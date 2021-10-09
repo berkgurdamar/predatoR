@@ -43,19 +43,29 @@ devtools::install_github("berkgurdamar/PredImption")
 
 ```{r example_input, echo=FALSE}
 test_data <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
-                                 c("2DN2", "B", 6, "GLU", "ALA"),
-                                 c("4ONL", "A", 36, "GLU", "GLY"),
-                                 c("4ONL", "A", 78, "PRO", "GLN")))
+                                 c("2DN2", "B", 6, "GLU", "ALA")))
+colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
 knitr::kable(test_data, align = c("c", "c", "c", "c", "c"))
 ```
 
 Mutation impact prediction can be done via `PredImption()` function:
+
+`PredImption()` function works on each PDB ID respectively. First, downloads the PDB file, creates distance matrix and turns PDB structure into a network. Calculates _Eigen Centrality Z-Score, Shortest Path Z-score_ and _Betweenness Z-Score_ of input positions. Find the _Mutation Type (1-Deadly, 0-Not Deadly)_, find the _Gene Name_ from the PDB file and if there are multiple genes annotated for the input PDB file, ask user to choose the input gene, gets _GnomAD Synonymous Z-Score, Non-Synonymous Z-Score_ and _PLoF Score, Genic Intolerance Score_, gets _BLOSUM62 score_ of the amino acid change, finds the _KEGG Pathway Number_ which contains the input gene. Finally, make prediction based on an _Adaboost_ model and classifies the mutation as _Disease Causing_ or _Silent_.
+
 
 ```{r usage, eval=FALSE}
 library(PredImption)
 pred_res <- PredImption(input_df)
 ```
 
-`PredImption()` function works on each PDB ID respectively. First, gets the PDB structure, create distance matrix and turns PDB structure into a network. Calculates Eigen Centrality Z-Score, Shortest Path Z-score and Betweenness Z-Score of input positions. Find the mutation type (1-Deadly, 0-Not Deadly), find the Gene Name from the PDB file and if there are multiple genes annotated for the input PDB file, ask user to choose the input gene, gets GnomAD Synonymous Z-Score, Non-Synonymous Z-Score and PLoF Score, Genic Intolerance Score, gets BLOSUM62 score of the amino acid change, finds the KEGG Pathway number which contains the input gene. Make prediction based on an Adaboost model and classifies the mutation as _Disease Causing_ or _Neutral_.
+`PredImption()` function returns a data.frame which contains additional two columns; _Prediction_ and _Probability_. _Prediction_ represents the result of the impact prediction and _Probability_ represents the probability that the mutation classified as _Disease Causing_ or _Silent_.
 
+```{r example_output, echo=FALSE}
+example_result <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "silent", "0.7676430"),
+                                      c("2DN2", "B", 6, "GLU", "ALA", "silent", "0.7225815")))
+
+colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Prediction", "Probability")
+
+knitr::kable(example_result, align = c("c", "c", "c", "c", "c", "c", "c"))
+```
 

@@ -32,28 +32,38 @@ devtools::install_github("berkgurdamar/PredImption")
 ‘PredImption’ uses data.frame structures as an input. data.frame should
 consist “PDB_ID”, “Chain”, “Position”, “Orig_AA”, “Mut_AA”:
 
-|  V1  | V2  | V3  | V4  | V5  |
-|:----:|:---:|:---:|:---:|:---:|
-| 2DN2 |  B  |  1  | VAL | ALA |
-| 2DN2 |  B  |  6  | GLU | ALA |
-| 4ONL |  A  | 36  | GLU | GLY |
-| 4ONL |  A  | 78  | PRO | GLN |
+| PDB_ID | Chain | Position | Orig_AA | Mut_AA |
+|:------:|:-----:|:--------:|:-------:|:------:|
+|  2DN2  |   B   |    1     |   VAL   |  ALA   |
+|  2DN2  |   B   |    6     |   GLU   |  ALA   |
 
 Mutation impact prediction can be done via `PredImption()` function:
+
+`PredImption()` function works on each PDB ID respectively. First,
+downloads the PDB file, creates distance matrix and turns PDB structure
+into a network. Calculates *Eigen Centrality Z-Score, Shortest Path
+Z-score* and *Betweenness Z-Score* of input positions. Find the
+*Mutation Type (1-Deadly, 0-Not Deadly)*, find the *Gene Name* from the
+PDB file and if there are multiple genes annotated for the input PDB
+file, ask user to choose the input gene, gets *GnomAD Synonymous
+Z-Score, Non-Synonymous Z-Score* and *PLoF Score, Genic Intolerance
+Score*, gets *BLOSUM62 score* of the amino acid change, finds the *KEGG
+Pathway Number* which contains the input gene. Finally, make prediction
+based on an *Adaboost* model and classifies the mutation as *Disease
+Causing* or *Silent*.
 
 ``` r
 library(PredImption)
 pred_res <- PredImption(input_df)
 ```
 
-`PredImption()` function works on each PDB ID respectively. First, gets
-the PDB structure, create distance matrix and turns PDB structure into a
-network. Calculates Eigen Centrality Z-Score, Shortest Path Z-score and
-Betweenness Z-Score of input positions. Find the mutation type
-(1-Deadly, 0-Not Deadly), find the Gene Name from the PDB file and if
-there are multiple genes annotated for the input PDB file, ask user to
-choose the input gene, gets GnomAD Synonymous Z-Score, Non-Synonymous
-Z-Score and PLoF Score, Genic Intolerance Score, gets BLOSUM62 score of
-the amino acid change, finds the KEGG Pathway number which contains the
-input gene. Make prediction based on an Adaboost model and classifies
-the mutation as *Disease Causing* or *Neutral*.
+`PredImption()` function returns a data.frame which contains additional
+two columns; *Prediction* and *Probability*. *Prediction* represents the
+result of the impact prediction and *Probability* represents the
+probability that the mutation classified as *Disease Causing* or
+*Silent*.
+
+| PDB_ID | Chain | Position | Orig_AA | Mut_AA | Prediction | Probability |
+|:------:|:-----:|:--------:|:-------:|:------:|:----------:|:-----------:|
+|  2DN2  |   B   |    1     |   VAL   |  ALA   |   silent   |  0.7676430  |
+|  2DN2  |   B   |    6     |   GLU   |  ALA   |   silent   |  0.7225815  |
