@@ -1,16 +1,30 @@
-Package: package
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Package: PredImption
+Title: Mutation Impact Predition Based on Network Properties
+Version: 0.0.1.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Berk",
+           family = "Gurdamar",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+           email = "berk_gurdamar@hotmail.com",
+           comment = c(ORCID = "0000-0003-3811-2211"))
+Description: Mutation Impact Prediction based on network properties. 
+            With using PDB ID, residue, reference amino acid and mutated amino acid, 
+            calculate the impact of a mutation and predict as disease causing or not.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: 
+    R (>= 4.1.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
+biocViews:
+Imports: 
+    adabag,
+    bio3d,
+    crayon,
+    doFuture,
+    foreach,
+    igraph,
+    parallel,
+    future,
+    biomaRt
