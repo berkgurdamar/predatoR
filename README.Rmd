@@ -30,11 +30,11 @@ You can install the released version of PredImption from [CRAN](https://CRAN.R-p
 install.packages("PredImption")
 ```
 
-or install via 'devtools':
+or install via [devtools](https://www.r-project.org/nosvn/pandoc/devtools.html):
 
 ``` {r installation_guide2, eval=FALSE}
 library(devtools)
-devtools::install_github("berkgurdamar/PredImption")
+install_github("berkgurdamar/PredImption")
 ```
 
 # Usage
