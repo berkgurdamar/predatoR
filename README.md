@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# PredImption: Mutation Impact Predition Based on Network Properties
+# <img src="https://github.com/berkgurdamar/PredImption/blob/master/inst/extdata/predimption_logo.png?raw=true" align="left" height=150/> PredImption: Mutation Impact Predition Based on Network Properties
 
 <!-- badges: start -->
 <!-- badges: end -->

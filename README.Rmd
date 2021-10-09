@@ -8,12 +8,12 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
+  fig.path = "inst/extdata",
   out.width = "100%"
 )
 ```
 
-# PredImption: Mutation Impact Predition Based on Network Properties
+# <img src="https://github.com/berkgurdamar/PredImption/blob/master/inst/extdata/predimption_logo.png?raw=true" align="left" height=150/> PredImption: Mutation Impact Predition Based on Network Properties
 
 <!-- badges: start -->
 <!-- badges: end -->
