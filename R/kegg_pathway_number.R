@@ -1,0 +1,15 @@
+#' KEGG Pathway Number from Gene Name
+#'
+#' @param gene_name Gene name
+#'
+#' @return numeric
+#' @export
+#'
+
+kegg_pathway_number <- function(gene_name){
+
+  message(crayon::white(paste0("Number of KEGG Pathways:", "\t", "DONE")))
+
+  return(length(grep(gene_name, kegg_info)))
+
+}
