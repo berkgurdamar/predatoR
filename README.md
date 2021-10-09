@@ -6,6 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+<br /> <br />
+
 # Overview
 
 `PredImption` is a tool for impact prediction of a mutation on a protein
