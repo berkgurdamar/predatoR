@@ -20,11 +20,12 @@ You can install the released version of PredImption from
 install.packages("PredImption")
 ```
 
-or install via ‘devtools’:
+or install via
+[devtools](https://www.r-project.org/nosvn/pandoc/devtools.html):
 
 ``` r
 library(devtools)
-devtools::install_github("berkgurdamar/PredImption")
+install_github("berkgurdamar/PredImption")
 ```
 
 # Usage
