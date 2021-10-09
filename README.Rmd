@@ -39,7 +39,7 @@ install_github("berkgurdamar/PredImption")
 
 # Usage
 
-`PredImption` uses data.frame structures as an input. data.frame should consist "PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA":
+`PredImption` uses data.frame structures as an input. data.frame should consist of _"PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA"_:
 
 ```{r example_input, echo=FALSE}
 test_data <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
@@ -50,7 +50,7 @@ knitr::kable(test_data, align = c("c", "c", "c", "c", "c"))
 
 Mutation impact prediction can be done via `PredImption()` function:
 
-`PredImption()` function works on each PDB ID respectively. First, downloads the PDB file, creates distance matrix and turns PDB structure into a network. Calculates __Eigen Centrality Z-Score, Shortest Path Z-score__ and __Betweenness Z-Score__ of input positions. Find the __Mutation Type (1-Deadly, 0-Not Deadly)__, find the __Gene Name__ from the PDB file and if there are multiple genes annotated for the input PDB file, ask user to choose the input gene, gets __GnomAD Synonymous Z-Score, Non-Synonymous Z-Score__ and __PLoF Score, Genic Intolerance Score__, gets __BLOSUM62 score__ of the amino acid change, finds the __KEGG Pathway Number__ which contains the input gene. Finally, make prediction based on an __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
+`PredImption()` function works on each PDB ID respectively. First, downloads the PDB file, creates distance matrix and turns PDB structure into a network. Calculates __Eigen Centrality Z-Score, Shortest Path Z-score__ and __Betweenness Z-Score__ of input positions. Classifies the mutation type as __Deadly (1), Not Deadly (0)__, find the __Gene Name__ from the PDB file and if there are multiple genes annotated for the input PDB file, asks user to choose the input gene, gets __GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, PLoF Score__, and __Genic Intolerance Score__, gets __BLOSUM62 score__ of the amino acid change, finds the __KEGG Pathway Number__ which contains the input gene. Finally, make prediction based on an __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
 
 
 ```{r usage, eval=FALSE}
@@ -58,11 +58,11 @@ library(PredImption)
 pred_res <- PredImption(input_df)
 ```
 
-`PredImption()` function returns a data.frame which contains additional two columns; __Prediction__ and __Probability__. __Prediction__ represents the result of the impact prediction and __Probability__ represents the probability that the mutation classified as __Disease Causing__ or __Silent__.
+`PredImption()` function returns a data.frame which contains additional two columns; __'Prediction'__ and __'Probability'__. __'Prediction'__ represents the result of the impact prediction and __'Probability'__ represents the probability that the mutation classified as __Disease Causing__ or __Silent__.
 
 ```{r example_output, echo=FALSE}
-example_result <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "silent", "0.7676430"),
-                                      c("2DN2", "B", 6, "GLU", "ALA", "silent", "0.7225815")))
+example_result <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "Silent", "0.7676430"),
+                                      c("2DN2", "B", 6, "GLU", "ALA", "Silent", "0.7225815")))
 
 colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Prediction", "Probability")
 
