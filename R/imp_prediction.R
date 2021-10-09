@@ -18,11 +18,11 @@ imp_prediction <- function(final_df){
   for(i in 1:length(res)){
     if(res[i] == 0){
       probs <- c(probs, pred$prob[i,1])
-      res_types <- c(res_types, "silent")
+      res_types <- c(res_types, "Silent")
     }
     else{
       probs <- c(probs, pred$prob[i,2])
-      res_types <- c(res_types, "disease causing")
+      res_types <- c(res_types, "Disease Causing")
     }
   }
 
