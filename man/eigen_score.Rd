@@ -14,8 +14,12 @@ eigen_score(connections_df, Position, atom_matrix)
 \item{atom_matrix}{matrix that contains all the atoms in the PDB file}
 }
 \value{
-numeric
+Eigen Centrality Z-Score of input position
 }
 \description{
-Eigen Centrality Score
+Calculate Eigen Centrality Z-Scores of input position
+}
+\details{
+This function calculates Eigen Centrality scores of all nodes in the network.
+Calculates and returns the Z-Scores of the input positions.
 }

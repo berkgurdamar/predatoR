@@ -1,9 +1,14 @@
 #' Betweenness Score
 #'
-#' @param connections_df data.frame contains all the edges
+#' Calculate Betweenness Z-Scores of input position
+#'
+#' This function calculates Betweenness scores of all nodes in the network via \code{betweenness} function
+#' of igraph package. Calculates and returns the Z-Scores of the input positions.
+#'
+#' @param connections_df data.frame contains all the edges calculated by \code{PDB2connections} function
 #' @param Position Mutation position
 #'
-#' @return numeric
+#' @return Betweenness Z-Scores of the input position
 #' @export
 #'
 

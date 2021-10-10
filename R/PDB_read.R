@@ -1,8 +1,11 @@
 #' PDB Downloading and Reading
 #'
+#' Download and read input PDB via \code{get.pdb} and \code{read.pdb} function of bio3d package
+#' and filter the PDB file for only containing atoms.
+#'
 #' @param PDB_ID PDB ID
 #'
-#' @return Matrix
+#' @return Matrix that contains all the atoms in the PDB structure
 #' @export
 #'
 

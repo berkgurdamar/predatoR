@@ -3,7 +3,9 @@
 #' @param PDB_ID PDB ID
 #' @param info_df data.frame contains all the input mutations
 #'
-#' @return list
+#' @return list that contains a data.frame containing GnomAD scores of input mutations and
+#' the gene name
+#'
 #' @export
 #'
 

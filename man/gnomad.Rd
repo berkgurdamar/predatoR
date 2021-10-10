@@ -12,7 +12,8 @@ gnomad(PDB_ID, info_df)
 \item{info_df}{data.frame contains all the input mutations}
 }
 \value{
-list
+list that contains a data.frame containing GnomAD scores of input mutations and
+the gene name
 }
 \description{
 GnomAD Scores

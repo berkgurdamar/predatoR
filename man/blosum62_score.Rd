@@ -10,7 +10,7 @@ blosum62_score(info_df)
 \item{info_df}{data.frame contains all the input mutations}
 }
 \value{
-numeric
+BLOSUM62 score of input mutation
 }
 \description{
 BLOSUM62 Score

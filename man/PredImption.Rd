@@ -2,20 +2,23 @@
 % Please edit documentation in R/PredImption.R
 \name{PredImption}
 \alias{PredImption}
-\title{Main mutation impact prediction function}
+\title{Mutation impact Prediction}
 \usage{
 PredImption(info_df)
 }
 \arguments{
-\item{info_df}{data.frame contains 'PDB_ID', 'Chain', 'Position',
-'Reference Amino Acid' and 'Mutated Amino Acid' information respectively}
+\item{info_df}{data.frame containing 'PDB_ID', 'Chain', 'Position',
+'Reference Amino Acid' and 'Mutated Amino Acid' information respectively.}
 }
 \value{
-data.frame
+data.frame which contains prediction results
 }
 \description{
-With an input data frame which contains 'PDB_ID', 'Chain', 'Position',
+Main function for mutation impact prediction
+}
+\details{
+With an input data.frame which contains 'PDB_ID', 'Chain', 'Position',
 'Reference Amino Acid' and 'Mutated Amino Acid' information respectively,
-make a prediction about the mutation with using adaboost model and classifies
-the mutation as 'disease causing' or 'silent'.
+make a prediction about the mutation by using pre computed adaboost model
+and classifies the mutation as 'Disease Causing' or 'Silent'.
 }

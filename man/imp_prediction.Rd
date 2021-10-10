@@ -10,8 +10,12 @@ imp_prediction(final_df)
 \item{final_df}{data.frame contains all the mutation information and the required information for impact prediction}
 }
 \value{
-matrix
+matrix contains the prediction results
 }
 \description{
-Impact Prediction
+Function that makes the final prediction
+}
+\details{
+This function takes a data.frame which contains all the required fields for impact prediction and compute
+the prediction based on pre-computed Adaboost model.
 }

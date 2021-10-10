@@ -10,8 +10,10 @@ mutation_type(info_df)
 \item{info_df}{data.frame contains all the input mutations}
 }
 \value{
-factor
+Mutation Type as a factor; 1 = Deadly, 0 = Not deadly
 }
 \description{
-Mutation Type Classifier
+This functios classifies the Charged-Charged, Charged-Polar, Polar-Charged, Polar-Polar and
+Hydrophobic-Hydrophobic mutations as 'Not deadly (0)', classifies Charged-Hydrophobic,
+Hydrophobic-Charged, Hydrophobic-Polar, Polar-Hydrophobic mutations as 'Deadly (1)'.
 }

@@ -10,7 +10,7 @@ kegg_pathway_number(gene_name)
 \item{gene_name}{Gene name}
 }
 \value{
-numeric
+Number of KEGG pathways which contain the input gene
 }
 \description{
 KEGG Pathway Number from Gene Name

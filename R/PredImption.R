@@ -1,14 +1,16 @@
-#' Main mutation impact prediction function
+#' Mutation impact Prediction
 #'
-#' With an input data frame which contains 'PDB_ID', 'Chain', 'Position',
+#' Main function for mutation impact prediction
+#'
+#' With an input data.frame which contains 'PDB_ID', 'Chain', 'Position',
 #' 'Reference Amino Acid' and 'Mutated Amino Acid' information respectively,
-#' make a prediction about the mutation with using adaboost model and classifies
-#' the mutation as 'disease causing' or 'silent'.
+#' make a prediction about the mutation by using pre computed adaboost model
+#' and classifies the mutation as 'Disease Causing' or 'Silent'.
 #'
-#' @param info_df data.frame contains 'PDB_ID', 'Chain', 'Position',
-#' 'Reference Amino Acid' and 'Mutated Amino Acid' information respectively
+#' @param info_df data.frame containing 'PDB_ID', 'Chain', 'Position',
+#' 'Reference Amino Acid' and 'Mutated Amino Acid' information respectively.
 #'
-#' @return data.frame
+#' @return data.frame which contains prediction results
 #' @export
 #'
 

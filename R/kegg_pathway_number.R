@@ -2,7 +2,7 @@
 #'
 #' @param gene_name Gene name
 #'
-#' @return numeric
+#' @return Number of KEGG pathways which contain the input gene
 #' @export
 #'
 

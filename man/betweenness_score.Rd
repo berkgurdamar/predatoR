@@ -7,13 +7,17 @@
 betweenness_score(connections_df, Position)
 }
 \arguments{
-\item{connections_df}{data.frame contains all the edges}
+\item{connections_df}{data.frame contains all the edges calculated by \code{PDB2connections} function}
 
 \item{Position}{Mutation position}
 }
 \value{
-numeric
+Betweenness Z-Scores of the input position
 }
 \description{
-Betweenness Score
+Calculate Betweenness Z-Scores of input position
+}
+\details{
+This function calculates Betweenness scores of all nodes in the network via \code{betweenness} function
+of igraph package. Calculates and returns the Z-Scores of the input positions.
 }

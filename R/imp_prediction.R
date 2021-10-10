@@ -1,9 +1,14 @@
 #' Impact Prediction
 #'
+#' Function that makes the final prediction
+#'
+#' This function takes a data.frame which contains all the required fields for impact prediction and compute
+#' the prediction based on pre-computed Adaboost model.
+#'
 #' @param final_df data.frame contains all the mutation information and the required information for impact prediction
 #'
 #' @import adabag
-#' @return matrix
+#' @return matrix contains the prediction results
 #' @export
 #'
 
