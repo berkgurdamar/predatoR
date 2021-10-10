@@ -2,3 +2,7 @@
 ^\.Rproj\.user$
 ^.*\.md$
 ^README\.Rmd$
+^README.md$
+^.*\.Rprofile$
+^extdata$
+^\.github$
