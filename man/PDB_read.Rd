@@ -10,8 +10,9 @@ PDB_read(PDB_ID)
 \item{PDB_ID}{PDB ID}
 }
 \value{
-Matrix
+Matrix that contains all the atoms in the PDB structure
 }
 \description{
-PDB Downloading and Reading
+Download and read input PDB via \code{get.pdb} and \code{read.pdb} function of bio3d package
+and filter the PDB file for only containing atoms.
 }

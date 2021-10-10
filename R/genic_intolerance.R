@@ -2,7 +2,7 @@
 #'
 #' @param gene_name Gene name
 #'
-#' @return numeric
+#' @return Genic Intolerance score of input gene
 #' @export
 #'
 

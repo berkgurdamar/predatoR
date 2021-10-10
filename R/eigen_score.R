@@ -1,10 +1,15 @@
 #' Eigen Centrality Score
 #'
+#' Calculate Eigen Centrality Z-Scores of input position
+#'
+#' This function calculates Eigen Centrality scores of all nodes in the network.
+#' Calculates and returns the Z-Scores of the input positions.
+#'
 #' @param connections_df data.frame contains all the edges
 #' @param Position Mutation position
 #' @param atom_matrix matrix that contains all the atoms in the PDB file
 #'
-#' @return numeric
+#' @return Eigen Centrality Z-Score of input position
 #' @export
 #'
 

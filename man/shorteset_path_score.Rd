@@ -12,8 +12,12 @@ shorteset_path_score(connections_df, Position)
 \item{Position}{Mutation position}
 }
 \value{
-integer
+Shortest Path Z-Scores of input position
 }
 \description{
-Calculates shortest path z-score of mutation index amino acid from list of edges
+Calculate Shortest Path Z-Scores of input position
+}
+\details{
+This function calculates Shortest Path lengths of all nodes in the network via \code{shortest.paths} function
+of igraph package. Sum shortest path lengts of every nodes, calculates and returns the Z-Scores of the input positions.
 }

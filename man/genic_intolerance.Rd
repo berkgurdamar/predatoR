@@ -10,7 +10,7 @@ genic_intolerance(gene_name)
 \item{gene_name}{Gene name}
 }
 \value{
-numeric
+Genic Intolerance score of input gene
 }
 \description{
 Genic Intolerance Score

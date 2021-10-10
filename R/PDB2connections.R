@@ -1,8 +1,13 @@
 #' Creating edge list from atom matrix
 #'
+#' Creates all the edges from the input atom matrix created by \code{PDB_read} function
+#'
+#' This function calculates the distances between all the atoms in the atom matrix and create edges
+#'  if the distance between two atoms is less or equal to 7 Angstrom.
+#'
 #' @param atom_matrix matrix that contains all the atoms in the PDB file
 #'
-#' @return data.frame
+#' @return data.frame containing all the edges
 #' @export
 #'
 

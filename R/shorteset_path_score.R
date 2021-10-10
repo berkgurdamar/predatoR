@@ -1,11 +1,14 @@
 #' Shortest Path Score Function
 #'
-#' Calculates shortest path z-score of mutation index amino acid from list of edges
+#' Calculate Shortest Path Z-Scores of input position
+#'
+#' This function calculates Shortest Path lengths of all nodes in the network via \code{shortest.paths} function
+#' of igraph package. Sum shortest path lengts of every nodes, calculates and returns the Z-Scores of the input positions.
 #'
 #' @param connections_df data frame contains list of edges
 #' @param Position Mutation position
 #'
-#' @return integer
+#' @return Shortest Path Z-Scores of input position
 #' @export
 #'
 

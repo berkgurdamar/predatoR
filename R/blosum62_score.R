@@ -2,7 +2,7 @@
 #'
 #' @param info_df data.frame contains all the input mutations
 #'
-#' @return numeric
+#' @return BLOSUM62 score of input mutation
 #' @export
 #'
 
