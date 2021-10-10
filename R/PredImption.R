@@ -16,6 +16,24 @@
 
 PredImption <- function(info_df){
 
+  if(is.data.frame(info_df) == F){
+    stop("Input should be a data.frame.")
+  }
+  else if(ncol(info_df) != 5){
+    stop("Input data.frame should contain 5 columns; PDB_ID, Chain, Position, Orig_AA and Mut_AA respectively.")
+  }
+  else if(length(setdiff(unique(unlist(c(info_df[4], info_df[5]))), toupper(c("ala", "arg", "asn", "asp", "val",
+                                                                              "cys", "glu", "gln", "gly", "tyr",
+                                                                              "his", "ile", "leu", "lys", "met",
+                                                                              "phe", "pro", "ser", "thr", "trp")))) > 0){
+    false_name <- setdiff(unique(unlist(c(info_df[4], info_df[5]))), toupper(c("ala", "arg", "asn", "asp", "val",
+                                                                               "cys", "glu", "gln", "gly", "tyr",
+                                                                               "his", "ile", "leu", "lys", "met",
+                                                                               "phe", "pro", "ser", "thr", "trp")))
+    stop(paste0(paste0(false_name, collapse = ", "),
+                " couldn't find in the amino acid names (Amino acid names should be 3 letter codes)"))
+  }
+
   colnames(info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
 
   final_df <- c()
