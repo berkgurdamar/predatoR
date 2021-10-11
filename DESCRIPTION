@@ -1,5 +1,5 @@
 Package: PredImption
-Title: Mutation Impact Predition Based on Network Properties
+Title: Mutation Impact Prediction Based on Network Properties
 Version: 0.0.1.9000
 Authors@R: 
     person(given = "Berk",

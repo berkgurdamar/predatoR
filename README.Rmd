@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# <img src="https://github.com/berkgurdamar/PredImption/blob/main/inst/extdata/predimption_logo.png?raw=true" align="left" height=150/> PredImption: Mutation Impact Predition Based on Network Properties
+# <img src="https://github.com/berkgurdamar/PredImption/blob/main/inst/extdata/predimption_logo.png?raw=true" align="left" height=150/> PredImption: Mutation Impact Prediction Based on Network Properties
 
 <!-- badges: start -->
 <!-- badges: end -->
