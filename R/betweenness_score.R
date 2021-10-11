@@ -16,6 +16,8 @@ betweenness_score <- function(connections_df, Position){
 
   idx <- strsplit(Position, "_")[[1]]
 
+  connections_df <- as.data.frame(connections_df[[which(names(connections_df) == idx[2])]])
+
   df.g <- igraph::graph.data.frame(d = connections_df, directed = FALSE)
 
   all_betwenness <- igraph::betweenness(df.g, directed = F)

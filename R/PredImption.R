@@ -75,10 +75,6 @@ PredImption <- function(info_df){
 
     message(crayon::white(paste0("Betweenness Score:", "\t\t", "DONE")))
 
-    ### mutation type
-
-    filtered_info_df$mut_type <- as.factor(mutation_type(filtered_info_df))
-
     ### gnomad
 
     gnomad_res <- gnomad(i, filtered_info_df)
@@ -97,10 +93,11 @@ PredImption <- function(info_df){
 
     filtered_info_df$genic_intolerance <- as.numeric(genic_intolerance(gene_name))
 
-    # close(pb)
     final_df <- rbind(final_df, filtered_info_df)
   }
+
   ### prediction
+
   final_df <- stats::na.omit(final_df)
 
   if(nrow(final_df) == 0){

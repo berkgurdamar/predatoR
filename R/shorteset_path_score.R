@@ -16,6 +16,7 @@ shorteset_path_score <- function(connections_df, Position){
 
   idx <- strsplit(Position, "_")[[1]]
 
+  connections_df <- as.data.frame(connections_df[[which(names(connections_df) == idx[2])]])
   df.g <- igraph::graph.data.frame(d = connections_df, directed = FALSE)
 
   distMatrix <- igraph::shortest.paths(df.g, v=igraph::V(df.g), to=igraph::V(df.g))
