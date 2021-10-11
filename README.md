@@ -45,15 +45,14 @@ Mutation impact prediction can be done via `PredImption()` function:
 `PredImption()` function works on each PDB ID respectively. First,
 downloads the PDB file, creates distance matrix and turns PDB structure
 into a network. Calculates **Eigen Centrality Z-Score, Shortest Path
-Z-score** and **Betweenness Z-Score** of input positions. Classifies the
-mutation type as **Deadly (1), Not Deadly (0)**, find the **Gene Name**
-from the PDB file and if there are multiple genes annotated for the
-input PDB file, asks user to choose the input gene, gets **GnomAD
-Synonymous Z-Score, Non-Synonymous Z-Score, PLoF Score**, and **Genic
-Intolerance Score**, gets **BLOSUM62 score** of the amino acid change,
-finds the **KEGG Pathway Number** which contains the input gene.
-Finally, make prediction based on an **Adaboost** model and classifies
-the mutation as **Disease Causing** or **Silent**.
+Z-score** and **Betweenness Z-Score** of input positions. Find the
+**Gene Name** from the PDB file and if there are multiple genes
+annotated for the input PDB file, asks user to choose the input gene,
+gets **GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, PLoF Score**,
+and **Genic Intolerance Score**, gets **BLOSUM62 score** of the amino
+acid change, finds the **KEGG Pathway Number** which contains the input
+gene. Finally, make prediction based on an **Adaboost** model and
+classifies the mutation as **Disease Causing** or **Silent**.
 
 ``` r
 library(PredImption)
@@ -68,5 +67,5 @@ Causing** or **Silent**.
 
 | PDB_ID | Chain | Position | Orig_AA | Mut_AA | Prediction | Probability |
 |:------:|:-----:|:--------:|:-------:|:------:|:----------:|:-----------:|
-|  2DN2  |   B   |    1     |   VAL   |  ALA   |   Silent   |  0.7676430  |
-|  2DN2  |   B   |    6     |   GLU   |  ALA   |   Silent   |  0.7225815  |
+|  2DN2  |   B   |    1     |   VAL   |  ALA   |   Silent   |  0.6599836  |
+|  2DN2  |   B   |    6     |   GLU   |  ALA   |   Silent   |  0.5899702  |
