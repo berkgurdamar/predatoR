@@ -10,7 +10,7 @@ PDB2connections(atom_matrix)
 \item{atom_matrix}{matrix that contains all the atoms in the PDB file}
 }
 \value{
-data.frame containing all the edges
+list containing all the edges of each chain
 }
 \description{
 Creates all the edges from the input atom matrix created by \code{PDB_read} function

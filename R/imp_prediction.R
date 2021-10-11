@@ -14,7 +14,7 @@
 
 imp_prediction <- function(final_df){
 
-  pred <- stats::predict(model, final_df)
+  pred <- stats::predict(adaboost_model, final_df)
 
   res <- pred$class
 

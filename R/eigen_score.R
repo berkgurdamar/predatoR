@@ -16,6 +16,8 @@
 eigen_score <- function(connections_df, Position, atom_matrix){
   idx <- strsplit(Position, "_")[[1]]
 
+  connections_df <- as.data.frame(connections_df[[which(names(connections_df) == idx[2])]])
+
   eigen_idx <- connections_df$connections[which(connections_df$node_name == paste0(idx[1], "_CA_", idx[2]))]
   scores <- nrow(connections_df[connections_df$node_name %in% eigen_idx,])
 
