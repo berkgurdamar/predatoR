@@ -11,12 +11,8 @@
 
 gnomad <- function(PDB_ID, info_df){
 
-  res <- suppressMessages(biomaRt::getBM(attributes = c('pdb',
-                                                        'ensembl_gene_id',
-                                                        'external_gene_name'),
-                                         filters = 'pdb',
-                                         values = PDB_ID,
-                                         mart = mart))
+
+  res <- biomart_data[which(biomart_data$pdb == PDB_ID),]
 
   if(length(res$external_gene_name) > 1){
     gene_name <- readline(prompt = paste0("There are multiple gene names for PDB ", PDB_ID,
