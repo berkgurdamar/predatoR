@@ -11,6 +11,7 @@
 
 gnomad <- function(PDB_ID, info_df){
 
+  if(length(unique(info_df$Gene_Name)) == 1 & "" %in% unique(info_df$Gene_Name)){
 
   res <- biomart_data[which(biomart_data$pdb == PDB_ID),]
 
@@ -102,6 +103,52 @@ gnomad <- function(PDB_ID, info_df){
     message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
     return(list(info_df, gnomad_data$gene[idx]))
+  }
+  }
+  else{
+    if(length(unique(info_df$Gene_Name)) != 1){
+      message(crayon::white(paste0("\n", "Gene name input should be same for the same PDB ID (", unique(info_df$PDB_ID), "), inputs will be removed from the query", "\n")))
+
+      info_df$syn_z <- NA
+
+      info_df$mis_z <- NA
+
+      info_df$pLI <- NA
+
+      message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
+
+      return(list(info_df, "no_name"))
+    }
+    else{
+      idx <- which(gnomad_data$gene == unique(info_df$Gene_Name))
+
+      if(length(idx) == 0){
+        message(crayon::white(paste0("\n", "gnomAD scores of the gene ", unique(info_df$Gene_Name),
+                                     " couldn't find, will be removed from the query", "\n")))
+
+        info_df$syn_z <- NA
+
+        info_df$mis_z <- NA
+
+        info_df$pLI <- NA
+
+        message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
+
+        return(list(info_df, unique(info_df$Gene_Name)))
+      }
+      else{
+
+        info_df$syn_z <- as.numeric(gnomad_data$syn_z[idx])
+
+        info_df$mis_z <- as.numeric(gnomad_data$mis_z[idx])
+
+        info_df$pLI <- as.numeric(gnomad_data$pLI[idx])
+
+        message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
+
+        return(list(info_df, unique(info_df$Gene_Name)))
+      }
+    }
   }
 }
 
