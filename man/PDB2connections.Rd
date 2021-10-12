@@ -4,10 +4,12 @@
 \alias{PDB2connections}
 \title{Creating edge list from atom matrix}
 \usage{
-PDB2connections(atom_matrix)
+PDB2connections(atom_matrix, filtered_info_df)
 }
 \arguments{
 \item{atom_matrix}{matrix that contains all the atoms in the PDB file}
+
+\item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{
 list containing all the edges of each chain
