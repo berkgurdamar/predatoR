@@ -11,13 +11,26 @@
 
 PDB_read <- function(PDB_ID){
 
-  pdb <- suppressMessages(bio3d::read.pdb(bio3d::get.pdb(PDB_ID, URL=TRUE)))
+  try <- tryCatch({
+    pdb <- suppressMessages(bio3d::read.pdb(bio3d::get.pdb(PDB_ID, URL=TRUE)))
 
-  atom_matrix <- pdb$atom
-  atom_matrix <- atom_matrix[which(atom_matrix$type == "ATOM"),]
-  atom_matrix <- atom_matrix[which(atom_matrix$resid != "HOH"),]
+    atom_matrix <- pdb$atom
+    atom_matrix <- atom_matrix[which(atom_matrix$type == "ATOM"),]
+    atom_matrix <- atom_matrix[which(atom_matrix$resid != "HOH"),]
 
-  message(crayon::white(paste0("STEP:","\n" ,"Reading PDB:", "\t\t\t", "DONE")))
+    message(crayon::white(paste0("STEP:","\n" ,"Reading PDB:", "\t\t\t", "DONE")))
 
-  return(atom_matrix)
+    return(atom_matrix)
+
+  },
+  error=function(x){
+    message(paste0("\n", "Couldn't download the PDB file ", PDB_ID, ", it will be removed from the query", "\n"))
+    return(NA)
+  },
+  warning=function(x) {
+    message(paste0("\n", "Couldn't download the PDB file ", PDB_ID, ", it will be removed from the query", "\n"))
+    return(NA)
+  }
+  )
+
 }
