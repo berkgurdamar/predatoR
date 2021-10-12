@@ -4,14 +4,12 @@
 \alias{eigen_score}
 \title{Eigen Centrality Score}
 \usage{
-eigen_score(connections_df, Position, atom_matrix)
+eigen_score(connections_df, filtered_info_df)
 }
 \arguments{
 \item{connections_df}{data.frame contains all the edges}
 
-\item{Position}{Mutation position}
-
-\item{atom_matrix}{matrix that contains all the atoms in the PDB file}
+\item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{
 Eigen Centrality Z-Score of input position

@@ -6,31 +6,36 @@
 #' Calculates and returns the Z-Scores of the input positions.
 #'
 #' @param connections_df data.frame contains all the edges
-#' @param Position Mutation position
-#' @param atom_matrix matrix that contains all the atoms in the PDB file
+#' @param filtered_info_df input data.frame which contain only one PDB entries
 #'
 #' @return Eigen Centrality Z-Score of input position
 #' @export
 #'
 
-eigen_score <- function(connections_df, Position, atom_matrix){
-  idx <- strsplit(Position, "_")[[1]]
 
-  connections_df <- as.data.frame(connections_df[[which(names(connections_df) == idx[2])]])
+eigen_score <- function(connections_df, filtered_info_df){
 
-  eigen_idx <- connections_df$connections[which(connections_df$node_name == paste0(idx[1], "_CA_", idx[2]))]
-  scores <- nrow(connections_df[connections_df$node_name %in% eigen_idx,])
+  final_df <- c()
+  for(i in 1:length(connections_df)){
+    total_scores <- c()
+    idx <- unique(connections_df[[i]][grep("_CA_", connections_df[[i]][,1]), 1])
+    for(j in idx){
+      eigen_idx <- connections_df[[i]][which(connections_df[[i]][,1] == j), 2]
+      total_scores <- c(total_scores, nrow(connections_df[[i]][connections_df[[i]][,1] %in% eigen_idx,]))
+    }
 
-  ca_df <- atom_matrix[atom_matrix$elety == "CA",]
-  total_scores <- c()
-  for(k in 1:nrow(ca_df)){
-    eigen_idx <- connections_df$connections[which(connections_df$node_name == paste0(ca_df$resno[k], "_CA_", ca_df$chain[k]))]
-    total_scores <- c(total_scores, nrow(connections_df[connections_df$node_name %in% eigen_idx,]))
+    mean_of_scores <- mean(total_scores)
+    sd_of_scores <- stats::sd(total_scores)
+
+    z_scores <- (total_scores - mean_of_scores) / sd_of_scores
+    final_df <- rbind(final_df, cbind(idx, z_scores))
   }
-  mean_of_scores <- mean(total_scores)
-  sd_of_scores <- stats::sd(total_scores)
+  final_df <- as.data.frame(final_df)
 
-  eigen_z_score <- (scores - mean_of_scores) / sd_of_scores
+  z_final_scores <- as.numeric(sapply(paste0(filtered_info_df$Position, "_CA_", filtered_info_df$Chain),
+                                      function(x) final_df$z_scores[which(final_df$idx == x)]))
 
-  return(eigen_z_score)
+  message(crayon::white(paste0("Eigen Centrality Score:", "\t\t", "DONE")))
+
+  return(z_final_scores)
 }

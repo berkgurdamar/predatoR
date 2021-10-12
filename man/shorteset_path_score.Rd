@@ -4,12 +4,12 @@
 \alias{shorteset_path_score}
 \title{Shortest Path Score Function}
 \usage{
-shorteset_path_score(connections_df, Position)
+shorteset_path_score(connections_df, filtered_info_df)
 }
 \arguments{
 \item{connections_df}{data frame contains list of edges}
 
-\item{Position}{Mutation position}
+\item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{
 Shortest Path Z-Scores of input position

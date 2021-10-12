@@ -4,12 +4,12 @@
 \alias{betweenness_score}
 \title{Betweenness Score}
 \usage{
-betweenness_score(connections_df, Position)
+betweenness_score(connections_df, filtered_info_df)
 }
 \arguments{
 \item{connections_df}{data.frame contains all the edges calculated by \code{PDB2connections} function}
 
-\item{Position}{Mutation position}
+\item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{
 Betweenness Z-Scores of the input position
