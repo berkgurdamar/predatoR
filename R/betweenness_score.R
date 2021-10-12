@@ -6,27 +6,38 @@
 #' of igraph package. Calculates and returns the Z-Scores of the input positions.
 #'
 #' @param connections_df data.frame contains all the edges calculated by \code{PDB2connections} function
-#' @param Position Mutation position
+#' @param filtered_info_df input data.frame which contain only one PDB entries
 #'
 #' @return Betweenness Z-Scores of the input position
 #' @export
 #'
 
-betweenness_score <- function(connections_df, Position){
+betweenness_score <- function(connections_df, filtered_info_df){
 
-  idx <- strsplit(Position, "_")[[1]]
+  final_df <- c()
+  for(i in 1:length(connections_df)){
 
-  connections_df <- as.data.frame(connections_df[[which(names(connections_df) == idx[2])]])
+    connections_df_filtered <- as.data.frame(connections_df[[i]])
 
-  df.g <- igraph::graph.data.frame(d = connections_df, directed = FALSE)
+    df.g <- igraph::graph.data.frame(d = connections_df_filtered, directed = FALSE)
 
-  all_betwenness <- igraph::betweenness(df.g, directed = F)
-  mean_betwenness <- mean(all_betwenness)
-  sd_betwenness <- stats::sd(all_betwenness)
+    all_betwenness <- igraph::betweenness(df.g, directed = F)
+    mean_betwenness <- mean(all_betwenness)
+    sd_betwenness <- stats::sd(all_betwenness)
 
-  idx_betwenness <- all_betwenness[paste0(idx[1], "_CA_", idx[2])]
+    final_betweenness <- (all_betwenness - mean_betwenness) / sd_betwenness
 
-  betwenness_scores_z <- (idx_betwenness - mean_betwenness) / sd_betwenness
+    final_df <- rbind(final_df, cbind(names(final_betweenness), final_betweenness))
 
-  return(betwenness_scores_z)
+  }
+
+  final_df <- as.data.frame(final_df)
+
+  betweenness_z_final <- as.numeric(sapply(paste0(filtered_info_df$Position, "_CA_", filtered_info_df$Chain),
+                                           function(x) final_df$final_betweenness[which(final_df$V1 == x)]))
+
+  message(crayon::white(paste0("Betweenness Score:", "\t\t", "DONE")))
+
+  return(betweenness_z_final)
 }
+
