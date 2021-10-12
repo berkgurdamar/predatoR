@@ -19,13 +19,14 @@ PredImption <- function(info_df){
   if(is.data.frame(info_df) == F){
     stop("Input should be a data.frame.")
   }
-  else if(ncol(info_df) != 5){
-    stop("Input data.frame should contain 5 columns; PDB_ID, Chain, Position, Orig_AA and Mut_AA respectively.")
+  else if(ncol(info_df) != 6){
+    stop("Input data.frame should contain 6 columns; PDB_ID, Chain, Position, Orig_AA and Mut_AA, Gene_Name respectively.")
   }
   else if(length(setdiff(unique(unlist(c(info_df[4], info_df[5]))), toupper(c("ala", "arg", "asn", "asp", "val",
                                                                               "cys", "glu", "gln", "gly", "tyr",
                                                                               "his", "ile", "leu", "lys", "met",
                                                                               "phe", "pro", "ser", "thr", "trp")))) > 0){
+
     false_name <- setdiff(unique(unlist(c(info_df[4], info_df[5]))), toupper(c("ala", "arg", "asn", "asp", "val",
                                                                                "cys", "glu", "gln", "gly", "tyr",
                                                                                "his", "ile", "leu", "lys", "met",
@@ -34,7 +35,13 @@ PredImption <- function(info_df){
                 " couldn't find in the amino acid names (Amino acid names should be 3 letter codes)"))
   }
 
-  colnames(info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
+  colnames(info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
+
+  doFuture::registerDoFuture()
+  n.cores <- parallel::detectCores() - 1
+
+  my.cluster <- parallel::makeCluster(n.cores)
+  future::plan(future::cluster, workers = my.cluster)
 
   final_df <- c()
   for(i in unique(info_df$PDB_ID)){
@@ -43,43 +50,61 @@ PredImption <- function(info_df){
 
     atom_matrix <- PDB_read(i)
 
+    if(is.data.frame(atom_matrix) == FALSE){
+      next
+    }
     message(crayon::white(paste0("PDB ID:", "\t\t\t\t", i, "\n",
                                  "Position(s):", "\t\t\t", paste0(filtered_info_df$Position, collapse = ", "))))
 
+    removed_idx <- c()
     for(j in 1:nrow(filtered_info_df)){
-      if(unique(atom_matrix$resid[atom_matrix$resno == filtered_info_df$Position[j] & atom_matrix$chain == filtered_info_df$Chain[j]]) != filtered_info_df$Orig_AA[j]){
-        stop(paste0("Residue ", filtered_info_df$Position[j], " is not ", filtered_info_df$Orig_AA[j], " in the PDB structure."))
-      }
       if(!(filtered_info_df$Position[j] %in% unique(atom_matrix$resno))){
-        stop(paste0("Residue ", filtered_info_df$Position[j], " is not included in the PDB structure."))
+        message(crayon::white(paste0("Residue ", filtered_info_df$Position[j],
+                                     " is not included in the PDB structure, it will be removed from the query")))
+        removed_idx <- c(removed_idx, j)
+      }
+      else if(length(unique(atom_matrix$resid[atom_matrix$resno == filtered_info_df$Position[j] & atom_matrix$chain == filtered_info_df$Chain[j]])) != 1){
+        message(crayon::white(paste0("There are multiple amino acids for residue ", filtered_info_df$Position[j],
+                                     " in the PDB file, it will be removed from the query")))
+        removed_idx <- c(removed_idx, j)
+        }
+      else if(unique(atom_matrix$resid[atom_matrix$resno == filtered_info_df$Position[j] & atom_matrix$chain == filtered_info_df$Chain[j]]) != filtered_info_df$Orig_AA[j]){
+        message(crayon::white(paste0("Residue ", filtered_info_df$Position[j], " is not ",
+                                     filtered_info_df$Orig_AA[j], " in the PDB structure, it will be removed from the query")))
+        removed_idx <- c(removed_idx, j)
       }
     }
 
-    connections_df <- PDB2connections(atom_matrix)
+    if(length(removed_idx) > 0){
+    filtered_info_df <- filtered_info_df[-removed_idx,]
+      if(nrow(filtered_info_df) == 0){
+        next
+      }
+    }
+
+    connections_df <- PDB2connections(atom_matrix, filtered_info_df)
 
     ### eigen centrality
 
-    filtered_info_df$eigen_z_score <- sapply(paste0(filtered_info_df$Position, "_",filtered_info_df$Chain), function(x) eigen_score(connections_df, x, atom_matrix))
-
-    message(crayon::white(paste0("Eigen Centrality Score:", "\t\t", "DONE")))
+    filtered_info_df$eigen_z_score <- eigen_score(connections_df, filtered_info_df)
 
     ### total shortest paths
 
-    filtered_info_df$shortest_path_z <- sapply(paste0(filtered_info_df$Position, "_",filtered_info_df$Chain), function(x) shorteset_path_score(connections_df, x))
-
-    message(crayon::white(paste0("Number of Shortest Paths:", "\t", "DONE")))
+    filtered_info_df$shortest_path_z <- shorteset_path_score(connections_df, filtered_info_df)
 
     ### betweenness scores
 
-    filtered_info_df$betwenness_scores_z <- sapply(paste0(filtered_info_df$Position, "_",filtered_info_df$Chain), function(x) betweenness_score(connections_df, x))
-
-    message(crayon::white(paste0("Betweenness Score:", "\t\t", "DONE")))
+    filtered_info_df$betwenness_scores_z <- betweenness_score(connections_df, filtered_info_df)
 
     ### gnomad
 
     gnomad_res <- gnomad(i, filtered_info_df)
     filtered_info_df <- gnomad_res[[1]]
     gene_name <- gnomad_res[[2]]
+
+    if(gene_name == "no_name"){
+      next
+    }
 
     ### BLOSUM62
 
@@ -109,6 +134,9 @@ PredImption <- function(info_df){
   prediction_result <- imp_prediction(final_df)
 
   }
+
+  parallel::stopCluster(my.cluster)
+
   return(prediction_result)
 
 }
