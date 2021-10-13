@@ -46,11 +46,11 @@ gnomad <- function(PDB_ID, info_df){
     }
     else{
 
-      info_df$syn_z <- as.numeric(gnomad_data$syn_z[idx])
+      info_df$syn_z <- max(as.numeric(gnomad_data$syn_z[idx]))
 
-      info_df$mis_z <- as.numeric(gnomad_data$mis_z[idx])
+      info_df$mis_z <- max(as.numeric(gnomad_data$mis_z[idx]))
 
-      info_df$pLI <- as.numeric(gnomad_data$pLI[idx])
+      info_df$pLI <- max(as.numeric(gnomad_data$pLI[idx]))
 
       message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
@@ -80,11 +80,11 @@ gnomad <- function(PDB_ID, info_df){
     }
     else{
 
-      info_df$syn_z <- as.numeric(gnomad_data$syn_z[idx])
+      info_df$syn_z <- max(as.numeric(gnomad_data$syn_z[idx]))
 
-      info_df$mis_z <- as.numeric(gnomad_data$mis_z[idx])
+      info_df$mis_z <- max(as.numeric(gnomad_data$mis_z[idx]))
 
-      info_df$pLI <- as.numeric(gnomad_data$pLI[idx])
+      info_df$pLI <- max(as.numeric(gnomad_data$pLI[idx]))
 
       message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
@@ -94,11 +94,11 @@ gnomad <- function(PDB_ID, info_df){
   else{
     idx <- which(gnomad_data$gene == res$external_gene_name)
 
-    info_df$syn_z <- as.numeric(gnomad_data$syn_z[idx])
+    info_df$syn_z <- max(as.numeric(gnomad_data$syn_z[idx]))
 
-    info_df$mis_z <- as.numeric(gnomad_data$mis_z[idx])
+    info_df$mis_z <- max(as.numeric(gnomad_data$mis_z[idx]))
 
-    info_df$pLI <- as.numeric(gnomad_data$pLI[idx])
+    info_df$pLI <- max(as.numeric(gnomad_data$pLI[idx]))
 
     message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
@@ -138,11 +138,11 @@ gnomad <- function(PDB_ID, info_df){
       }
       else{
 
-        info_df$syn_z <- as.numeric(gnomad_data$syn_z[idx])
+        info_df$syn_z <- max(as.numeric(gnomad_data$syn_z[idx]))
 
-        info_df$mis_z <- as.numeric(gnomad_data$mis_z[idx])
+        info_df$mis_z <- max(as.numeric(gnomad_data$mis_z[idx]))
 
-        info_df$pLI <- as.numeric(gnomad_data$pLI[idx])
+        info_df$pLI <- max(as.numeric(gnomad_data$pLI[idx]))
 
         message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
