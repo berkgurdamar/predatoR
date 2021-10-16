@@ -6,7 +6,7 @@
 #' @export
 #'
 
-kegg_pathway_number <- function(gene_name){
+KEGG_pathway_number <- function(gene_name){
 
   message(crayon::white(paste0("Number of KEGG Pathways:", "\t", "DONE")))
 
