@@ -64,11 +64,11 @@ pred_res <- predatoR(input_df)
 `predatoR()` function returns a data.frame which contains additional two columns; __'Prediction'__ and __'Probability'__. __'Prediction'__ represents the result of the impact prediction and __'Probability'__ represents the probability that the mutation classified as __Disease Causing__ or __Silent__.
 
 ```{r example_output, echo=FALSE}
-example_result <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "Silent", "0.6205009"),
-                                      c("2DN2", "B", 6, "GLU", "ALA", "Silent", "0.6286857")))
+example_result <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB", "Silent", "0.6205009"),
+                                      c("2DN2", "B", 6, "GLU", "ALA", "HBB", "Silent", "0.6286857")))
 
-colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Prediction", "Probability")
+colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name", "Prediction", "Probability")
 
-knitr::kable(example_result, align = c("c", "c", "c", "c", "c", "c", "c"))
+knitr::kable(example_result, align = c("c", "c", "c", "c", "c", "c", "c", "c"))
 ```
 
