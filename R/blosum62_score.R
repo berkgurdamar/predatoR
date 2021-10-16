@@ -6,7 +6,7 @@
 #' @export
 #'
 
-blosum62_score <- function(info_df){
+BLOSUM62_score <- function(info_df){
 
   blosum62_scores <- c()
   for(i in 1:nrow(info_df)){

@@ -7,12 +7,11 @@
 #'
 #' @param final_df data.frame contains all the mutation information and the required information for impact prediction
 #'
-#@import adabag
 #' @return matrix contains the prediction results
 #' @export
 #'
 
-imp_prediction <- function(final_df){
+impact_prediction <- function(final_df){
 
   # colnames(final_df)[4:5] <- c("X.Orig.Amino.Acid", "X.Mutant.Amino.Acid")
   prob <- stats::predict(caret_adaboost, final_df, type = "prob")
@@ -35,5 +34,5 @@ imp_prediction <- function(final_df){
   pred_df <- data.frame(Prediction = res_types,
                         Probability = probs)
 
-  return(cbind(final_df[,1:5], pred_df))
+  return(cbind(final_df[,1:6], pred_df))
 }

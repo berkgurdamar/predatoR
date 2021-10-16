@@ -9,7 +9,7 @@
 #' @export
 #'
 
-gnomad <- function(PDB_ID, info_df){
+gnomad_scores <- function(PDB_ID, info_df){
 
   if(length(unique(info_df$Gene_Name)) == 1 & "" %in% unique(info_df$Gene_Name)){
 
