@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# <img src="https://github.com/berkgurdamar/PredImption/blob/main/inst/extdata/predimption_logo.png?raw=true" align="left" height=150/> PredImption: Mutation Impact Prediction Based on Network Properties
+# <img src="https://github.com/berkgurdamar/predatoR/blob/main/inst/extdata/predator_logo.png?raw=true" align="left" height=150/> predatoR: Mutation Impact Prediction Based on Network Properties
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -10,16 +10,16 @@
 
 # Overview
 
-`PredImption` is a tool for impact prediction of a mutation on a protein
+`predatoR` is a tool for impact prediction of a mutation on a protein
 structure by using network properties.
 
 # Installation
 
-You can install the released version of PredImption from
+You can install the released version of predatoR from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("PredImption")
+install.packages("predatoR")
 ```
 
 or install via
@@ -27,12 +27,12 @@ or install via
 
 ``` r
 library(devtools)
-install_github("berkgurdamar/PredImption")
+install_github("berkgurdamar/predatoR")
 ```
 
 # Usage
 
-`PredImption` uses data.frame structures as an input. data.frame should
+`predatoR` uses data.frame structures as an input. data.frame should
 consist of *“PDB_ID”, “Chain”, “Position”, “Orig_AA”, “Mut_AA”*:
 
 | PDB_ID | Chain | Position | Orig_AA | Mut_AA |
@@ -40,9 +40,9 @@ consist of *“PDB_ID”, “Chain”, “Position”, “Orig_AA”, “Mut_AA�
 |  2DN2  |   B   |    1     |   VAL   |  ALA   |
 |  2DN2  |   B   |    6     |   GLU   |  ALA   |
 
-Mutation impact prediction can be done via `PredImption()` function:
+Mutation impact prediction can be done via `predatoR()` function:
 
-`PredImption()` function works on each PDB ID respectively. First,
+`predatoR()` function works on each PDB ID respectively. First,
 downloads the PDB file, creates distance matrix and turns PDB structure
 into a network. Calculates **Eigen Centrality Z-Score, Shortest Path
 Z-score** and **Betweenness Z-Score** of input positions. Find the
@@ -55,12 +55,12 @@ gene. Finally, make prediction based on an **Adaboost** model and
 classifies the mutation as **Disease Causing** or **Silent**.
 
 ``` r
-library(PredImption)
-pred_res <- PredImption(input_df)
+library(predatoR)
+pred_res <- predatoR(input_df)
 ```
 
-`PredImption()` function returns a data.frame which contains additional
-two columns; **‘Prediction’** and **‘Probability’**. **‘Prediction’**
+`predatoR()` function returns a data.frame which contains additional two
+columns; **‘Prediction’** and **‘Probability’**. **‘Prediction’**
 represents the result of the impact prediction and **‘Probability’**
 represents the probability that the mutation classified as **Disease
 Causing** or **Silent**.

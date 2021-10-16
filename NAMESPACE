@@ -2,7 +2,7 @@
 
 export(PDB2connections)
 export(PDB_read)
-export(PredImption)
+export(predatoR)
 export(betweenness_score)
 export(blosum62_score)
 export(eigen_score)
@@ -11,4 +11,3 @@ export(gnomad)
 export(imp_prediction)
 export(kegg_pathway_number)
 export(shorteset_path_score)
-import(adabag)
