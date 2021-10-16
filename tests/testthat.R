@@ -1,4 +1,4 @@
 library(testthat)
-library(PredImption)
+library(predatoR)
 
-test_check("PredImption")
+test_check("predatoR")
