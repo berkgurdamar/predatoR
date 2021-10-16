@@ -2,7 +2,6 @@
 
 export(PDB2connections)
 export(PDB_read)
-export(predatoR)
 export(betweenness_score)
 export(blosum62_score)
 export(eigen_score)
@@ -10,4 +9,5 @@ export(genic_intolerance)
 export(gnomad)
 export(imp_prediction)
 export(kegg_pathway_number)
+export(predatoR)
 export(shorteset_path_score)
