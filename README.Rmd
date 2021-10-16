@@ -42,18 +42,18 @@ install_github("berkgurdamar/predatoR")
 
 # Usage
 
-`predatoR` uses data.frame structures as an input. data.frame should consist of _"PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA"_:
+`predatoR` uses data.frame structures as an input. data.frame should consist of __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__, __'Mut_AA'__ and __'Gene_Name'__ as an optional input:
 
 ```{r example_input, echo=FALSE}
-test_data <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
-                                 c("2DN2", "B", 6, "GLU", "ALA")))
-colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
-knitr::kable(test_data, align = c("c", "c", "c", "c", "c"))
+test_data <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                 c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
+knitr::kable(test_data, align = c("c", "c", "c", "c", "c", "c"))
 ```
 
 Mutation impact prediction can be done via `predatoR()` function:
 
-`predatoR()` function works on each PDB ID respectively. First, downloads the PDB file, creates distance matrix and turns PDB structure into a network. Calculates __Eigen Centrality Z-Score, Shortest Path Z-score__ and __Betweenness Z-Score__ of input positions. Find the __Gene Name__ from the PDB file and if there are multiple genes annotated for the input PDB file, asks user to choose the input gene, gets __GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, PLoF Score__, and __Genic Intolerance Score__, gets __BLOSUM62 score__ of the amino acid change, finds the __KEGG Pathway Number__ which contains the input gene. Finally, make prediction based on an __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
+`predatoR()` function works on each PDB ID respectively. First, downloads the PDB file, creates distance matrix between every atom and turns PDB structure into a network model. Calculates __Eigen Centrality Z-Score, Shortest Path Z-score__ and __Betweenness Z-Score__ of input positions.  If __'Gene_Name'__ is not provided in the input, `predatoR()` gets the related gene names from __'Ensembl-BioMart'__ and if there are multiple genes annotated for the PDB ID, asks user to choose input __'Gene_Name'__, gets __GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, PLoF Score__, and __Genic Intolerance Score__, gets __BLOSUM62 score__ of the mutation, finds the __KEGG Pathway Number__ which contains the input gene. Finally, make prediction based on an pre-computed __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
 
 
 ```{r usage, eval=FALSE}
@@ -64,8 +64,8 @@ pred_res <- predatoR(input_df)
 `predatoR()` function returns a data.frame which contains additional two columns; __'Prediction'__ and __'Probability'__. __'Prediction'__ represents the result of the impact prediction and __'Probability'__ represents the probability that the mutation classified as __Disease Causing__ or __Silent__.
 
 ```{r example_output, echo=FALSE}
-example_result <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "Silent", "0.6599836"),
-                                      c("2DN2", "B", 6, "GLU", "ALA", "Silent", "0.5899702")))
+example_result <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "Silent", "0.6205009"),
+                                      c("2DN2", "B", 6, "GLU", "ALA", "Silent", "0.6286857")))
 
 colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Prediction", "Probability")
 
