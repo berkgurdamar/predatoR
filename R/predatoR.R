@@ -14,7 +14,7 @@
 #' @export
 #'
 
-PredImption <- function(info_df){
+predatoR <- function(info_df){
 
   if(is.data.frame(info_df) == F){
     stop("Input should be a data.frame.")

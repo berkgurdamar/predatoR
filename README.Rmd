@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# <img src="https://github.com/berkgurdamar/PredImption/blob/main/inst/extdata/predimption_logo.png?raw=true" align="left" height=150/> PredImption: Mutation Impact Prediction Based on Network Properties
+# <img src="https://github.com/berkgurdamar/predatoR/blob/main/inst/extdata/predator_logo.png?raw=true" align="left" height=150/> predatoR: Mutation Impact Prediction Based on Network Properties
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -23,26 +23,26 @@ knitr::opts_chunk$set(
 
 # Overview
 
-`PredImption` is a tool for impact prediction of a mutation on a protein structure by using network properties. 
+`predatoR` is a tool for impact prediction of a mutation on a protein structure by using network properties. 
 
 # Installation
 
-You can install the released version of PredImption from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of predatoR from [CRAN](https://CRAN.R-project.org) with:
 
 ``` {r installation_guide1, eval=FALSE}
-install.packages("PredImption")
+install.packages("predatoR")
 ```
 
 or install via [devtools](https://www.r-project.org/nosvn/pandoc/devtools.html):
 
 ``` {r installation_guide2, eval=FALSE}
 library(devtools)
-install_github("berkgurdamar/PredImption")
+install_github("berkgurdamar/predatoR")
 ```
 
 # Usage
 
-`PredImption` uses data.frame structures as an input. data.frame should consist of _"PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA"_:
+`predatoR` uses data.frame structures as an input. data.frame should consist of _"PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA"_:
 
 ```{r example_input, echo=FALSE}
 test_data <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
@@ -51,17 +51,17 @@ colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
 knitr::kable(test_data, align = c("c", "c", "c", "c", "c"))
 ```
 
-Mutation impact prediction can be done via `PredImption()` function:
+Mutation impact prediction can be done via `predatoR()` function:
 
-`PredImption()` function works on each PDB ID respectively. First, downloads the PDB file, creates distance matrix and turns PDB structure into a network. Calculates __Eigen Centrality Z-Score, Shortest Path Z-score__ and __Betweenness Z-Score__ of input positions. Find the __Gene Name__ from the PDB file and if there are multiple genes annotated for the input PDB file, asks user to choose the input gene, gets __GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, PLoF Score__, and __Genic Intolerance Score__, gets __BLOSUM62 score__ of the amino acid change, finds the __KEGG Pathway Number__ which contains the input gene. Finally, make prediction based on an __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
+`predatoR()` function works on each PDB ID respectively. First, downloads the PDB file, creates distance matrix and turns PDB structure into a network. Calculates __Eigen Centrality Z-Score, Shortest Path Z-score__ and __Betweenness Z-Score__ of input positions. Find the __Gene Name__ from the PDB file and if there are multiple genes annotated for the input PDB file, asks user to choose the input gene, gets __GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, PLoF Score__, and __Genic Intolerance Score__, gets __BLOSUM62 score__ of the amino acid change, finds the __KEGG Pathway Number__ which contains the input gene. Finally, make prediction based on an __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
 
 
 ```{r usage, eval=FALSE}
-library(PredImption)
-pred_res <- PredImption(input_df)
+library(predatoR)
+pred_res <- predatoR(input_df)
 ```
 
-`PredImption()` function returns a data.frame which contains additional two columns; __'Prediction'__ and __'Probability'__. __'Prediction'__ represents the result of the impact prediction and __'Probability'__ represents the probability that the mutation classified as __Disease Causing__ or __Silent__.
+`predatoR()` function returns a data.frame which contains additional two columns; __'Prediction'__ and __'Probability'__. __'Prediction'__ represents the result of the impact prediction and __'Probability'__ represents the probability that the mutation classified as __Disease Causing__ or __Silent__.
 
 ```{r example_output, echo=FALSE}
 example_result <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "Silent", "0.6599836"),
