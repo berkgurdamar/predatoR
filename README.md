@@ -68,7 +68,7 @@ represents the result of the impact prediction and **‘Probability’**
 represents the probability that the mutation classified as **Disease
 Causing** or **Silent**.
 
-| PDB_ID | Chain | Position | Orig_AA | Mut_AA | Prediction | Probability |
-|:------:|:-----:|:--------:|:-------:|:------:|:----------:|:-----------:|
-|  2DN2  |   B   |    1     |   VAL   |  ALA   |   Silent   |  0.6205009  |
-|  2DN2  |   B   |    6     |   GLU   |  ALA   |   Silent   |  0.6286857  |
+| PDB_ID | Chain | Position | Orig_AA | Mut_AA | Gene_Name | Prediction | Probability |
+|:------:|:-----:|:--------:|:-------:|:------:|:---------:|:----------:|:-----------:|
+|  2DN2  |   B   |    1     |   VAL   |  ALA   |    HBB    |   Silent   |  0.6205009  |
+|  2DN2  |   B   |    6     |   GLU   |  ALA   |    HBB    |   Silent   |  0.6286857  |
