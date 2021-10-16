@@ -3,42 +3,60 @@
 #' Main function for mutation impact prediction
 #'
 #' With an input data.frame which contains 'PDB_ID', 'Chain', 'Position',
-#' 'Reference Amino Acid' and 'Mutated Amino Acid' information respectively,
+#' 'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively,
 #' make a prediction about the mutation by using pre computed adaboost model
 #' and classifies the mutation as 'Disease Causing' or 'Silent'.
 #'
 #' @param info_df data.frame containing 'PDB_ID', 'Chain', 'Position',
-#' 'Reference Amino Acid' and 'Mutated Amino Acid' information respectively.
+#' 'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively.
+#' @param internal_PDB_path PDB file path (default = NULL)
+#' @param n_threads number of threads (default = NULL)
+#' @param gene_name_info whether there is gene name information in the input or not (default = TRUE)
 #'
 #' @return data.frame which contains prediction results
 #' @export
 #'
 
-predatoR <- function(info_df){
+predatoR <- function(info_df, internal_PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE){
 
   if(is.data.frame(info_df) == F){
     stop("Input should be a data.frame.")
   }
-  else if(ncol(info_df) != 6){
-    stop("Input data.frame should contain 6 columns; PDB_ID, Chain, Position, Orig_AA and Mut_AA, Gene_Name respectively.")
+  else if(gene_name_info == TRUE){
+    if(ncol(info_df) != 6){
+      stop("Input data.frame should contain 6 columns; PDB_ID, Chain, Position, Orig_AA and Mut_AA, Gene_Name respectively.")
+    }
+    else{
+      colnames(info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
+      info_df$Orig_AA <- toupper(info_df$Orig_AA)
+      info_df$Mut_AA <- toupper(info_df$Mut_AA)
+    }
   }
-  else if(length(setdiff(unique(unlist(c(info_df[4], info_df[5]))), toupper(c("ala", "arg", "asn", "asp", "val",
-                                                                              "cys", "glu", "gln", "gly", "tyr",
-                                                                              "his", "ile", "leu", "lys", "met",
-                                                                              "phe", "pro", "ser", "thr", "trp")))) > 0){
+  else if(gene_name_info == FALSE){
+    if(ncol(info_df) != 5){
+      stop("Input data.frame should contain 5 columns; PDB_ID, Chain, Position, Orig_AA and Mut_AA respectively.")
+    }
+    else{
+      colnames(info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
+      info_df$Orig_AA <- toupper(info_df$Orig_AA)
+      info_df$Mut_AA <- toupper(info_df$Mut_AA)
+    }
+  }
+  else if(length(setdiff(unique(unlist(c(info_df[4], info_df[5]))), colnames(blosum_data))) > 0){
 
-    false_name <- setdiff(unique(unlist(c(info_df[4], info_df[5]))), toupper(c("ala", "arg", "asn", "asp", "val",
-                                                                               "cys", "glu", "gln", "gly", "tyr",
-                                                                               "his", "ile", "leu", "lys", "met",
-                                                                               "phe", "pro", "ser", "thr", "trp")))
+    false_name <- setdiff(unique(unlist(c(info_df[4], info_df[5]))), colnames(blosum_data))
+
     stop(paste0(paste0(false_name, collapse = ", "),
                 " couldn't find in the amino acid names (Amino acid names should be 3 letter codes)"))
   }
 
-  colnames(info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
-
   doFuture::registerDoFuture()
-  n.cores <- parallel::detectCores() - 1
+
+  if(is.null(n_threads) == TRUE){
+    n.cores <- parallel::detectCores() - 1
+  }else{
+    n.cores <- n_threads
+  }
 
   my.cluster <- parallel::makeCluster(n.cores)
   future::plan(future::cluster, workers = my.cluster)
@@ -48,7 +66,7 @@ predatoR <- function(info_df){
 
     filtered_info_df <- info_df[info_df$PDB_ID == i,]
 
-    atom_matrix <- PDB_read(i)
+    atom_matrix <- read_PDB(i, internal_PDB_path = internal_PDB_path)
 
     if(is.data.frame(atom_matrix) == FALSE){
       next
@@ -98,9 +116,9 @@ predatoR <- function(info_df){
 
     ### gnomad
 
-    gnomad_res <- gnomad(i, filtered_info_df)
-    filtered_info_df <- gnomad_res[[1]]
-    gene_name <- gnomad_res[[2]]
+    gnomad_result <- gnomad_scores(i, filtered_info_df)
+    filtered_info_df <- gnomad_result[[1]]
+    gene_name <- gnomad_result[[2]]
 
     if(gene_name == "no_name"){
       next
@@ -108,11 +126,11 @@ predatoR <- function(info_df){
 
     ### BLOSUM62
 
-    filtered_info_df$blosum62_scores <- blosum62_score(filtered_info_df)
+    filtered_info_df$blosum62_scores <- as.numeric(BLOSUM62_score(filtered_info_df))
 
     ### kegg pathway
 
-    filtered_info_df$kegg_pathway_number <- as.numeric(kegg_pathway_number(gene_name))
+    filtered_info_df$kegg_pathway_number <- as.numeric(KEGG_pathway_number(gene_name))
 
     ### genic intolerance
 
@@ -131,7 +149,7 @@ predatoR <- function(info_df){
 
   }else{
 
-  prediction_result <- imp_prediction(final_df)
+  prediction_result <- impact_prediction(final_df)
 
   }
 

@@ -4,11 +4,22 @@
 \alias{predatoR}
 \title{Mutation impact Prediction}
 \usage{
-predatoR(info_df)
+predatoR(
+  info_df,
+  internal_PDB_path = NULL,
+  n_threads = NULL,
+  gene_name_info = TRUE
+)
 }
 \arguments{
 \item{info_df}{data.frame containing 'PDB_ID', 'Chain', 'Position',
-'Reference Amino Acid' and 'Mutated Amino Acid' information respectively.}
+'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively.}
+
+\item{internal_PDB_path}{PDB file path (default = NULL)}
+
+\item{n_threads}{number of threads (default = NULL)}
+
+\item{gene_name_info}{whether there is gene name information in the input or not (default = TRUE)}
 }
 \value{
 data.frame which contains prediction results
@@ -18,7 +29,7 @@ Main function for mutation impact prediction
 }
 \details{
 With an input data.frame which contains 'PDB_ID', 'Chain', 'Position',
-'Reference Amino Acid' and 'Mutated Amino Acid' information respectively,
+'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively,
 make a prediction about the mutation by using pre computed adaboost model
 and classifies the mutation as 'Disease Causing' or 'Silent'.
 }
