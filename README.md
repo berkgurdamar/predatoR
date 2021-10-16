@@ -33,26 +33,29 @@ install_github("berkgurdamar/predatoR")
 # Usage
 
 `predatoR` uses data.frame structures as an input. data.frame should
-consist of *“PDB_ID”, “Chain”, “Position”, “Orig_AA”, “Mut_AA”*:
+consist of **‘PDB_ID’**, **‘Chain’**, **‘Position’**, **‘Orig_AA’**,
+**‘Mut_AA’** and **‘Gene_Name’** as an optional input:
 
-| PDB_ID | Chain | Position | Orig_AA | Mut_AA |
-|:------:|:-----:|:--------:|:-------:|:------:|
-|  2DN2  |   B   |    1     |   VAL   |  ALA   |
-|  2DN2  |   B   |    6     |   GLU   |  ALA   |
+| PDB_ID | Chain | Position | Orig_AA | Mut_AA | Gene_Name |
+|:------:|:-----:|:--------:|:-------:|:------:|:---------:|
+|  2DN2  |   B   |    1     |   VAL   |  ALA   |    HBB    |
+|  2DN2  |   B   |    6     |   GLU   |  ALA   |    HBB    |
 
 Mutation impact prediction can be done via `predatoR()` function:
 
 `predatoR()` function works on each PDB ID respectively. First,
-downloads the PDB file, creates distance matrix and turns PDB structure
-into a network. Calculates **Eigen Centrality Z-Score, Shortest Path
-Z-score** and **Betweenness Z-Score** of input positions. Find the
-**Gene Name** from the PDB file and if there are multiple genes
-annotated for the input PDB file, asks user to choose the input gene,
-gets **GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, PLoF Score**,
-and **Genic Intolerance Score**, gets **BLOSUM62 score** of the amino
-acid change, finds the **KEGG Pathway Number** which contains the input
-gene. Finally, make prediction based on an **Adaboost** model and
-classifies the mutation as **Disease Causing** or **Silent**.
+downloads the PDB file, creates distance matrix between every atom and
+turns PDB structure into a network model. Calculates **Eigen Centrality
+Z-Score, Shortest Path Z-score** and **Betweenness Z-Score** of input
+positions. If **‘Gene_Name’** is not provided in the input, `predatoR()`
+gets the related gene names from **‘Ensembl-BioMart’** and if there are
+multiple genes annotated for the PDB ID, asks user to choose input
+**‘Gene_Name’**, gets **GnomAD Synonymous Z-Score, Non-Synonymous
+Z-Score, PLoF Score**, and **Genic Intolerance Score**, gets **BLOSUM62
+score** of the mutation, finds the **KEGG Pathway Number** which
+contains the input gene. Finally, make prediction based on an
+pre-computed **Adaboost** model and classifies the mutation as **Disease
+Causing** or **Silent**.
 
 ``` r
 library(predatoR)
@@ -67,5 +70,5 @@ Causing** or **Silent**.
 
 | PDB_ID | Chain | Position | Orig_AA | Mut_AA | Prediction | Probability |
 |:------:|:-----:|:--------:|:-------:|:------:|:----------:|:-----------:|
-|  2DN2  |   B   |    1     |   VAL   |  ALA   |   Silent   |  0.6599836  |
-|  2DN2  |   B   |    6     |   GLU   |  ALA   |   Silent   |  0.5899702  |
+|  2DN2  |   B   |    1     |   VAL   |  ALA   |   Silent   |  0.6205009  |
+|  2DN2  |   B   |    6     |   GLU   |  ALA   |   Silent   |  0.6286857  |
