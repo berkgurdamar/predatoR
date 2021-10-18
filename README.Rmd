@@ -25,6 +25,22 @@ knitr::opts_chunk$set(
 
 `predatoR` is a tool for impact prediction of a mutation on a protein structure by using network properties. 
 
+<img src="https://github.com/berkgurdamar/predatoR/blob/main/vignettes/predatoR_workflow.png?raw=true" style="max-width:100%;" />
+
+`predatoR()` function works on each PDB ID respectively. For each PDB ID;  
+
+ - Download/Read PDB file
+ - Calculate distances between every atom
+ - Create network from PDB
+ - Calculate Eigen Centrality Z-Score of each Carbon-α atom
+ - Calculate Shortest Path Z-Score of each Carbon-α atom
+ - Calculate Betweenness Z-Score of each Carbon-α atom
+ - Gets GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
+ - Gets Genic Intolerance Score
+ - Gets BLOSUM62 score of the mutation
+ - Finds the number of KEGG Pathways which contains the input gene
+ - Make prediction
+
 # Installation
 
 You can install the released version of predatoR from [CRAN](https://CRAN.R-project.org) with:
