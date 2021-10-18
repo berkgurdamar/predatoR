@@ -4,18 +4,13 @@
 \alias{predatoR}
 \title{Mutation impact Prediction}
 \usage{
-predatoR(
-  info_df,
-  internal_PDB_path = NULL,
-  n_threads = NULL,
-  gene_name_info = TRUE
-)
+predatoR(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE)
 }
 \arguments{
 \item{info_df}{data.frame containing 'PDB_ID', 'Chain', 'Position',
 'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively.}
 
-\item{internal_PDB_path}{PDB file path (default = NULL)}
+\item{PDB_path}{PDB file path (default = NULL)}
 
 \item{n_threads}{number of threads (default = NULL)}
 

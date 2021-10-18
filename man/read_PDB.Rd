@@ -4,17 +4,17 @@
 \alias{read_PDB}
 \title{PDB Reading/Downloading}
 \usage{
-read_PDB(PDB_ID, internal_PDB_path = NULL)
+read_PDB(PDB_ID, PDB_path = NULL)
 }
 \arguments{
 \item{PDB_ID}{PDB ID}
 
-\item{internal_PDB_path}{PDB file path (default = FALSE)}
+\item{PDB_path}{PDB file path (default = FALSE)}
 }
 \value{
 Matrix that contains all the atoms in the PDB structure
 }
 \description{
-Download and read input PDB via \code{get.pdb} and \code{read.pdb} function of bio3d package
+Download/Read input PDB via \code{get.pdb} and \code{read.pdb} function of bio3d package
 and filter the PDB file for only containing atoms.
 }
