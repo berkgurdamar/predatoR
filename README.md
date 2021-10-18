@@ -48,12 +48,12 @@ downloads the PDB file, creates distance matrix between every atom and
 turns PDB structure into a network model. Calculates **Eigen Centrality
 Z-Score, Shortest Path Z-score** and **Betweenness Z-Score** of input
 positions. If **‘Gene_Name’** is not provided in the input, `predatoR()`
-gets the related gene names from **‘Ensembl-BioMart’** and if there are
-multiple genes annotated for the PDB ID, asks user to choose input
+gets the related gene names from **‘Ensembl’** and if there are multiple
+genes annotated for the PDB ID, asks user to choose input
 **‘Gene_Name’**, gets **GnomAD Synonymous Z-Score, Non-Synonymous
 Z-Score, PLoF Score**, and **Genic Intolerance Score**, gets **BLOSUM62
 score** of the mutation, finds the **KEGG Pathway Number** which
-contains the input gene. Finally, make prediction based on an
+contains the input gene. Finally, make prediction based on a
 pre-computed **Adaboost** model and classifies the mutation as **Disease
 Causing** or **Silent**.
 
