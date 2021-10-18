@@ -4,12 +4,12 @@
 \alias{gnomad_scores}
 \title{GnomAD Scores}
 \usage{
-gnomad_scores(PDB_ID, info_df)
+gnomad_scores(PDB_ID, filtered_info_df)
 }
 \arguments{
 \item{PDB_ID}{PDB ID}
 
-\item{info_df}{data.frame contains all the input mutations}
+\item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{
 list that contains a data.frame containing GnomAD scores of input mutations and
