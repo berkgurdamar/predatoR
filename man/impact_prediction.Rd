@@ -7,7 +7,7 @@
 impact_prediction(final_df)
 }
 \arguments{
-\item{final_df}{data.frame contains all the mutation information and the required information for impact prediction}
+\item{final_df}{data.frame contains all the required information for impact prediction}
 }
 \value{
 matrix contains the prediction results

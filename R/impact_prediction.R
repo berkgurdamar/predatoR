@@ -5,7 +5,7 @@
 #' This function takes a data.frame which contains all the required fields for impact prediction and compute
 #' the prediction based on pre-computed Adaboost model.
 #'
-#' @param final_df data.frame contains all the mutation information and the required information for impact prediction
+#' @param final_df data.frame contains all the required information for impact prediction
 #'
 #' @return matrix contains the prediction results
 #' @export
