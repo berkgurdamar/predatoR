@@ -13,7 +13,7 @@
 #'
 
 
-eigen_score <- function(connections_df, filtered_info_df){
+eigen_centrality_score <- function(connections_df, filtered_info_df){
 
   final_df <- c()
   for(i in 1:length(connections_df)){
