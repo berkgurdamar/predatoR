@@ -9,7 +9,7 @@
 #'
 #' @param info_df data.frame containing 'PDB_ID', 'Chain', 'Position',
 #' 'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively.
-#' @param internal_PDB_path PDB file path (default = NULL)
+#' @param PDB_path PDB file path (default = NULL)
 #' @param n_threads number of threads (default = NULL)
 #' @param gene_name_info whether there is gene name information in the input or not (default = TRUE)
 #'
@@ -17,7 +17,7 @@
 #' @export
 #'
 
-predatoR <- function(info_df, internal_PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE){
+predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE){
 
   if(is.data.frame(info_df) == F){
     stop("Input should be a data.frame.")
@@ -66,7 +66,7 @@ predatoR <- function(info_df, internal_PDB_path = NULL, n_threads = NULL, gene_n
 
     filtered_info_df <- info_df[info_df$PDB_ID == i,]
 
-    atom_matrix <- read_PDB(i, internal_PDB_path = internal_PDB_path)
+    atom_matrix <- read_PDB(i, PDB_path = PDB_path)
 
     if(is.data.frame(atom_matrix) == FALSE){
       next
@@ -104,7 +104,7 @@ predatoR <- function(info_df, internal_PDB_path = NULL, n_threads = NULL, gene_n
 
     ### eigen centrality
 
-    filtered_info_df$eigen_z_score <- eigen_score(connections_df, filtered_info_df)
+    filtered_info_df$eigen_z_score <- eigen_centrality_score(connections_df, filtered_info_df)
 
     ### total shortest paths
 
