@@ -21,10 +21,9 @@ suppressPackageStartupMessages(library(predatoR))
 
 In this section, we show you how to use `predatoR` package for impact prediction.
 
-`predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` 
-gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns.
- Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__.
- __'Gene_Name'__ column is optional. 
+`predatoR` package makes prediction about amino acid mutations based on a pre-computed __Adaboost__ model (Accuracy: 0.9043, Sensitivity: 0.9572, Specificity: 0.7903) and classifies the mutation as __Disease Causing__ or __Silent__. Model created by using [Varibench](http://structure.bmc.lu.se/VariBench/) datasets. [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) datasets also used for additional model validation (Accuracy: 0.7748, Sensitivity: 0.8224, Specificity: 0.7211). 
+
+`predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. 
  
 ### Workflow
 
@@ -38,31 +37,31 @@ gets a data.frame structure as an input. Input should contain 5 mandatory and 1 
  - Calculate Eigen Centrality Z-Score of each Carbon-α atom
  - Calculate Shortest Path Z-Score of each Carbon-α atom
  - Calculate Betweenness Z-Score of each Carbon-α atom
- - Gets GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
+ - Gets gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
  - Gets Genic Intolerance Score
  - Gets BLOSUM62 score of the mutation
  - Finds the number of KEGG Pathways which contains the input gene
  - Make prediction
  
-If there are missing information such as no Genic Intolerance Score, these inputs will be removed from the query.
- 
+
+If `predatoR()` couldn't find any information of any gene such as 'Genic Intolerance Score', these inputs will be removed from the query before the prediction step.
  
 ### Arguments
  
  `predatoR()` function has 4 arguments; 
  
- - info_df: Input data.frame
- - PDB_path: PDB file path if the user wants to use PDB structures stored locally (default = NULL)
- - n_threads: number of threads (default = NULL)
- - gene_name_info: whether there is gene name information in the input or not (default = TRUE)
+ - __info_df:__ Input data.frame
+ - __PDB_path:__ PDB file path if the user wants to use PDB structures stored locally (default = NULL)
+ - __n_threads:__ Number of threads (default = NULL)
+ - __gene_name_info:__ Whether there is gene name information in the input or not (default = TRUE)
  
  When running the `predatoR()` function, if gene name is included in the input, `gene_name_info`
  should be set as `TRUE`. If there is no gene name information in the input (`gene_name_info = FALSE`), 
- `predatoR()` function gets the related gene names from __'Ensembl'__ and if there are multiple
+ `predatoR()` function gets the related gene names from [Ensembl](https://www.ensembl.org/) and if there are multiple
  genes annotated for the PDB ID, asks user to choose input __'Gene_Name'__. 
  
  
- Example input with __'Gene_Name'__ information included:
+ Example input with the __'Gene_Name'__ information included:
  
 ```{r example_gene_name, echo=FALSE}
 test_data <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
@@ -78,7 +77,7 @@ prediction_result <- predatoR(test_data, gene_name_info = TRUE)
 
 ```
 
-Example input with __'Gene_Name'__ information does not included:
+Example input with the __'Gene_Name'__ information does not included:
  
 ```{r example_no_gene_name, echo=FALSE}
 test_data <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
@@ -95,7 +94,7 @@ prediction_result <- predatoR(test_data, gene_name_info = FALSE)
 
  
 `predatoR()` function can work with partially added gene name informations. If some mutations has no gene name
-information, it ets the related gene names from __'Ensembl-BioMart'__ and if there are multiple
+information, it gets the related gene names from [Ensembl](https://www.ensembl.org/) and if there are multiple
  genes annotated for the PDB ID, asks user to choose input __'Gene_Name'__ (`gene_name_info` should set as `TRUE`).
  
  
@@ -194,8 +193,8 @@ PDB_2DN2_structure <- read_PDB("2DN2")
 
 ### `PDB2connections()`
 
-`PDB2connections()` function calculate distances between every ATOM in the PDB structure 
-and create an edge between atoms if the distance >= 7 Angstrom. As a result, returns a data frame 
+`PDB2connections()` function calculates distances between every ATOM in the PDB structure 
+and creates an edge between atoms if the distance <= 7 Angstrom. As a result, returns a data frame 
 which contains connection list.
 
 #### Arguments
@@ -222,13 +221,13 @@ edge_list <- PDB2connections(atom_matrix = PDB_2DN2_structure, filtered_info_df 
 ### `eigen_centrality_score()`
 
 `eigen_centrality_score()` function calculates the total number of connections of nodes to which a node is connected.
-Calculate Z-scores of each node and returns desired nodes scores.
+Calculates Z-scores of each node and returns desired nodes scores.
 
 #### Arguments
 
 `eigen_centrality_score()` has 2 arguments;
 
- - __connections_df:__ Matrix created by `PDB2connections()` function
+ - __edge_list:__ Matrix created by `PDB2connections()` function
  - __filtered_info_df:__ data.frame which contain only one PDB entries
 
 #### Usage 
@@ -249,14 +248,14 @@ eigen_centrality_z_score <- eigen_centrality_score(edge_list = PDB_2DN2_structur
 
 ### `shorteset_path_score()`
 
-`shorteset_path_score()` function calculates the distances between each node via \code{shortest.paths} function
+`shorteset_path_score()` function calculates the distances between each node via `shortest.paths()` function
 of igraph package, sum distances of each nodes, calculates Z-score and returns desired nodes scores.
 
 #### Arguments
 
 `shorteset_path_score()` has 2 arguments;
 
- - __connections_df:__ Matrix created by `PDB2connections()` function
+ - __edge_list:__ Matrix created by `PDB2connections()` function
  - __filtered_info_df:__ data.frame which contain only one PDB entries
 
 #### Usage 
@@ -276,10 +275,10 @@ eigen_centrality_z_score <- shorteset_path_score(edge_list = PDB_2DN2_structure,
 
 ### `betweenness_score()`
 
-`betweenness_score()` function calculates Betweenness Score of each node by using \code{betweenness} 
-function of igraph package, turn the scores into Z-scores and returns desired nodes scores.
+`betweenness_score()` function calculates Betweenness Score of each node by using `betweenness()` 
+function of igraph package, turns the scores into Z-scores and returns desired nodes scores.
 
-\code{betweenness} function calculates Betweenness by using formula below;
+`betweenness()` function calculates Betweenness by using formula below;
 
 
 $$
@@ -290,7 +289,7 @@ $$
 
 `betweenness_score()` has 2 arguments;
 
- - __connections_df:__ Matrix created by `PDB2connections()` function
+ - __edge_list:__ Matrix created by `PDB2connections()` function
  - __filtered_info_df:__ data.frame which contain only one PDB entries
 
 #### Usage 
@@ -310,7 +309,7 @@ betweenness_z_score <- betweenness_score(edge_list = PDB_2DN2_structure, filtere
 
 ### `gnomad_scores()`
 
-`gnomad_scores()` function gets input gene's GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
+`gnomad_scores()` function gets input gene's gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
 from data retrieved from [gnomAD](https://gnomad.broadinstitute.org/). If there is no gene name information in the input,
 `gnomad_scores()` finds the genes that related with input PDB ID by using a dataset retrieved from [Ensembl](https://www.ensembl.org/). 
 `gnomad_scores()` returns a list contains two elements; first one is the gnomAD scores added input data.frame and a 
@@ -407,7 +406,7 @@ genic_intolerance_score <- genic_intolerance(gene_name = "HBB")
 
 ### `impact_prediction()`
 
-`impact_prediction()` function make prediction based on a pre-computed __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
+`impact_prediction()` function makes prediction based on a pre-computed __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
 
 #### Arguments
 
@@ -454,3 +453,7 @@ colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA"
 
 knitr::kable(example_result, align = c("c", "c", "c", "c", "c", "c", "c", "c"))
 ```
+
+
+<br />
+<br />
