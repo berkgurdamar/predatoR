@@ -9,7 +9,7 @@ read_PDB(PDB_ID, PDB_path = NULL)
 \arguments{
 \item{PDB_ID}{PDB ID}
 
-\item{PDB_path}{PDB file path (default = FALSE)}
+\item{PDB_path}{PDB file path (default = NULL)}
 }
 \value{
 Matrix that contains all the atoms in the PDB structure

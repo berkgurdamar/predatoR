@@ -5,23 +5,30 @@
 #' This function calculates Eigen Centrality scores of all nodes in the network.
 #' Calculates and returns the Z-Scores of the input positions.
 #'
-#' @param connections_df data.frame contains all the edges
+#' @param edge_list list contains separate edge data.frames for each chain
 #' @param filtered_info_df input data.frame which contain only one PDB entries
 #'
 #' @return Eigen Centrality Z-Score of input position
+#'
 #' @export
 #'
 
 
-eigen_centrality_score <- function(connections_df, filtered_info_df){
+eigen_centrality_score <- function(edge_list, filtered_info_df){
+
+  colnames(filtered_info_df)[1:5] <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
+
+  if(length(unique(filtered_info_df$PDB_ID)) > 1){
+    stop(paste0("filtered_info_df should contain only one PDB entries"))
+  }
 
   final_df <- c()
-  for(i in 1:length(connections_df)){
+  for(i in 1:length(edge_list)){
     total_scores <- c()
-    idx <- unique(connections_df[[i]][grep("_CA_", connections_df[[i]][,1]), 1])
+    idx <- unique(edge_list[[i]][grep("_CA_", edge_list[[i]][,1]), 1])
     for(j in idx){
-      eigen_idx <- connections_df[[i]][which(connections_df[[i]][,1] == j), 2]
-      total_scores <- c(total_scores, nrow(connections_df[[i]][connections_df[[i]][,1] %in% eigen_idx,]))
+      eigen_idx <- edge_list[[i]][which(edge_list[[i]][,1] == j), 2]
+      total_scores <- c(total_scores, nrow(edge_list[[i]][edge_list[[i]][,1] %in% eigen_idx,]))
     }
 
     mean_of_scores <- mean(total_scores)

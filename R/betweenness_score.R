@@ -5,21 +5,29 @@
 #' This function calculates Betweenness scores of all nodes in the network via \code{betweenness} function
 #' of igraph package. Calculates and returns the Z-Scores of the input positions.
 #'
-#' @param connections_df data.frame contains all the edges calculated by \code{PDB2connections} function
+#' @param edge_list list contains separate edge data.frames for each chain
 #' @param filtered_info_df input data.frame which contain only one PDB entries
 #'
 #' @return Betweenness Z-Scores of the input position
+#'
 #' @export
 #'
 
-betweenness_score <- function(connections_df, filtered_info_df){
+betweenness_score <- function(edge_list, filtered_info_df){
+
+  colnames(filtered_info_df)[1:5] <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
+
+  if(length(unique(filtered_info_df$PDB_ID)) > 1){
+    stop(paste0("filtered_info_df should contain only one PDB entries"))
+  }
+
 
   final_df <- c()
-  for(i in 1:length(connections_df)){
+  for(i in 1:length(edge_list)){
 
-    connections_df_filtered <- as.data.frame(connections_df[[i]])
+    edge_list_filtered <- as.data.frame(edge_list[[i]])
 
-    df.g <- igraph::graph.data.frame(d = connections_df_filtered, directed = FALSE)
+    df.g <- igraph::graph.data.frame(d = edge_list_filtered, directed = FALSE)
 
     all_betwenness <- igraph::betweenness(df.g, directed = F)
     mean_betwenness <- mean(all_betwenness)

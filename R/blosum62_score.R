@@ -3,10 +3,13 @@
 #' @param info_df data.frame contains all the input mutations
 #'
 #' @return BLOSUM62 score of input mutation
+#'
 #' @export
 #'
 
 BLOSUM62_score <- function(info_df){
+
+  colnames(info_df)[1:5] <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
 
   blosum62_scores <- c()
   for(i in 1:nrow(info_df)){

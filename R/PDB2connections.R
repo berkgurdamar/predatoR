@@ -7,23 +7,50 @@
 #'
 #' @param atom_matrix matrix that contains all the atoms in the PDB file
 #' @param filtered_info_df input data.frame which contain only one PDB entries
+#' @param n_threads number of threads (default = NULL)
+#' @param single_run should be set as TRUE when using \code{PDB2connections} function alone (default = TRUE)
 #'
-#' @return list containing all the edges of each chain
+#' @return list contains separate edge data.frames for each chain
+#'
 #' @export
 #'
 
-PDB2connections <- function(atom_matrix, filtered_info_df){
+PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, single_run = TRUE){
 
-  # doFuture::registerDoFuture()
-  # n.cores <- parallel::detectCores() - 1
-  #
-  # my.cluster <- parallel::makeCluster(n.cores)
-  # future::plan(future::cluster, workers = my.cluster)
-  #
+  colnames(filtered_info_df)[1:5] <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
+
+  if(single_run == TRUE){
+
+    # foreach::registerDoSEQ()
+    close_parallel <- TRUE
+
+    if(is.null(n_threads)){
+
+      n.cores <- parallel::detectCores() - 1
+
+    }else{
+
+      n.cores <- n_threads
+
+    }
+
+    clusters <- parallel::makeCluster(n.cores, strategy = "sequential")
+    doParallel::registerDoParallel(clusters)
+
+  }else{
+
+    # foreach::registerDoSEQ()
+    close_parallel <- FALSE
+  }
+
+  if(length(unique(filtered_info_df$PDB_ID)) > 1){
+    stop(paste0("filtered_info_df should contain only one PDB entries"))
+  }
+
   `%dopar%` <- foreach::`%dopar%`
 
   j <- ""
-  connections_df <- list()
+  edge_list <- list()
   for(index in 1:length(unique(filtered_info_df$Chain))){
     filtered_atom_matrix <- atom_matrix[atom_matrix$chain == unique(filtered_info_df$Chain)[index],]
 
@@ -50,15 +77,18 @@ PDB2connections <- function(atom_matrix, filtered_info_df){
       cbind(node_name, connections)
 
     }
-    connections_df[[length(connections_df) + 1]] <- chain_df
+    edge_list[[length(edge_list) + 1]] <- chain_df
 
   }
 
-  names(connections_df) <- unique(filtered_info_df$Chain)
+  names(edge_list) <- unique(filtered_info_df$Chain)
 
-  # parallel::stopCluster(my.cluster)
+  if(close_parallel == TRUE){
 
+    parallel::stopCluster(clusters)
+
+  }
   message(crayon::white(paste0("List of Edges:", "\t\t\t", "DONE")))
 
-  return(connections_df)
+  return(edge_list)
 }

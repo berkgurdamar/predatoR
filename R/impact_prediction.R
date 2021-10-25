@@ -8,12 +8,24 @@
 #' @param final_df data.frame contains all the required information for impact prediction
 #'
 #' @return matrix contains the prediction results
+#'
 #' @export
 #'
 
 impact_prediction <- function(final_df){
 
-  # colnames(final_df)[4:5] <- c("X.Orig.Amino.Acid", "X.Mutant.Amino.Acid")
+  final_df$Orig_AA <- as.factor(final_df$Orig_AA)
+  final_df$Mut_AA <- as.factor(final_df$Mut_AA)
+  final_df$eigen_z_score <- as.numeric(final_df$eigen_z_score)
+  final_df$shortest_path_z <- as.numeric(final_df$shortest_path_z)
+  final_df$betwenness_scores_z <- as.numeric(final_df$betwenness_scores_z)
+  final_df$syn_z <- as.numeric(final_df$syn_z)
+  final_df$mis_z <- as.numeric(final_df$mis_z)
+  final_df$pLI <- as.numeric(final_df$pLI)
+  final_df$blosum62_scores <- as.numeric(final_df$blosum62_scores)
+  final_df$kegg_pathway_number <- as.numeric(final_df$kegg_pathway_number)
+  final_df$genic_intolerance <- as.numeric(final_df$genic_intolerance)
+
   prob <- stats::predict(caret_adaboost, final_df, type = "prob")
 
   res <- stats::predict(caret_adaboost, final_df)

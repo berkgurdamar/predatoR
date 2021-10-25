@@ -5,20 +5,27 @@
 #' This function calculates Shortest Path lengths of all nodes in the network via \code{shortest.paths} function
 #' of igraph package. Sum shortest path lengts of every nodes, calculates and returns the Z-Scores of the input positions.
 #'
-#' @param connections_df data frame contains list of edges
+#' @param edge_list list contains separate edge data.frames for each chain
 #' @param filtered_info_df input data.frame which contain only one PDB entries
 #'
 #' @return Shortest Path Z-Scores of input position
+#'
 #' @export
 #'
 
 
-shorteset_path_score <- function(connections_df, filtered_info_df){
+shorteset_path_score <- function(edge_list, filtered_info_df){
+
+  colnames(filtered_info_df)[1:5] <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
+
+  if(length(unique(filtered_info_df$PDB_ID)) > 1){
+    stop(paste0("filtered_info_df should contain only one PDB entries"))
+  }
 
   final_df <- c()
-  for(i in 1:length(connections_df)){
-    connections_df_filtered <- as.data.frame(connections_df[[i]])
-    df.g <- igraph::graph.data.frame(d = connections_df_filtered, directed = FALSE)
+  for(i in 1:length(edge_list)){
+    edge_list_filtered <- as.data.frame(edge_list[[i]])
+    df.g <- igraph::graph.data.frame(d = edge_list_filtered, directed = FALSE)
 
     distMatrix <- igraph::shortest.paths(df.g, v=igraph::V(df.g), to=igraph::V(df.g))
     distMatrix[which(distMatrix == "Inf")] <- 0
