@@ -11,6 +11,17 @@
 
 gnomad_scores <- function(PDB_ID, filtered_info_df){
 
+  if(ncol(filtered_info_df) < 6){
+    stop("Input data.frame should contain at least 6 columns; PDB_ID, Chain, Position, Orig_AA, Mut_AA and Gene_Name ... respectively.")
+  }
+  else{
+    colnames(filtered_info_df)[1:6] <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
+  }
+
+  if(length(unique(filtered_info_df$PDB_ID)) > 1){
+    stop(paste0("filtered_info_df should contain only one PDB entries"))
+  }
+
   if(length(unique(filtered_info_df$Gene_Name)) == 1 & "" %in% unique(filtered_info_df$Gene_Name)){
 
   res <- biomart_data[which(biomart_data$pdb == PDB_ID),]
@@ -40,6 +51,8 @@ gnomad_scores <- function(PDB_ID, filtered_info_df){
 
       filtered_info_df$pLI <- NA
 
+      filtered_info_df$Gene_Name <- gene_name
+
       message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
       return(list(filtered_info_df, gene_name))
@@ -51,6 +64,8 @@ gnomad_scores <- function(PDB_ID, filtered_info_df){
       filtered_info_df$mis_z <- max(as.numeric(gnomad_data$mis_z[idx]))
 
       filtered_info_df$pLI <- max(as.numeric(gnomad_data$pLI[idx]))
+
+      filtered_info_df$Gene_Name <- gene_name
 
       message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
@@ -74,6 +89,8 @@ gnomad_scores <- function(PDB_ID, filtered_info_df){
 
       filtered_info_df$pLI <- NA
 
+      filtered_info_df$Gene_Name <- gene_name
+
       message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
       return(list(filtered_info_df, gene_name))
@@ -85,6 +102,8 @@ gnomad_scores <- function(PDB_ID, filtered_info_df){
       filtered_info_df$mis_z <- max(as.numeric(gnomad_data$mis_z[idx]))
 
       filtered_info_df$pLI <- max(as.numeric(gnomad_data$pLI[idx]))
+
+      filtered_info_df$Gene_Name <- gene_name
 
       message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
@@ -100,11 +119,14 @@ gnomad_scores <- function(PDB_ID, filtered_info_df){
 
     filtered_info_df$pLI <- max(as.numeric(gnomad_data$pLI[idx]))
 
+    filtered_info_df$Gene_Name <- gene_name
+
     message(crayon::white(paste0("GNOMAD Information:", "\t\t", "DONE")))
 
     return(list(filtered_info_df, gnomad_data$gene[idx]))
   }
   }
+
   else{
     if(length(unique(filtered_info_df$Gene_Name)) != 1){
       message(crayon::white(paste0("\n", "Gene name input should be same for the same PDB ID (", unique(filtered_info_df$PDB_ID), "), inputs will be removed from the query", "\n")))

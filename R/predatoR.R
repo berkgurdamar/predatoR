@@ -14,17 +14,24 @@
 #' @param gene_name_info whether there is gene name information in the input or not (default = TRUE)
 #'
 #' @return data.frame which contains prediction results
+#'
 #' @export
 #'
 
 predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE){
 
+  if(is.null(n_threads) == TRUE){
+    n.cores <- parallel::detectCores() - 1
+  }else{
+    n.cores <- n_threads
+  }
+
   if(is.data.frame(info_df) == F){
     stop("Input should be a data.frame.")
   }
-  else if(gene_name_info == TRUE){
+  if(gene_name_info == TRUE){
     if(ncol(info_df) != 6){
-      stop("Input data.frame should contain 6 columns; PDB_ID, Chain, Position, Orig_AA and Mut_AA, Gene_Name respectively.")
+      stop("Input data.frame should contain 6 columns; PDB_ID, Chain, Position, Orig_AA, Mut_AA and Gene_Name respectively.")
     }
     else{
       colnames(info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
@@ -38,11 +45,12 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
     }
     else{
       colnames(info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
+      info_df$Gene_Name <- ""
       info_df$Orig_AA <- toupper(info_df$Orig_AA)
       info_df$Mut_AA <- toupper(info_df$Mut_AA)
     }
   }
-  else if(length(setdiff(unique(unlist(c(info_df[4], info_df[5]))), colnames(blosum_data))) > 0){
+  if(length(setdiff(unique(unlist(c(info_df[4], info_df[5]))), colnames(blosum_data))) > 0){
 
     false_name <- setdiff(unique(unlist(c(info_df[4], info_df[5]))), colnames(blosum_data))
 
@@ -50,18 +58,10 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
                 " couldn't find in the amino acid names (Amino acid names should be 3 letter codes)"))
   }
 
-  doFuture::registerDoFuture()
+  my.cluster <- parallel::makeCluster(n.cores, strategy = "sequential")
+  doParallel::registerDoParallel(my.cluster)
 
-  if(is.null(n_threads) == TRUE){
-    n.cores <- parallel::detectCores() - 1
-  }else{
-    n.cores <- n_threads
-  }
-
-  my.cluster <- parallel::makeCluster(n.cores)
-  future::plan(future::cluster, workers = my.cluster)
-
-  final_df <- c()
+  final_df <- data.frame()
   for(i in unique(info_df$PDB_ID)){
 
     filtered_info_df <- info_df[info_df$PDB_ID == i,]
@@ -84,11 +84,13 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
       else if(length(unique(atom_matrix$resid[atom_matrix$resno == filtered_info_df$Position[j] & atom_matrix$chain == filtered_info_df$Chain[j]])) != 1){
         message(crayon::white(paste0("There are multiple amino acids for residue ", filtered_info_df$Position[j],
                                      " in the PDB file, it will be removed from the query")))
+
         removed_idx <- c(removed_idx, j)
         }
       else if(unique(atom_matrix$resid[atom_matrix$resno == filtered_info_df$Position[j] & atom_matrix$chain == filtered_info_df$Chain[j]]) != filtered_info_df$Orig_AA[j]){
         message(crayon::white(paste0("Residue ", filtered_info_df$Position[j], " is not ",
                                      filtered_info_df$Orig_AA[j], " in the PDB structure, it will be removed from the query")))
+
         removed_idx <- c(removed_idx, j)
       }
     }
@@ -100,21 +102,13 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
       }
     }
 
-    connections_df <- PDB2connections(atom_matrix, filtered_info_df)
+    edge_list <- PDB2connections(atom_matrix, filtered_info_df, n_threads = n.cores, single_run = FALSE)
 
-    ### eigen centrality
+    filtered_info_df$eigen_z_score <- eigen_centrality_score(edge_list, filtered_info_df)
 
-    filtered_info_df$eigen_z_score <- eigen_centrality_score(connections_df, filtered_info_df)
+    filtered_info_df$shortest_path_z <- shorteset_path_score(edge_list, filtered_info_df)
 
-    ### total shortest paths
-
-    filtered_info_df$shortest_path_z <- shorteset_path_score(connections_df, filtered_info_df)
-
-    ### betweenness scores
-
-    filtered_info_df$betwenness_scores_z <- betweenness_score(connections_df, filtered_info_df)
-
-    ### gnomad
+    filtered_info_df$betwenness_scores_z <- betweenness_score(edge_list, filtered_info_df)
 
     gnomad_result <- gnomad_scores(i, filtered_info_df)
     filtered_info_df <- gnomad_result[[1]]
@@ -124,28 +118,22 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
       next
     }
 
-    ### BLOSUM62
-
     filtered_info_df$blosum62_scores <- as.numeric(BLOSUM62_score(filtered_info_df))
 
-    ### kegg pathway
-
     filtered_info_df$kegg_pathway_number <- as.numeric(KEGG_pathway_number(gene_name))
-
-    ### genic intolerance
 
     filtered_info_df$genic_intolerance <- as.numeric(genic_intolerance(gene_name))
 
     final_df <- rbind(final_df, filtered_info_df)
   }
 
-  ### prediction
-
   final_df <- stats::na.omit(final_df)
 
   if(nrow(final_df) == 0){
 
-    stop("There is no input for prediction after NA omit")
+    parallel::stopCluster(my.cluster)
+
+    stop("There is no input for prediction")
 
   }else{
 
@@ -154,6 +142,7 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
   }
 
   parallel::stopCluster(my.cluster)
+
 
   return(prediction_result)
 

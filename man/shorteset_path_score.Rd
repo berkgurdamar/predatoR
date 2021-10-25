@@ -4,10 +4,10 @@
 \alias{shorteset_path_score}
 \title{Shortest Path Score Function}
 \usage{
-shorteset_path_score(connections_df, filtered_info_df)
+shorteset_path_score(edge_list, filtered_info_df)
 }
 \arguments{
-\item{connections_df}{data frame contains list of edges}
+\item{edge_list}{list contains separate edge data.frames for each chain}
 
 \item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }

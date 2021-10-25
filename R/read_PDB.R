@@ -4,15 +4,16 @@
 #' and filter the PDB file for only containing atoms.
 #'
 #' @param PDB_ID PDB ID
-#' @param PDB_path PDB file path (default = FALSE)
+#' @param PDB_path PDB file path (default = NULL)
 #'
 #' @return Matrix that contains all the atoms in the PDB structure
+#'
 #' @export
 #'
 
 read_PDB <- function(PDB_ID, PDB_path = NULL){
 
-  if(is.null(PDB_path) == TRUE){
+  if(is.null(PDB_path)){
 
     try <- tryCatch({
       pdb <- suppressMessages(bio3d::read.pdb(bio3d::get.pdb(PDB_ID, URL=TRUE)))
@@ -26,12 +27,7 @@ read_PDB <- function(PDB_ID, PDB_path = NULL){
       return(atom_matrix)
 
     },
-    error=function(x){
 
-      message(paste0("\n", "Couldn't download the PDB file ", PDB_ID, ", it will be removed from the query", "\n"))
-      return(NA)
-
-    },
     warning=function(x){
 
       message(paste0("\n", "Couldn't download the PDB file ", PDB_ID, ", it will be removed from the query", "\n"))
@@ -39,11 +35,13 @@ read_PDB <- function(PDB_ID, PDB_path = NULL){
 
     }
     )
-  }else{
+  } else {
 
-    if(paste0(PDB_path, PDB_ID, ".pdb") %in% list.files(PDB_path, full.names = T)){
+    f_path <- file.path(PDB_path, paste0(PDB_ID, ".pdb"))
 
-      pdb <- suppressMessages(bio3d::read.pdb(paste0(PDB_path, "/", PDB_ID, ".pdb")))
+    if (file.exists(f_path)) {
+
+      pdb <- suppressMessages(bio3d::read.pdb(f_path))
 
       atom_matrix <- pdb$atom
       atom_matrix <- atom_matrix[which(atom_matrix$type == "ATOM"),]
@@ -51,11 +49,10 @@ read_PDB <- function(PDB_ID, PDB_path = NULL){
 
       message(crayon::white(paste0("STEP:","\n" ,"Reading PDB:", "\t\t\t", "DONE")))
 
-      return(atom_matrix)
+      return(as.data.frame(atom_matrix))
 
-    }else{
-
-      message(paste0("\n", "Couldn't find the PDB file ", PDB_ID, "in the ", PDB_path, ", it will be removed from the query", "\n"))
+    } else {
+      message(paste0("\n", "Couldn't find the PDB file ", PDB_ID, " in the given path, it will be removed from the query", "\n"))
       return(NA)
 
     }
