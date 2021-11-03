@@ -24,23 +24,38 @@ eigen_centrality_score <- function(edge_list, filtered_info_df){
 
   final_df <- c()
   for(i in 1:length(edge_list)){
-    total_scores <- c()
-    idx <- unique(edge_list[[i]][grep("_CA_", edge_list[[i]][,1]), 1])
-    for(j in idx){
-      eigen_idx <- edge_list[[i]][which(edge_list[[i]][,1] == j), 2]
-      total_scores <- c(total_scores, nrow(edge_list[[i]][edge_list[[i]][,1] %in% eigen_idx,]))
-    }
 
-    mean_of_scores <- mean(total_scores)
-    sd_of_scores <- stats::sd(total_scores)
+    edge_list_filtered <- as.data.frame(edge_list[[i]])
 
-    z_scores <- (total_scores - mean_of_scores) / sd_of_scores
-    final_df <- rbind(final_df, cbind(idx, z_scores))
+    df.g <- igraph::graph.data.frame(d = edge_list_filtered, directed = FALSE)
+
+    eigen_centrality_scores <- igraph::eigen_centrality(df.g)$vector
+
+    eigen_z_score <- (eigen_centrality_scores - mean(eigen_centrality_scores)) / stats::sd(eigen_centrality_scores)
+
+    final_df <- rbind(final_df, cbind(names(eigen_z_score), eigen_z_score))
+
+
+  # final_df <- c()
+  # for(i in 1:length(edge_list)){
+  #   total_scores <- c()
+  #   idx <- unique(edge_list[[i]][, 1])
+  #   for(j in idx){
+  #     eigen_idx <- edge_list[[i]][which(edge_list[[i]][,1] == j), 2]
+  #     total_scores <- c(total_scores, nrow(edge_list[[i]][edge_list[[i]][,1] %in% eigen_idx,]))
+  #   }
+  #
+  #   mean_of_scores <- mean(total_scores)
+  #   sd_of_scores <- stats::sd(total_scores)
+  #
+  #   z_scores <- (total_scores - mean_of_scores) / sd_of_scores
+  #   final_df <- rbind(final_df, cbind(idx, z_scores))
   }
   final_df <- as.data.frame(final_df)
+  colnames(final_df)[1] <- "res_name"
 
   z_final_scores <- as.numeric(sapply(paste0(filtered_info_df$Position, "_CA_", filtered_info_df$Chain),
-                                      function(x) final_df$z_scores[which(final_df$idx == x)]))
+                                      function(x) final_df$eigen_z_score[which(final_df$res_name == x)]))
 
   message(crayon::white(paste0("Eigen Centrality Score:", "\t\t", "DONE")))
 

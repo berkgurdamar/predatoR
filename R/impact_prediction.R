@@ -14,11 +14,12 @@
 
 impact_prediction <- function(final_df){
 
-  final_df$Orig_AA <- as.factor(final_df$Orig_AA)
-  final_df$Mut_AA <- as.factor(final_df$Mut_AA)
+  final_df$degree_z_score <- as.numeric(final_df$degree_z_score)
   final_df$eigen_z_score <- as.numeric(final_df$eigen_z_score)
   final_df$shortest_path_z <- as.numeric(final_df$shortest_path_z)
-  final_df$betwenness_scores_z <- as.numeric(final_df$betwenness_scores_z)
+  final_df$betweenness_scores_z <- as.numeric(final_df$betweenness_scores_z)
+  final_df$clique_z_score <- as.numeric(final_df$clique_z_score)
+  final_df$pagerank_z_score <- as.numeric(final_df$pagerank_z_score)
   final_df$syn_z <- as.numeric(final_df$syn_z)
   final_df$mis_z <- as.numeric(final_df$mis_z)
   final_df$pLI <- as.numeric(final_df$pLI)

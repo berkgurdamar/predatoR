@@ -2,7 +2,7 @@
 % Please edit documentation in R/shortest_path_score.R
 \name{shorteset_path_score}
 \alias{shorteset_path_score}
-\title{Shortest Path Score Function}
+\title{Shortest Path Score}
 \usage{
 shorteset_path_score(edge_list, filtered_info_df)
 }

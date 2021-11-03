@@ -21,7 +21,6 @@ PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, sin
 
   if(single_run == TRUE){
 
-    # foreach::registerDoSEQ()
     close_parallel <- TRUE
 
     if(is.null(n_threads)){
@@ -34,18 +33,22 @@ PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, sin
 
     }
 
+    if(length(unique(filtered_info_df$PDB_ID)) > 1){
+      stop(paste0("filtered_info_df should contain only one PDB entries"))
+    }
+
     clusters <- parallel::makeCluster(n.cores, strategy = "sequential")
     doParallel::registerDoParallel(clusters)
 
   }else{
 
-    # foreach::registerDoSEQ()
     close_parallel <- FALSE
+
+    if(length(unique(filtered_info_df$PDB_ID)) > 1){
+      stop(paste0("filtered_info_df should contain only one PDB entries"))
+    }
   }
 
-  if(length(unique(filtered_info_df$PDB_ID)) > 1){
-    stop(paste0("filtered_info_df should contain only one PDB entries"))
-  }
 
   `%dopar%` <- foreach::`%dopar%`
 
@@ -88,7 +91,7 @@ PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, sin
     parallel::stopCluster(clusters)
 
   }
-  message(crayon::white(paste0("List of Edges:", "\t\t\t", "DONE")))
+  message(crayon::white(paste0("Edge List:", "\t\t\t", "DONE")))
 
   return(edge_list)
 }

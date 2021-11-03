@@ -4,11 +4,9 @@
 \alias{gnomad_scores}
 \title{GnomAD Scores}
 \usage{
-gnomad_scores(PDB_ID, filtered_info_df)
+gnomad_scores(filtered_info_df)
 }
 \arguments{
-\item{PDB_ID}{PDB ID}
-
 \item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{

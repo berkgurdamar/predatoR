@@ -71,8 +71,14 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
     if(is.data.frame(atom_matrix) == FALSE){
       next
     }
+    # message(crayon::white(paste0("PDB ID:", "\t\t\t\t", i, "\n",
+    #                              "Position(s):", "\t\t\t", paste0(filtered_info_df$Position, collapse = ", "))))
+    #
     message(crayon::white(paste0("PDB ID:", "\t\t\t\t", i, "\n",
-                                 "Position(s):", "\t\t\t", paste0(filtered_info_df$Position, collapse = ", "))))
+                                 "Position(s):", "\t\t\t",
+                                 paste0(sapply(split(filtered_info_df$Position, ceiling(seq_along(filtered_info_df$Position)/20)),
+                                               function(x) paste(x, collapse = ", ")), collapse = "\n\t\t\t\t"))))
+
 
     removed_idx <- c()
     for(j in 1:nrow(filtered_info_df)){
@@ -104,25 +110,26 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
 
     edge_list <- PDB2connections(atom_matrix, filtered_info_df, n_threads = n.cores, single_run = FALSE)
 
+    filtered_info_df$degree_z_score <- degree_score(edge_list, filtered_info_df)
+
     filtered_info_df$eigen_z_score <- eigen_centrality_score(edge_list, filtered_info_df)
 
     filtered_info_df$shortest_path_z <- shorteset_path_score(edge_list, filtered_info_df)
 
-    filtered_info_df$betwenness_scores_z <- betweenness_score(edge_list, filtered_info_df)
+    filtered_info_df$betweenness_scores_z <- betweenness_score(edge_list, filtered_info_df)
 
-    gnomad_result <- gnomad_scores(i, filtered_info_df)
-    filtered_info_df <- gnomad_result[[1]]
-    gene_name <- gnomad_result[[2]]
+    filtered_info_df$clique_z_score <- clique_score(edge_list, filtered_info_df, n_threads = n.cores, single_run = FALSE)
 
-    if(gene_name == "no_name"){
-      next
-    }
+    filtered_info_df$pagerank_z_score <- pagerank_score(edge_list, filtered_info_df)
+
+    filtered_info_df <- gnomad_scores(filtered_info_df)
 
     filtered_info_df$blosum62_scores <- as.numeric(BLOSUM62_score(filtered_info_df))
 
-    filtered_info_df$kegg_pathway_number <- as.numeric(KEGG_pathway_number(gene_name))
+    filtered_info_df <- KEGG_pathway_number(filtered_info_df)
 
-    filtered_info_df$genic_intolerance <- as.numeric(genic_intolerance(gene_name))
+    filtered_info_df <- genic_intolerance(filtered_info_df)
+
 
     final_df <- rbind(final_df, filtered_info_df)
   }
