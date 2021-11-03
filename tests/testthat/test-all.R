@@ -1,28 +1,10 @@
-# Sys.setenv(R_TESTS="")
-
 library(testthat)
 library(predatoR)
 
-# chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-#
-# if (nzchar(chk) && chk == "TRUE") {
-#   # use 2 cores in CRAN/Travis/AppVeyor
-#   num_workers <- 2L
-# } else {
-#   # use all cores in devtools::test()
-#   num_workers <- parallel::detectCores() - 1
-# }
+
 # predatoR ----------------------------------------------------------------
 
-test_that("Check wrong gene name message", {
-  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
-                                 c("2DN2", "B", 6, "GLU", "ALA", "BRCA"),
-                                 c("4ONL", "A", 36, "GLU", "GLY", "UBE2V2")))
 
-  expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2),
-                 "Gene name input should be same for the same PDB ID [()A-Za-z0-9_-]+, inputs will be removed from the query")
-
-})
 
 info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
@@ -46,7 +28,9 @@ test_that("Check input column number", {
 test_that("Check output class and thread input", {
 
   info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
-                                 c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+                                 c("2DN2", "B", 6, "GLU", "ALA", "HBB"),
+                                 c("4ONL", "A", 36, "GLU", "GLY", "UBE2V2"),
+                                 c("4ONL", "A", 78, "PRO", "GLN", "UBE2V2")))
 
   expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2)))
 })
@@ -174,8 +158,6 @@ connections_df <- PDB2connections(atom_matrix, info_df, single_run = TRUE, n_thr
 test_that("Check output class an thread input", {
 
   expect_true(is.list(connections_df))
-  expect_message(PDB2connections(atom_matrix, info_df, single_run = TRUE, n_threads = 2),
-                 "List of Edges:			DONE")
 })
 
 
@@ -184,6 +166,8 @@ test_that("Check multiple PDB error", {
                                  c("2DDD", "B", 6, "GLU", "ALA", "HBB")))
 
   expect_error(PDB2connections(atom_matrix, info_df, single_run = TRUE),
+               "filtered_info_df should contain only one PDB entries")
+  expect_error(PDB2connections(atom_matrix, info_df, single_run = FALSE),
                "filtered_info_df should contain only one PDB entries")
 })
 
@@ -216,7 +200,7 @@ test_that("Check output class", {
 
   expect_true(is.numeric(shorteset_path_score(connections_df, info_df)))
   expect_message(shorteset_path_score(connections_df, info_df),
-                 "Number of Shortest Paths:	DONE")
+                 "Shortest Path Score:		DONE")
 })
 
 test_that("Check multiple PDB error", {
@@ -226,7 +210,6 @@ test_that("Check multiple PDB error", {
   expect_error(shorteset_path_score(connections_df, info_df),
                "filtered_info_df should contain only one PDB entries")
 })
-
 
 
 # betweenness_score -------------------------------------------------------
@@ -253,70 +236,68 @@ test_that("Check multiple PDB error", {
 
 test_that("Check output class", {
 
-  expect_true(is.list(gnomad_scores("2DN2", info_df)))
-  expect_message(gnomad_scores("2DN2", info_df),
-                 "GNOMAD Information:		DONE")
+  expect_true(is.data.frame(gnomad_scores(info_df)))
+  expect_message(gnomad_scores(info_df),
+                 "GNOMAD Scores:			DONE")
 })
 
 test_that("Check multiple PDB error", {
   info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
                                  c("2DNN", "B", 6, "GLU", "ALA", "HBB")))
 
-  expect_error(gnomad_scores("2DN2", info_df),
+  expect_error(gnomad_scores(info_df),
                "filtered_info_df should contain only one PDB entries")
 })
 
 
-test_that("Check column name error", {
+test_that("Check column number error", {
   info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
                                  c("2DN2", "B", 6, "GLU", "ALA")))
 
-  expect_error(gnomad_scores("2DN2", info_df),
+  expect_error(gnomad_scores(info_df),
                "Input data.frame should contain at least 6 columns; PDB_ID, Chain, Position, Orig_AA, Mut_AA and Gene_Name ... respectively.")
 })
 
 
 
-test_that("Check multiple PDB error", {
-  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
-                                 c("2DNN", "B", 6, "GLU", "ALA", "HBB")))
-
-  expect_error(gnomad_scores("2DN2", info_df),
-               "filtered_info_df should contain only one PDB entries")
-})
-
 test_that("Check wrong gene name message", {
-  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "ASDSADASD"),
-                                 c("2DN2", "B", 6, "GLU", "ALA", "ASDSADASD")))
-
-  expect_message(gnomad_scores("2DN2", info_df),
-               "gnomAD scores of the gene [A-Za-z0-9_-]+ couldn't find, will be removed from the query")
-
-})
-
-
-
-test_that("Check multiple gene name message", {
-  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "BRCA"),
                                  c("2DN2", "B", 6, "GLU", "ALA", "BRCA")))
 
-  expect_message(gnomad_scores("2DN2", info_df),
-                 "Gene name input should be same for the same PDB ID [()A-Za-z0-9_-]+, inputs will be removed from the query")
+  expect_message(gnomad_scores(info_df))
 
 })
 
 
-# find pdb for this
-# test_that("Check multiple amino acid for a residue message", {
-#   info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
-#                                  c("2DN2", "B", 6, "GLU", "ALA", "BRCA")))
-#
-#   expect_message(gnomad_scores("2DN2", info_df),
-#                  "Gene name input should be same for the same PDB ID [()A-Za-z0-9_-]+, inputs will be removed from the query")
-#   expect_true(gnomad_scores("2DN2", info_df)[[2]] == "no_name")
-#
-# })
+test_that("Check multiple gene info", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "AQP1"),
+                                 c("2DN2", "B", 6, "GLU", "ALA", "AQP1")))
 
+  expect_true(is.data.frame(gnomad_scores(info_df)))
+
+})
+
+
+test_that("Check no gene input returning multiple gene", {
+  info_df <- as.data.frame(rbind(c("1A01", "A", 1, "VAL", "ALA", ""),
+                                 c("1A01", "A", 6, "GLU", "ALA", "")))
+
+  expect_true(is.data.frame(gnomad_scores(info_df)))
+})
+
+test_that("Check no gene input", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", ""),
+                                 c("2DN2", "B", 6, "GLU", "ALA", "")))
+
+  expect_true(is.data.frame(gnomad_scores(info_df)))
+})
+
+test_that("Check wrong pdb input returning no gene", {
+  info_df <- as.data.frame(rbind(c("ASDA", "B", 1, "VAL", "ALA", ""),
+                                 c("ASDA", "B", 6, "GLU", "ALA", "")))
+
+  expect_true(is.data.frame(gnomad_scores(info_df)))
+})
 
 
 # BLOSUM62_score ----------------------------------------------------------
@@ -333,20 +314,31 @@ test_that("Check output class", {
 
 test_that("Check output class", {
 
-  expect_true(is.numeric(KEGG_pathway_number("HBB")))
-  expect_message(KEGG_pathway_number("HBB"),
-                 "Number of KEGG Pathways:	DONE")
+  expect_true(is.data.frame(KEGG_pathway_number(info_df)))
+  expect_message(KEGG_pathway_number(info_df),
+                 "KEGG Pathway Number:		DONE")
 })
 
 
+
+test_that("Check column number error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
+                                 c("2DN2", "B", 6, "GLU", "ALA")))
+
+  expect_error(KEGG_pathway_number(info_df),
+               "Input data.frame should contain at least 6 columns; PDB_ID, Chain, Position, Orig_AA, Mut_AA and Gene_Name ... respectively.")
+})
 
 
 # genic_intolerance -------------------------------------------------------
 
 test_that("Check output class", {
 
-  expect_true(is.character(genic_intolerance("HBB")))
-  expect_message(genic_intolerance("HBB"),
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                 c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+
+  expect_true(is.data.frame(genic_intolerance(info_df)))
+  expect_message(genic_intolerance(info_df),
                  "Genic Intolerance Score:	DONE")
 })
 
@@ -354,29 +346,105 @@ test_that("Check output class", {
 
 test_that("Check input error message", {
 
-  expect_message(genic_intolerance("ASDASDASD"),
-                 "Genic Intolerance score of the gene [A-Za-z0-9_-]+ couldn't find, will be removed from the query")
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "BRCA"),
+                                 c("2DN2", "B", 6, "GLU", "ALA", "BRCA")))
+
+  expect_message(genic_intolerance(info_df))
 })
 
 
-test_that("Check input error output type", {
 
-  expect_true(is.na(genic_intolerance("ASDASDASD")))
+test_that("Check column number error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
+                                 c("2DN2", "B", 6, "GLU", "ALA")))
+
+  expect_error(genic_intolerance(info_df),
+               "Input data.frame should contain at least 6 columns; PDB_ID, Chain, Position, Orig_AA, Mut_AA and Gene_Name ... respectively.")
 })
 
+# clique_score ------------------------------------------------------------
+
+
+atom_matrix <- read_PDB("2DN2")
+
+info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                               c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+
+connections_df <- PDB2connections(atom_matrix, info_df, single_run = TRUE, n_threads = 2)
+
+
+
+test_that("Check multiple PDB error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                 c("2DDD", "B", 6, "GLU", "ALA", "HBB")))
+
+  expect_error(clique_score(connections_df, info_df, single_run = TRUE),
+               "filtered_info_df should contain only one PDB entries")
+  expect_error(clique_score(connections_df, info_df, single_run = FALSE),
+               "filtered_info_df should contain only one PDB entries")
+})
+
+
+test_that("Check output class", {
+
+  expect_true(is.numeric(clique_score(connections_df, info_df, single_run = TRUE, n_threads = 2)))
+})
+
+
+
+
+# degree_score ------------------------------------------------------------
+
+
+
+
+test_that("Check multiple PDB error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                 c("2DDD", "B", 6, "GLU", "ALA", "HBB")))
+
+  expect_error(degree_score(connections_df, info_df),
+               "filtered_info_df should contain only one PDB entries")
+})
+
+
+test_that("Check output class", {
+
+  expect_true(is.numeric(degree_score(connections_df, info_df)))
+})
+
+
+
+
+
+# pagerank_score ----------------------------------------------------------
+
+
+test_that("Check multiple PDB error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                 c("2DDD", "B", 6, "GLU", "ALA", "HBB")))
+
+  expect_error(pagerank_score(connections_df, info_df),
+               "filtered_info_df should contain only one PDB entries")
+})
+
+
+test_that("Check output class", {
+
+  expect_true(is.numeric(pagerank_score(connections_df, info_df)))
+})
 
 
 
 # impact_prediction -------------------------------------------------------
 
-final_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB", "-0.7491699", "0.1615106", "-0.04987094",
-                                  "-3.7953", "-0.2113", "1.2274e-09", "0", "5", "-0.01"),
-                                c("2DN2", "B", 6, "GLU", "ALA", "HBB", "-1.2004364", "1.8748888", "-0.86584380",
-                                  "-3.7953", "-0.2113", "1.2274e-09", "-1", "5", "-0.01")))
+final_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB", "-0.3319392", "-0.9048452", "0.1615106", "-0.04987094",
+                                  "-0.8371797", "-0.1839022", "-3.7953", "-0.2113", "1.2274e-09", "0", "5", "-0.01"),
+                                c("2DN2", "B", 6, "GLU", "ALA", "HBB", "-0.6075531", "-1.3857613", "1.8748888", "-0.86584380",
+                                  "-0.3499602", "-0.3829808", "-3.7953", "-0.2113", "1.2274e-09", "-1", "5", "-0.01")))
 
-colnames(final_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name",
-                        "eigen_z_score", "shortest_path_z", "betwenness_scores_z", "syn_z", "mis_z", "pLI",
-                        "blosum62_scores", "kegg_pathway_number", "genic_intolerance")
+colnames(final_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name", "degree_z_score",
+                        "eigen_z_score", "shortest_path_z", "betweenness_scores_z", "clique_z_score", "pagerank_z_score",
+                        "syn_z", "mis_z", "pLI", "blosum62_scores", "kegg_pathway_number", "genic_intolerance")
 
 
 test_that("Check output class", {
