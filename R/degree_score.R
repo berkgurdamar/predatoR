@@ -1,6 +1,6 @@
 #' Degree Score
 #'
-#' Degree Score is the total number of connections of the node.
+#' Degree Score is the total number of connections of the nodes.
 #'
 #' @param edge_list list contains separate edge data.frames for each chain
 #' @param filtered_info_df input data.frame which contain only one PDB entries
