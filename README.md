@@ -25,10 +25,13 @@ ID;
 -   Download/Read PDB file
 -   Calculate distances between every atom
 -   Create network from PDB
+-   Calculate Degree Centrality Z-Score of each Carbon-α atom
 -   Calculate Eigen Centrality Z-Score of each Carbon-α atom
 -   Calculate Shortest Path Z-Score of each Carbon-α atom
 -   Calculate Betweenness Z-Score of each Carbon-α atom
--   Gets GnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF
+-   Calculate Clique Z-Score of each Carbon-α atom
+-   Calculate PageRank Z-Score of each Carbon-α atom
+-   Gets gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF
     Score
 -   Gets Genic Intolerance Score
 -   Gets BLOSUM62 score of the mutation
@@ -67,21 +70,25 @@ Mutation impact prediction can be done via `predatoR()` function:
 
 `predatoR()` function works on each PDB ID respectively. First,
 downloads the PDB file, creates distance matrix between every atom and
-turns PDB structure into a network model. Calculates **Eigen Centrality
-Z-Score, Shortest Path Z-score** and **Betweenness Z-Score** of input
-positions. If **‘Gene_Name’** is not provided in the input, `predatoR()`
-gets the related gene names from **‘Ensembl’** and if there are multiple
-genes annotated for the PDB ID, asks user to choose input
-**‘Gene_Name’**, gets **GnomAD Synonymous Z-Score, Non-Synonymous
-Z-Score, PLoF Score**, and **Genic Intolerance Score**, gets **BLOSUM62
-score** of the mutation, finds the **KEGG Pathway Number** which
-contains the input gene. Finally, make prediction based on a
-pre-computed **Adaboost** model and classifies the mutation as **Disease
-Causing** or **Silent**.
+turns PDB structure into a network model. Calculates **Degree Centrality
+Z-Score, Eigen Centrality Z-Score, Shortest Path Z-score, Betweenness
+Z-Score, Clique Z-Score** and **PageRank Z-Score** of input positions.
+If **‘Gene_Name’** is not provided in the input, `predatoR()` gets the
+related gene names from **‘Ensembl’** and if there are multiple genes
+annotated for the same PDB ID, gets the gene that has maximum
+**Synonymous Z-Score, Non-Synonymous Z-Score**, and **PLoF Score**, and
+**Genic Intolerance Score**, gets **BLOSUM62 score** of the mutation,
+finds the **KEGG Pathway Number** which contains the input gene.
+Finally, make prediction based on a pre-computed **Adaboost** model and
+classifies the mutation as **Disease Causing** or **Silent**.
 
 ``` r
 library(predatoR)
-pred_res <- predatoR(input_df)
+
+input_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+
+pred_res <- predatoR(info_df =  input_df, n_threads = 8, gene_name_info = TRUE)
 ```
 
 `predatoR()` function returns a data.frame which contains additional two
@@ -92,5 +99,5 @@ Causing** or **Silent**.
 
 | PDB_ID | Chain | Position | Orig_AA | Mut_AA | Gene_Name | Prediction | Probability |
 |:------:|:-----:|:--------:|:-------:|:------:|:---------:|:----------:|:-----------:|
-|  2DN2  |   B   |    1     |   VAL   |  ALA   |    HBB    |   Silent   |  0.6205009  |
-|  2DN2  |   B   |    6     |   GLU   |  ALA   |    HBB    |   Silent   |  0.6286857  |
+|  2DN2  |   B   |    1     |   VAL   |  ALA   |    HBB    |   Silent   |  0.6123515  |
+|  2DN2  |   B   |    6     |   GLU   |  ALA   |    HBB    |   Silent   |  0.5398617  |
