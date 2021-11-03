@@ -26,6 +26,7 @@ gnomad_scores <- function(filtered_info_df){
     filtered_info_df$pdb_chain_info <- paste0(filtered_info_df$PDB_ID, ".", filtered_info_df$Chain)
 
     no_name <- c()
+    no_gnomad <- c()
     for(i in 1:nrow(filtered_info_df)){
       res <- pdb2gene[which(pdb2gene$PDB.Chain %in% filtered_info_df$pdb_chain_info[i]),]
 
@@ -46,14 +47,28 @@ gnomad_scores <- function(filtered_info_df){
 
         filtered_gnomad_data <- gnomad_data[gnomad_data$gene == unique(res$Gene),]
 
-        filtered_info_df$Gene_Name[i] <- filtered_gnomad_data$gene
+        if(nrow(filtered_gnomad_data) == 0){
 
-        filtered_info_df$syn_z[i] <- filtered_gnomad_data$syn_z
+          no_gnomad <- c(no_gnomad, unique(res$Gene))
 
-        filtered_info_df$mis_z[i] <- filtered_gnomad_data$mis_z
+          filtered_info_df$Gene_Name[i] <- unique(res$Gene)
 
-        filtered_info_df$pLI[i] <- filtered_gnomad_data$pLI
+          filtered_info_df$syn_z[i] <- NA
 
+          filtered_info_df$mis_z[i] <- NA
+
+          filtered_info_df$pLI[i] <- NA
+        }
+        else{
+
+          filtered_info_df$Gene_Name[i] <- filtered_gnomad_data$gene
+
+          filtered_info_df$syn_z[i] <- filtered_gnomad_data$syn_z
+
+          filtered_info_df$mis_z[i] <- filtered_gnomad_data$mis_z
+
+          filtered_info_df$pLI[i] <- filtered_gnomad_data$pLI
+        }
       }
       else{
 
@@ -79,6 +94,11 @@ gnomad_scores <- function(filtered_info_df){
     if(length(unique(no_name)) > 0){
       message(crayon::white(paste0("\n", "Gene name(s) couldn't find for ", paste(unique(no_name), collapse = ", "), " (PDB.Chain), will be removed from the query", "\n")))
     }
+
+    if(length(unique(no_gnomad)) > 0){
+      message(crayon::white(paste0("\n", "gnomAD scores of the gene(s) ", paste(unique(no_gnomad), collapse = ", "), " couldn't find, will be removed from the query", "\n")))
+    }
+
 
     message(crayon::white(paste0("GNOMAD Scores:", "\t\t\t", "DONE")))
 
