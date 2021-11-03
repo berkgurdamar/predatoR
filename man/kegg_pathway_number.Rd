@@ -4,13 +4,13 @@
 \alias{KEGG_pathway_number}
 \title{KEGG Pathway Number from Gene Name}
 \usage{
-KEGG_pathway_number(gene_name)
+KEGG_pathway_number(filtered_info_df)
 }
 \arguments{
-\item{gene_name}{Gene name}
+\item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{
-Number of KEGG pathways which contain the input gene
+Number of KEGG pathways which contain the input genes
 }
 \description{
 KEGG Pathway Number from Gene Name

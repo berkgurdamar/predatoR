@@ -1,4 +1,4 @@
-#' Shortest Path Score Function
+#' Shortest Path Score
 #'
 #' Calculate Shortest Path Z-Scores of input position
 #'
@@ -43,7 +43,7 @@ shorteset_path_score <- function(edge_list, filtered_info_df){
   shortest_z_final <- as.numeric(sapply(paste0(filtered_info_df$Position, "_CA_", filtered_info_df$Chain),
                                         function(x) final_df$shortest_path_z[which(final_df$V1 == x)]))
 
-  message(crayon::white(paste0("Number of Shortest Paths:", "\t", "DONE")))
+  message(crayon::white(paste0("Shortest Path Score:", "\t\t", "DONE")))
 
   return(shortest_z_final)
 }

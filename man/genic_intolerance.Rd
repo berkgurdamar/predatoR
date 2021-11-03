@@ -4,13 +4,13 @@
 \alias{genic_intolerance}
 \title{Genic Intolerance Score}
 \usage{
-genic_intolerance(gene_name)
+genic_intolerance(filtered_info_df)
 }
 \arguments{
-\item{gene_name}{Gene name}
+\item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{
-Genic Intolerance score of input gene
+Genic Intolerance scores of input genes
 }
 \description{
 Genic Intolerance Score
