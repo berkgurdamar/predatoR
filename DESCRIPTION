@@ -24,7 +24,7 @@ Imports:
     crayon,
     foreach,
     doParallel,
-    igraph (>= 1.2.7),
+    igraph,
     parallel,
     biomaRt
 Suggests: 
