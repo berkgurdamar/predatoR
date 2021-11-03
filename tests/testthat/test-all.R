@@ -300,6 +300,14 @@ test_that("Check wrong pdb input returning no gene", {
 })
 
 
+test_that("Check no gene info in gnomad", {
+  info_df <- as.data.frame(rbind(c("1ND5", "B", 1, "VAL", "ALA", ""),
+                                 c("1ND5", "B", 6, "GLU", "ALA", "")))
+
+  expect_true(is.data.frame(gnomad_scores(info_df)))
+})
+
+
 # BLOSUM62_score ----------------------------------------------------------
 
 test_that("Check output class", {
