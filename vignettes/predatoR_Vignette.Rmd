@@ -21,7 +21,7 @@ suppressPackageStartupMessages(library(predatoR))
 
 In this section, we show you how to use `predatoR` package for impact prediction.
 
-`predatoR` package makes prediction about amino acid mutations based on a pre-computed __Adaboost__ model (Accuracy: 0.9140, Sensitivity: 0.9667, Specificity: 0.8005, AUC: 0.9718) and classifies the mutation as __Disease Causing__ or __Silent__. Model created by using [Varibench](http://structure.bmc.lu.se/VariBench/) datasets. [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) datasets also used for additional model validation (Accuracy: 0.7818, Sensitivity: 0.8174, Specificity: 0.7428, AUC: 0.8601). 
+`predatoR` package makes prediction about amino acid mutations based on a pre-computed __Adaboost__ model (Accuracy: 0.9230, Sensitivity: 0.9240, Specificity: 0.9207, AUC: 0.9718) and classifies the mutation as __Disease Causing__ or __Silent__. Model created by using [Varibench](http://structure.bmc.lu.se/VariBench/) datasets. [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) datasets also used for additional model validation (Accuracy: 0.7693, Sensitivity: 0.7058, Specificity: 0.8391). 
 
 `predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. 
  
@@ -172,7 +172,7 @@ The wrapper function `predatoR()` uses the utility functions below;
  - `impact_prediction()`
  
 
-### `read_PDB()`
+### `read_PDB`
 
 `read_PDB()` function downloads input PDB by default but can read and process locally stored PDB structures.
 After reading, create a matrix that contains only ATOM labelled structures.
@@ -197,7 +197,7 @@ PDB_2DN2_structure <- read_PDB("2DN2")
 ```
 
 
-### `PDB2connections()`
+### `PDB2connections`
 
 `PDB2connections()` function calculates distances between every ATOM in the PDB structure 
 and creates an edge between atoms if the distance <= 7 Angstrom. As a result, returns a data frame 
@@ -226,7 +226,7 @@ edge_list <- PDB2connections(atom_matrix = PDB_2DN2_structure, filtered_info_df 
 ```
 
 
-### `degree_score()`
+### `degree_score`
 
 `degree_score()` function calculates the total number of connections of all nodes.
 Calculates Z-scores of each node and returns scores of desired nodes.
@@ -253,7 +253,7 @@ degree_z_score <- degree_score(edge_list = edge_list, filtered_info_df = test_da
 
 
 
-### `eigen_centrality_score()`
+### `eigen_centrality_score`
 
 `eigen_centrality_score()` function calculates the total number of connections of nodes to which a node is connected.
 Calculates Z-scores of all nodes and returns scores of desired nodes.
@@ -281,7 +281,7 @@ eigen_centrality_z_score <- eigen_centrality_score(edge_list = edge_list, filter
 
 
 
-### `shorteset_path_score()`
+### `shorteset_path_score`
 
 `shorteset_path_score()` function calculates the distances between each node via `shortest.paths()` function
 of igraph package, sum distances of each nodes, calculates Z-scores and returns scores of desired nodes.
@@ -308,7 +308,7 @@ shorteset_path_z_score <- shorteset_path_score(edge_list = edge_list, filtered_i
 
 
 
-### `betweenness_score()`
+### `betweenness_score`
 
 `betweenness_score()` function calculates Betweenness Score of each node by using `betweenness()` 
 function of igraph package, turns the scores into Z-scores and returns scores of desired nodes.
@@ -341,7 +341,7 @@ betweenness_z_score <- betweenness_score(edge_list = edge_list, filtered_info_df
 ```
 
 
-### `clique_score()`
+### `clique_score`
 
 `clique_score()` function calculates how many of the nodes that a node is connected to are connected to each other.
 Turns the scores into Z-scores and returns scores of desired nodes.
@@ -369,7 +369,7 @@ clique_z_score <- clique_score(edge_list = edge_list, filtered_info_df = test_da
 ```
 
 
-### `pagerank_score()`
+### `pagerank_score`
 
 `pagerank_score()` function assigns an importance score to every node via
 `page_rank()` function of igraph package. Turns the scores into Z-scores and returns scores of desired nodes.
@@ -397,7 +397,7 @@ pagerank_z_score <- pagerank_score(edge_list = edge_list, filtered_info_df = tes
 
 
 
-### `gnomad_scores()`
+### `gnomad_scores`
 
 `gnomad_scores()` function gets input gene's gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
 from data retrieved from [gnomAD](https://gnomad.broadinstitute.org/). If there is no gene name information in the input,
@@ -425,7 +425,7 @@ gnomad_score <- gnomad_scores(filtered_info_df = test_data)
 
 
 
-### `BLOSUM62_score()`
+### `BLOSUM62_score`
 
 `BLOSUM62_score()` function returns BLOSUM62 scores of input mutations.
 
@@ -451,7 +451,7 @@ BLOSUM62_scores <- BLOSUM62_score(info_df = test_data)
 
 
 
-### `KEGG_pathway_number()`
+### `KEGG_pathway_number`
 
 `KEGG_pathway_number()` function finds number of KEGG Pathways which contains the input genes.
 
@@ -475,7 +475,7 @@ KEGG_path_number <- KEGG_pathway_number(filtered_info_df = test_data)
 ```
 
 
-### `genic_intolerance()`
+### `genic_intolerance`
 
 `genic_intolerance()` function returns Genic Intolerance score by using a dataset retrieved from 
 [Genic Intolerance](http://genic-intolerance.org/).
@@ -501,7 +501,7 @@ genic_intolerance_score <- genic_intolerance(filtered_info_df = test_data)
 ```
 
 
-### `impact_prediction()`
+### `impact_prediction`
 
 `impact_prediction()` function makes prediction based on a pre-computed __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
 
