@@ -24,7 +24,7 @@ PDB2connections(
 list contains separate edge data.frames for each chain
 }
 \description{
-Creates all the edges from the input atom matrix created by \code{PDB_read} function
+Creates all the edges from the input atom matrix created by \code{PDB_read} .
 }
 \details{
 This function calculates the distances between all the atoms in the atom matrix and create edges

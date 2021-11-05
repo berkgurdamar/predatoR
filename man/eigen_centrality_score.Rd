@@ -18,6 +18,6 @@ Eigen Centrality Z-Score of input position
 Calculate Eigen Centrality Z-Scores of input position
 }
 \details{
-This function calculates Eigen Centrality scores of all nodes in the network.
+This function calculates the total number of connections of nodes to which a node is connected.
 Calculates and returns the Z-Scores of the input positions.
 }

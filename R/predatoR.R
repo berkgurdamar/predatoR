@@ -4,7 +4,7 @@
 #'
 #' With an input data.frame which contains 'PDB_ID', 'Chain', 'Position',
 #' 'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively,
-#' make a prediction about the mutation by using pre computed adaboost model
+#' make a prediction about the mutation by using pre computed Adaboost model
 #' and classifies the mutation as 'Disease Causing' or 'Silent'.
 #'
 #' @param info_df data.frame containing 'PDB_ID', 'Chain', 'Position',

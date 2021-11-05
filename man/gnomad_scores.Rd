@@ -10,9 +10,11 @@ gnomad_scores(filtered_info_df)
 \item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{
-list that contains a data.frame containing GnomAD scores of input mutations and
-the gene name
+gnomAD scores added input data.frame
 }
 \description{
-GnomAD Scores
+Function gets input gene's gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
+from data retrieved from \href{https://gnomad.broadinstitute.org/}{gnomAD}. If there is no gene name information in the input,
+\code{gnomad_scores} finds the genes that related with input PDB ID by using a dataset retrieved from \href{https://www.ensembl.org/}{Ensembl}.
+If there are multiple genes annotated for same PDB, \code{gnomad_scores} function gets the gene that has maximum Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score.
 }

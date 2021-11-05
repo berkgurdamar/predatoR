@@ -1,6 +1,7 @@
 #' Clique Score
 #'
 #' The Click is how many of the nodes that a node is connected to are connected to each other.
+#' Calculates and returns the Z-Scores of the input positions.
 #'
 #' @param edge_list list contains separate edge data.frames for each chain
 #' @param filtered_info_df input data.frame which contain only one PDB entries

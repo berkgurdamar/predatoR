@@ -1,5 +1,7 @@
 #' BLOSUM62 Score
 #'
+#' Function returns BLOSUM62 scores of input mutations.
+#'
 #' @param info_df data.frame contains all the input mutations
 #'
 #' @return BLOSUM62 score of input mutation

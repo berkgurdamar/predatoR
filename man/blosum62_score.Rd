@@ -13,5 +13,5 @@ BLOSUM62_score(info_df)
 BLOSUM62 score of input mutation
 }
 \description{
-BLOSUM62 Score
+Function returns BLOSUM62 scores of input mutations.
 }

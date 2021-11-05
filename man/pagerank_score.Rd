@@ -16,5 +16,5 @@ PageRank Z-Scores of input position
 }
 \description{
 \code{pagerank_score} function assigns an importance score to every node via
-\code{page_rank} function of igraph package..
+\code{page_rank} function of igraph package. Calculates and returns the Z-Scores of the input positions.
 }

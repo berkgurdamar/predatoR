@@ -1,8 +1,10 @@
 #' Genic Intolerance Score
 #'
+#' \code{genic_intolerance} function returns Genic Intolerance scores of input genes
+#'
 #' @param filtered_info_df input data.frame which contain only one PDB entries
 #'
-#' @return Genic Intolerance scores of input genes
+#' @return Genic Intolerance scores added input data.frame
 #'
 #' @export
 #'

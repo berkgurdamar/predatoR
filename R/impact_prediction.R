@@ -14,7 +14,7 @@
 
 impact_prediction <- function(final_df){
 
-  message(crayon::white(paste0("\n", "Prediction threshold: > ", "0.5493059 --> Disease Causing", "\n")))
+  message(crayon::white(paste0("\n", "Prediction threshold: > ", "0.5158203 --> Disease Causing", "\n")))
 
   final_df$degree_z_score <- as.numeric(final_df$degree_z_score)
   final_df$eigen_z_score <- as.numeric(final_df$eigen_z_score)
@@ -31,9 +31,7 @@ impact_prediction <- function(final_df){
 
   prob <- stats::predict(caret_adaboost, final_df, type = "prob")
 
-  # res <- stats::predict(caret_adaboost, final_df)
-  res <- as.factor(ifelse(stats::predict(caret_adaboost, final_df, type = "prob")[,2] > 0.5493059, "1", "0"))
-
+  res <- as.factor(ifelse(stats::predict(caret_adaboost, final_df, type = "prob")[,2] > 0.5158203, "1", "0"))
 
   probs <- c()
   res_types <- c()

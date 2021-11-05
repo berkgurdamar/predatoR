@@ -13,5 +13,5 @@ KEGG_pathway_number(filtered_info_df)
 Number of KEGG pathways which contain the input genes
 }
 \description{
-KEGG Pathway Number from Gene Name
+Function finds the number of KEGG Pathways which contains the input genes.
 }

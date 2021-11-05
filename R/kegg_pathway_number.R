@@ -1,5 +1,7 @@
 #' KEGG Pathway Number from Gene Name
 #'
+#' Function finds the number of KEGG Pathways which contains the input genes.
+#'
 #' @param filtered_info_df input data.frame which contain only one PDB entries
 #'
 #' @return Number of KEGG pathways which contain the input genes

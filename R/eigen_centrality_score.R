@@ -2,7 +2,7 @@
 #'
 #' Calculate Eigen Centrality Z-Scores of input position
 #'
-#' This function calculates Eigen Centrality scores of all nodes in the network.
+#' This function calculates the total number of connections of nodes to which a node is connected.
 #' Calculates and returns the Z-Scores of the input positions.
 #'
 #' @param edge_list list contains separate edge data.frames for each chain
@@ -35,21 +35,6 @@ eigen_centrality_score <- function(edge_list, filtered_info_df){
 
     final_df <- rbind(final_df, cbind(names(eigen_z_score), eigen_z_score))
 
-
-  # final_df <- c()
-  # for(i in 1:length(edge_list)){
-  #   total_scores <- c()
-  #   idx <- unique(edge_list[[i]][, 1])
-  #   for(j in idx){
-  #     eigen_idx <- edge_list[[i]][which(edge_list[[i]][,1] == j), 2]
-  #     total_scores <- c(total_scores, nrow(edge_list[[i]][edge_list[[i]][,1] %in% eigen_idx,]))
-  #   }
-  #
-  #   mean_of_scores <- mean(total_scores)
-  #   sd_of_scores <- stats::sd(total_scores)
-  #
-  #   z_scores <- (total_scores - mean_of_scores) / sd_of_scores
-  #   final_df <- rbind(final_df, cbind(idx, z_scores))
   }
   final_df <- as.data.frame(final_df)
   colnames(final_df)[1] <- "res_name"
