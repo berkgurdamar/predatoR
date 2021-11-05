@@ -7,10 +7,15 @@ Authors@R:
            role = c("aut", "cre", "cph"),
            email = "berk_gurdamar@hotmail.com",
            comment = c(ORCID = "0000-0003-3811-2211"))
-Description: Mutation Impact Prediction based on network properties. 
-            With using PDB ID, residue, reference amino acid and mutated amino acid, 
-            calculate the impact of a mutation and predict as disease causing or not.
+Description: Mutation impact prediction has an important role in understanding the
+            roles of mutations in diseases. predatoR package makes prediction about
+            amino acid substitutions on protein structures. With using PDB ID, residue, 
+            reference amino acid, mutated amino acid and gene name (optional), 
+            calculates the impact of a mutation by using Adaboost model and classifies the mutations
+            as disease causing or not.
 License: MIT + file LICENSE
+URL: https://github.com/berkgurdamar/predatoR
+BugReports: https://github.com/berkgurdamar/predatoR/issues
 Encoding: UTF-8
 LazyData: true
 Depends: 
