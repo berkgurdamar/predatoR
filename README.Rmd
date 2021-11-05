@@ -24,11 +24,13 @@ knitr::opts_chunk$set(
 
 # Overview
 
-`predatoR` is a tool for impact prediction of a mutation on a protein structure by using network properties. 
+`predatoR` is a tool for mutation impact prediction using network properties.
 
 <img src="https://github.com/berkgurdamar/predatoR/blob/main/vignettes/predatoR_workflow.png?raw=true" style="max-width:100%;" />
 
-`predatoR()` function works on each PDB ID respectively. For each PDB ID;  
+`predatoR()` function is the wrapper function of `predatoR` package.
+
+`predatoR()` works on each PDB ID respectively. For each PDB ID;  
 
  - Download/Read PDB file
  - Calculate distances between every atom
@@ -64,23 +66,24 @@ install_github("berkgurdamar/predatoR")
 
 `predatoR` uses data.frame structures as an input. data.frame should consist of __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__, __'Mut_AA'__ and __'Gene_Name'__ as an optional input:
 
-```{r example_input, echo=FALSE}
+Mutation impact prediction can be done via `predatoR()` function:
+
+```{r example_input1, eval=FALSE}
+
+input_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+
+```
+
+```{r example_input2, echo=FALSE}
 test_data <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
                                  c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
 colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
 knitr::kable(test_data, align = c("c", "c", "c", "c", "c", "c"))
 ```
 
-Mutation impact prediction can be done via `predatoR()` function:
-
-`predatoR()` function works on each PDB ID respectively. First, downloads the PDB file, creates distance matrix between every atom and turns PDB structure into a network model. Calculates __Degree Centrality Z-Score, Eigen Centrality Z-Score, Shortest Path Z-score, Betweenness Z-Score, Clique Z-Score__ and __PageRank Z-Score__ of input positions.  If __'Gene_Name'__ is not provided in the input, `predatoR()` gets the related gene names from __'Ensembl'__ and if there are multiple genes annotated for the same PDB ID, gets the gene that has maximum __Synonymous Z-Score, Non-Synonymous Z-Score__, and __PLoF Score__, and __Genic Intolerance Score__, gets __BLOSUM62 score__ of the mutation, finds the __KEGG Pathway Number__ which contains the input gene. Finally, make prediction based on a pre-computed __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
-
-
-```{r usage, eval=FALSE}
+```{r example_run, eval=FALSE}
 library(predatoR)
-
-input_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
-                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
 
 pred_res <- predatoR(info_df =  input_df, n_threads = 8, gene_name_info = TRUE)
 ```
@@ -96,3 +99,23 @@ colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA"
 knitr::kable(example_result, align = c("c", "c", "c", "c", "c", "c", "c", "c"))
 ```
 
+
+## Utility Functions
+
+The wrapper function `predatoR()` uses the utility functions below;
+
+ - `read_PDB()`
+ - `PDB2connections()`
+ - `degree_score()`
+ - `eigen_centrality_score()`
+ - `shorteset_path_score()`
+ - `betweenness_score()`
+ - `clique_score()`
+ - `pagerank_score()`
+ - `gnomad_scores()`
+ - `BLOSUM62_score()`
+ - `KEGG_pathway_number()`
+ - `genic_intolerance()`
+ - `impact_prediction()`
+ 
+Utility functions can be used alone, for more detail please see vignette.

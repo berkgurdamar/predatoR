@@ -14,13 +14,14 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.or
 
 # Overview
 
-`predatoR` is a tool for impact prediction of a mutation on a protein
-structure by using network properties.
+`predatoR` is a tool for mutation impact prediction using network
+properties.
 
 <img src="https://github.com/berkgurdamar/predatoR/blob/main/vignettes/predatoR_workflow.png?raw=true" style="max-width:100%;" />
 
-`predatoR()` function works on each PDB ID respectively. For each PDB
-ID;
+`predatoR()` function is the wrapper function of `predatoR` package.
+
+`predatoR()` works on each PDB ID respectively. For each PDB ID;
 
 -   Download/Read PDB file
 -   Calculate distances between every atom
@@ -61,32 +62,20 @@ install_github("berkgurdamar/predatoR")
 consist of **‘PDB_ID’**, **‘Chain’**, **‘Position’**, **‘Orig_AA’**,
 **‘Mut_AA’** and **‘Gene_Name’** as an optional input:
 
+Mutation impact prediction can be done via `predatoR()` function:
+
+``` r
+input_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+```
+
 | PDB_ID | Chain | Position | Orig_AA | Mut_AA | Gene_Name |
 |:------:|:-----:|:--------:|:-------:|:------:|:---------:|
 |  2DN2  |   B   |    1     |   VAL   |  ALA   |    HBB    |
 |  2DN2  |   B   |    6     |   GLU   |  ALA   |    HBB    |
 
-Mutation impact prediction can be done via `predatoR()` function:
-
-`predatoR()` function works on each PDB ID respectively. First,
-downloads the PDB file, creates distance matrix between every atom and
-turns PDB structure into a network model. Calculates **Degree Centrality
-Z-Score, Eigen Centrality Z-Score, Shortest Path Z-score, Betweenness
-Z-Score, Clique Z-Score** and **PageRank Z-Score** of input positions.
-If **‘Gene_Name’** is not provided in the input, `predatoR()` gets the
-related gene names from **‘Ensembl’** and if there are multiple genes
-annotated for the same PDB ID, gets the gene that has maximum
-**Synonymous Z-Score, Non-Synonymous Z-Score**, and **PLoF Score**, and
-**Genic Intolerance Score**, gets **BLOSUM62 score** of the mutation,
-finds the **KEGG Pathway Number** which contains the input gene.
-Finally, make prediction based on a pre-computed **Adaboost** model and
-classifies the mutation as **Disease Causing** or **Silent**.
-
 ``` r
 library(predatoR)
-
-input_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
-                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
 
 pred_res <- predatoR(info_df =  input_df, n_threads = 8, gene_name_info = TRUE)
 ```
@@ -101,3 +90,24 @@ Causing** or **Silent**.
 |:------:|:-----:|:--------:|:-------:|:------:|:---------:|:----------:|:-----------:|
 |  2DN2  |   B   |    1     |   VAL   |  ALA   |    HBB    |   Silent   |  0.6123515  |
 |  2DN2  |   B   |    6     |   GLU   |  ALA   |    HBB    |   Silent   |  0.5398617  |
+
+## Utility Functions
+
+The wrapper function `predatoR()` uses the utility functions below;
+
+-   `read_PDB()`
+-   `PDB2connections()`
+-   `degree_score()`
+-   `eigen_centrality_score()`
+-   `shorteset_path_score()`
+-   `betweenness_score()`
+-   `clique_score()`
+-   `pagerank_score()`
+-   `gnomad_scores()`
+-   `BLOSUM62_score()`
+-   `KEGG_pathway_number()`
+-   `genic_intolerance()`
+-   `impact_prediction()`
+
+Utility functions can be used alone, for more detail please see
+vignette.
