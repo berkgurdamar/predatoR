@@ -21,7 +21,7 @@ suppressPackageStartupMessages(library(predatoR))
 
 In this section, we show you how to use `predatoR` package for impact prediction.
 
-`predatoR` package makes prediction about amino acid mutations based on a pre-computed __Adaboost__ model (Accuracy: 0.9230, Sensitivity: 0.9240, Specificity: 0.9207, AUC: 0.9718) and classifies the mutation as __Disease Causing__ or __Silent__. Model created by using [Varibench](http://structure.bmc.lu.se/VariBench/) datasets. [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) datasets also used for additional model validation (Accuracy: 0.7693, Sensitivity: 0.7058, Specificity: 0.8391). 
+`predatoR` package makes prediction about amino acid mutations based on a pre-computed __Adaboost__ model (Accuracy: 0.9165, Sensitivity: 0.9537, Specificity: 0.8363, AUC: 0.9718) and classifies the mutation as __Disease Causing__ or __Silent__. Model created by using [Varibench](http://structure.bmc.lu.se/VariBench/) datasets. [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) datasets also used for additional model validation (Accuracy: 0.7869, Sensitivity: 0.7876, Specificity: 0.7862). 
 
 `predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. 
  
@@ -453,7 +453,7 @@ BLOSUM62_scores <- BLOSUM62_score(info_df = test_data)
 
 ### `KEGG_pathway_number`
 
-`KEGG_pathway_number()` function finds number of KEGG Pathways which contains the input genes.
+`KEGG_pathway_number()` function finds the number of KEGG Pathways which contains the input genes.
 
 #### Arguments
 
