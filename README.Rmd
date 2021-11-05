@@ -64,9 +64,9 @@ install_github("berkgurdamar/predatoR")
 
 # Usage
 
-`predatoR` uses data.frame structures as an input. data.frame should consist of __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__, __'Mut_AA'__ and __'Gene_Name'__(optional):
-
 Mutation impact prediction can be done via `predatoR()` function:
+
+`predatoR()` uses data.frame structures as an input. data.frame should consist of __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__, __'Mut_AA'__ and __'Gene_Name'__(optional):
 
 ```{r example_input1, eval=FALSE}
 

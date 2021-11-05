@@ -58,11 +58,11 @@ install_github("berkgurdamar/predatoR")
 
 # Usage
 
-`predatoR` uses data.frame structures as an input. data.frame should
+Mutation impact prediction can be done via `predatoR()` function:
+
+`predatoR()` uses data.frame structures as an input. data.frame should
 consist of **‘PDB_ID’**, **‘Chain’**, **‘Position’**, **‘Orig_AA’**,
 **‘Mut_AA’** and **‘Gene_Name’**(optional):
-
-Mutation impact prediction can be done via `predatoR()` function:
 
 ``` r
 input_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
