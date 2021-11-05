@@ -26,12 +26,12 @@ properties.
 -   Download/Read PDB file
 -   Calculate distances between every atom
 -   Create network from PDB
--   Calculate Degree Centrality Z-Score of each Carbon-α atom
--   Calculate Eigen Centrality Z-Score of each Carbon-α atom
--   Calculate Shortest Path Z-Score of each Carbon-α atom
--   Calculate Betweenness Z-Score of each Carbon-α atom
--   Calculate Clique Z-Score of each Carbon-α atom
--   Calculate PageRank Z-Score of each Carbon-α atom
+-   Calculate Degree Centrality Z-Score of each atom
+-   Calculate Eigen Centrality Z-Score of each atom
+-   Calculate Shortest Path Z-Score of each atom
+-   Calculate Betweenness Z-Score of each atom
+-   Calculate Clique Z-Score of each atom
+-   Calculate PageRank Z-Score of each atom
 -   Gets gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF
     Score
 -   Gets Genic Intolerance Score
