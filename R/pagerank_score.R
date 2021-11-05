@@ -1,7 +1,7 @@
 #' PageRank Score
 #'
 #' \code{pagerank_score} function assigns an importance score to every node via
-#' \code{page_rank} function of igraph package..
+#' \code{page_rank} function of igraph package. Calculates and returns the Z-Scores of the input positions.
 #'
 #' @param edge_list list contains separate edge data.frames for each chain
 #' @param filtered_info_df input data.frame which contain only one PDB entries

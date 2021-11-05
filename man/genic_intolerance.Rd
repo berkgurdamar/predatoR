@@ -10,8 +10,8 @@ genic_intolerance(filtered_info_df)
 \item{filtered_info_df}{input data.frame which contain only one PDB entries}
 }
 \value{
-Genic Intolerance scores of input genes
+Genic Intolerance scores added input data.frame
 }
 \description{
-Genic Intolerance Score
+\code{genic_intolerance} function returns Genic Intolerance scores of input genes
 }

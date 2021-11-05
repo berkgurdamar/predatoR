@@ -15,5 +15,5 @@ degree_score(edge_list, filtered_info_df)
 Degree Z-Scores of input position
 }
 \description{
-Degree Score is the total number of connections of the node.
+Degree Score is the total number of connections of the nodes. Calculates and returns the Z-Scores of the input positions.
 }

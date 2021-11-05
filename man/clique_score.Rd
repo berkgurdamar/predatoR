@@ -20,4 +20,5 @@ Clique Z-Scores of input position
 }
 \description{
 The Click is how many of the nodes that a node is connected to are connected to each other.
+Calculates and returns the Z-Scores of the input positions.
 }
