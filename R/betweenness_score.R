@@ -30,6 +30,9 @@ betweenness_score <- function(edge_list, filtered_info_df){
     df.g <- igraph::graph.data.frame(d = edge_list_filtered, directed = FALSE)
 
     all_betwenness <- igraph::betweenness(df.g, directed = F)
+    all_betwenness[which(all_betwenness == "Inf")] <- 0
+    all_betwenness[which(all_betwenness == "NaN")] <- 0
+
     mean_betwenness <- mean(all_betwenness)
     sd_betwenness <- stats::sd(all_betwenness)
 

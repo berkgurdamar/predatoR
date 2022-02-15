@@ -30,7 +30,9 @@ read_PDB <- function(PDB_ID, PDB_path = NULL){
 
     warning=function(x){
 
-      message(paste0("\n", "Couldn't download the PDB file ", PDB_ID, ", it will be removed from the query", "\n"))
+      message(crayon::white(paste0("\n", "Couldn't download the PDB file ",
+                                   PDB_ID,
+                                   ", it will be removed from the query", "\n")))
       return(NA)
 
     }
@@ -52,7 +54,9 @@ read_PDB <- function(PDB_ID, PDB_path = NULL){
       return(as.data.frame(atom_matrix))
 
     } else {
-      message(paste0("\n", "Couldn't find the PDB file ", PDB_ID, " in the given path, it will be removed from the query", "\n"))
+      message(crayon::white(paste0("\n", "Couldn't find the PDB file ",
+                                   PDB_ID,
+                                   " in the given path, it will be removed from the query", "\n")))
       return(NA)
 
     }

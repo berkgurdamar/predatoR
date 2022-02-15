@@ -12,13 +12,18 @@
 #' @param PDB_path PDB file path (default = NULL)
 #' @param n_threads number of threads (default = NULL)
 #' @param gene_name_info whether there is gene name information in the input or not (default = TRUE)
+#' @param pssm_path folder path for saving PSSM matrices for fastening the further analysis
 #'
 #' @return data.frame which contains prediction results
 #'
 #' @export
 #'
 
-predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE){
+predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE, pssm_path = NULL){
+
+  if(Sys.which("makeblastdb") == "" | Sys.which("psiblast") == "") {
+    stop("Cannot find makeblastdb or psiblast. Please install NCBI Blast+ first")
+  }
 
   if(is.null(n_threads) == TRUE){
     n.cores <- parallel::detectCores() - 1
@@ -130,6 +135,13 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
 
     filtered_info_df <- genic_intolerance(filtered_info_df)
 
+    filtered_info_df <- GO_terms(filtered_info_df)
+
+    filtered_info_df <- DisGeNET(filtered_info_df)
+
+    filtered_info_df <- gene_essentiality(filtered_info_df)
+
+    filtered_info_df <- PSSM_Scores(filtered_info_df, pssm_path = pssm_path)
 
     final_df <- rbind(final_df, filtered_info_df)
   }
