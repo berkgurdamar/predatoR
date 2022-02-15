@@ -6,3 +6,5 @@
 ^.*\.Rprofile$
 ^extdata$
 ^\.github$
+^doc$
+^Meta$

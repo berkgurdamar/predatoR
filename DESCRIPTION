@@ -31,7 +31,10 @@ Imports:
     doParallel,
     igraph,
     parallel,
-    biomaRt
+    biomaRt,
+    stringr,
+    seqinr,
+    protr
 Suggests: 
     rmarkdown,
     knitr,
