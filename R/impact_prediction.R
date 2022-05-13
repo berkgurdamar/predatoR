@@ -14,7 +14,6 @@
 
 impact_prediction <- function(final_df){
 
-  # message(crayon::white(paste0("\n", "Prediction threshold: > ", "0.5158203 --> Disease Causing", "\n")))
   final_df$Orig_AA <- as.factor(final_df$Orig_AA)
   final_df$Mut_AA <- as.factor(final_df$Mut_AA)
   final_df$degree_z_score <- as.numeric(final_df$degree_z_score)
@@ -32,6 +31,13 @@ impact_prediction <- function(final_df){
   final_df$go_terms <- as.numeric(final_df$go_terms)
   final_df$disgenet <- as.numeric(final_df$disgenet)
   final_df$gene_essentiality <- as.numeric(final_df$gene_essentiality)
+  final_df$gtex <- as.numeric(final_df$gtex)
+  final_df$ref_asa <- as.numeric(final_df$ref_asa)
+  final_df$mut_asa <- as.numeric(final_df$mut_asa)
+  final_df$asa_diff <- as.numeric(final_df$asa_diff)
+  final_df$ref_hyd <- as.numeric(final_df$ref_hyd)
+  final_df$mut_hyd <- as.numeric(final_df$mut_hyd)
+  final_df$hyd_diff <- as.numeric(final_df$hyd_diff)
 
   prob <- stats::predict(caret_adaboost, final_df, type = "prob")
 
@@ -42,11 +48,11 @@ impact_prediction <- function(final_df){
   for(i in 1:length(res)){
     if(res[i] == 0){
       probs <- c(probs, prob[i,1])
-      res_types <- c(res_types, "Silent")
+      res_types <- c(res_types, "Neutral")
     }
     else{
       probs <- c(probs, prob[i,2])
-      res_types <- c(res_types, "Disease Causing")
+      res_types <- c(res_types, "Pathogenic")
     }
   }
 

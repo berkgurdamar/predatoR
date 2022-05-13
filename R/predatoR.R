@@ -12,18 +12,13 @@
 #' @param PDB_path PDB file path (default = NULL)
 #' @param n_threads number of threads (default = NULL)
 #' @param gene_name_info whether there is gene name information in the input or not (default = TRUE)
-#' @param pssm_path folder path for saving PSSM matrices for fastening the further analysis
 #'
 #' @return data.frame which contains prediction results
 #'
 #' @export
 #'
 
-predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE, pssm_path = NULL){
-
-  if(Sys.which("makeblastdb") == "" | Sys.which("psiblast") == "") {
-    stop("Cannot find makeblastdb or psiblast. Please install NCBI Blast+ first")
-  }
+predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE){
 
   if(is.null(n_threads) == TRUE){
     n.cores <- parallel::detectCores() - 1
@@ -76,9 +71,8 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
     if(is.data.frame(atom_matrix) == FALSE){
       next
     }
-    # message(crayon::white(paste0("PDB ID:", "\t\t\t\t", i, "\n",
-    #                              "Position(s):", "\t\t\t", paste0(filtered_info_df$Position, collapse = ", "))))
-    #
+
+
     message(crayon::white(paste0("PDB ID:", "\t\t\t\t", i, "\n",
                                  "Position(s):", "\t\t\t",
                                  paste0(sapply(split(filtered_info_df$Position, ceiling(seq_along(filtered_info_df$Position)/20)),
@@ -141,7 +135,9 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
 
     filtered_info_df <- gene_essentiality(filtered_info_df)
 
-    filtered_info_df <- PSSM_Scores(filtered_info_df, pssm_path = pssm_path)
+    filtered_info_df <- GTEx(filtered_info_df)
+
+    filtered_info_df <- amino_acid_features(filtered_info_df)
 
     final_df <- rbind(final_df, filtered_info_df)
   }
@@ -161,7 +157,6 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
   }
 
   parallel::stopCluster(my.cluster)
-
 
   return(prediction_result)
 

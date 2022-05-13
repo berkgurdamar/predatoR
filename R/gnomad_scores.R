@@ -21,16 +21,7 @@ gnomad_scores <- function(filtered_info_df){
     colnames(filtered_info_df)[1:6] <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
   }
 
-  if(length(unique(filtered_info_df$PDB_ID)) > 1){
-    stop(paste0("filtered_info_df should contain only one PDB entries"))
-  }
-
-  if(length(unique(filtered_info_df$Gene_Name)) == 2 & "" %in% unique(filtered_info_df$Gene_Name)){
-    gene_names <- unique(filtered_info_df$Gene_Name[filtered_info_df$Gene_Name != ""])
-    filtered_info_df$Gene_Name <- gene_names
-
-  }
-
+  filtered_info_df$pdb_chain_info <- paste0(filtered_info_df$PDB_ID, ".", filtered_info_df$Chain)
 
   no_name <- c()
   no_gnomad <- c()
@@ -38,11 +29,9 @@ gnomad_scores <- function(filtered_info_df){
 
     if(filtered_info_df$Gene_Name[i] == ""){
 
-      filtered_info_df$pdb_chain_info <- paste0(filtered_info_df$PDB_ID, ".", filtered_info_df$Chain)
+      chain_info <- filtered_info_df$pdb_chain_info[i]
 
-      chain_info <- unique(filtered_info_df$pdb_chain_info)
-
-      res <- pdb2gene[which(pdb2gene$PDB.Chain %in% chain_info),]
+      res <- pdb2gene[which(pdb2gene$PDB.Chain == chain_info),]
 
       if(length(unique(res$Gene)) == 0){
 
@@ -117,10 +106,6 @@ gnomad_scores <- function(filtered_info_df){
         filtered_info_df$pLI[i] <- filtered_gnomad_data$pLI
         }
       }
-
-      filtered_info_df <- filtered_info_df[-(which(colnames(filtered_info_df) == "pdb_chain_info"))]
-
-
     }
 
     # gene name included
@@ -169,6 +154,8 @@ gnomad_scores <- function(filtered_info_df){
   if(length(unique(no_gnomad)) > 0){
     message(crayon::white(paste0("\n", "gnomAD scores of the gene(s) ", paste(unique(no_gnomad), collapse = ", "), " couldn't find, will be removed from the query", "\n")))
   }
+
+  filtered_info_df <- filtered_info_df[-(which(colnames(filtered_info_df) == "pdb_chain_info"))]
 
   message(crayon::white(paste0("GNOMAD Scores:", "\t\t\t", "DONE")))
 
