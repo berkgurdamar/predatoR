@@ -21,7 +21,7 @@ suppressPackageStartupMessages(library(predatoR))
 
 In this section, we show you how to use `predatoR` package for mutation impact prediction.
 
-`predatoR` package makes prediction about amino acid mutations based on a pre-computed __Adaboost__ model (Accuracy: 0.9165, Sensitivity: 0.9537, Specificity: 0.8363, AUC: 0.9718) and classifies the mutation as __Disease Causing__ or __Silent__. Model created by using [Varibench](http://structure.bmc.lu.se/VariBench/) datasets. [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) datasets also used for additional model validation (Accuracy: 0.7869, Sensitivity: 0.7876, Specificity: 0.7862). 
+`predatoR` package makes prediction about impact of a mutation based on an __Adaboost__ model and classifies the mutations as __Pathogenic__ or __Neutral__. Model was created by using [Varibench](http://structure.bmc.lu.se/VariBench/) and [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/) datasets (AUC: 0.948). [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) dataset also used for model validation (AUC: 0.932). 
 
 `predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. 
  
@@ -31,26 +31,28 @@ In this section, we show you how to use `predatoR` package for mutation impact p
 
 `predatoR()` function works on each PDB ID respectively. For each PDB ID;  
 
- - Downloads/Reads PDB file
- - Calculates distances between each atom
- - Creates network from PDB
- - Calculates Degree Centrality Z-Score of each atom
- - Calculates Eigen Centrality Z-Score of each atom
- - Calculates Shortest Path Z-Score of each atom
- - Calculates Betweenness Z-Score of each atom
- - Calculates Clique Z-Score of each atom
- - Calculates PageRank Z-Score of each atom
+ - Download/Read PDB file
+ - Calculate distances between every atom
+ - Create network from PDB
+ - Calculate Degree Centrality Z-Score of each atom
+ - Calculate Eigen Centrality Z-Score of each atom
+ - Calculate Shortest Path Z-Score of each atom
+ - Calculate Betweenness Z-Score of each atom
+ - Calculate Clique Z-Score of each atom
+ - Calculate PageRank Z-Score of each atom
  - Gets gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
- - Gets Genic Intolerance Score
  - Gets BLOSUM62 score of the mutation
- - Finds the number of KEGG Pathways which related with the input gene
- - Calculates the number of GO Terms related with the input gene
- - Calculates the number of diseases associated with the input gene
- - Gets Gene Essentiality Score
- - Makes prediction
+ - Finds the number of KEGG Pathways which contains the input gene
+ - Gets [Genic Intolerance](http://genic-intolerance.org/) Score
+ - Finds the number of GO terms associated with the input gene
+ - Finds the number of diseases associated with the input gene from [DisGeNET](https://www.disgenet.org/)
+ - Gets the Gene Essentiality Score from Online Gene Essentiality ([OGEE](https://v3.ogee.info/#/home)) Database
+ - Calculates the median gene expression value of the input gene from [GTEx](https://gtexportal.org/home/)
+ - Calculates 6 different features from Accessible Surface Area and Hydrophobicity Scale of reference and mutant amino acids
+ - Make prediction
  
 
-If `predatoR()` couldn't find any information of any gene such as 'Genic Intolerance Score', these inputs will be removed from the query before the prediction step.
+If `predatoR()` couldn't find any information of any gene such as 'Genic Intolerance Score', those inputs will be removed from the query before the prediction step.
  
 ### Arguments
  
@@ -99,7 +101,7 @@ prediction_result <- predatoR(test_data, gene_name_info = FALSE)
 ```
 
  
-`predatoR()` function can work with partially added gene name informations. If some mutations has no gene name
+`predatoR()` function can also work with no gene name inputs. If a mutation has no gene name
 information, it gets the related gene names from [Ensembl](https://www.ensembl.org/) and if there are multiple
  genes annotated for the PDB ID, gets the gene which has maximum GnomAD scores (`gene_name_info` should set as `TRUE`).
  
@@ -147,8 +149,8 @@ prediction_result <- predatoR(test_data, PDB_path = "path/to/PDB/files/")
 `predatoR()` function returns a data.frame which contains additional two columns; __'Prediction'__ and __'Probability'__. __'Prediction'__ represents the result of the impact prediction and __'Probability'__ represents the probability that the mutation classified as __Disease Causing__ or __Silent__. 
 
 ```{r example_output, echo=FALSE}
-example_result <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB", "Silent", "0.7353718"),
-                                      c("3SQJ", "A", 60, "GLU", "LYS","ALB", "Silent", "0.7919581")))
+example_result <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB", "Pathogenic", "0.5025182"),
+                                      c("3SQJ", "A", 60, "GLU", "LYS","ALB", "Nautral", "0.5644399")))
 
 colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name", "Prediction", "Probability")
 
@@ -175,6 +177,8 @@ The wrapper function `predatoR()` uses the utility functions below;
  - `GO_terms()`
  - `DisGeNET()`
  - `gene_essentiality()`
+ - `GTEx()`
+ - `amino_acid_features()`
  - `impact_prediction()`
  
 
@@ -584,9 +588,66 @@ gene_essentiality_score <- gene_essentiality(filtered_info_df = test_data)
 ```
 
 
+### `GTEx`
+
+`GTEx()` function returns the median gene expression value of the input gene from [GTEx](https://gtexportal.org/home/).
+
+#### Arguments
+
+`GTEx()` has 1 arguments;
+
+ - __filtered_info_df:__ input data.frame contains only one PDB entries
+
+#### Usage 
+
+```{r GTEx_example, eval=FALSE}
+
+test_data <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB"),
+                                 c("3SQJ", "A", 60, "GLU", "LYS","ALB")))
+
+colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
+
+gene_essentiality_score <- GTEx(filtered_info_df = test_data) 
+
+
+```
+
+
+### `amino_acid_features`
+
+`amino_acid_features()` function returns 6 different features:
+
+ - Accessible Surface Area of reference amino acid
+ - Accessible Surface Area of mutant amino acid
+ - Accessible Surface Area difference of mutant and reference amino acid
+ - Hydrophobicity Scale of reference amino acid
+ - Hydrophobicity Scale of mutant amino acid
+ - Hydrophobicity Scale difference of mutant and reference amino acid
+
+#### Arguments
+
+`amino_acid_features()` has 1 arguments;
+
+ - __info_df:__ input data.frame contains all the mutations
+
+#### Usage 
+
+```{r amino_acid_features_example, eval=FALSE}
+
+test_data <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB"),
+                                 c("3SQJ", "A", 60, "GLU", "LYS","ALB")))
+
+colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
+
+gene_essentiality_score <- amino_acid_features(info_df = test_data) 
+
+
+```
+
+
 ### `impact_prediction`
 
-`impact_prediction()` function makes prediction based on a pre-computed __Adaboost__ model and classifies the mutation as __Disease Causing__ or __Silent__.
+`impact_prediction()` function makes impact prediction and classifies the mutation as __Pathogenic__ or __Neutral__.
 
 #### Arguments
 
@@ -596,26 +657,17 @@ gene_essentiality_score <- gene_essentiality(filtered_info_df = test_data)
 
 #### Usage 
 
-As an input data.frame containing __PDB_ID__, __Chain__, __Position__, __Orig_AA__, __Mut_AA__, __Gene_Name__, __eigen_z_score__, __shortest_path_z__, __betwenness_scores_z__, __syn_z__, __mis_z__, __pLI__, __blosum62_scores__, __kegg_pathway_number__ and __genic_intolerance__ scores, `impact_prediction()` classifies the mutation as __Disease Causing__ or __Silent__.
+
+As an input data.frame containing __PDB_ID__, __Chain__, __Position__, __Orig_AA__, __Mut_AA__, __Gene_Name__, __degree_z_score__, __eigen_z_score__, __shortest_path_z__, __betwenness_scores_z__, __clique_z_score__, __pagerank_z_score__, __syn_z__, __mis_z__, __pLI__, __blosum62_scores__, __kegg_pathway_number__, __genic_intolerance__, __go_terms__, __disgenet__, __gene_essentiality__, __gtex__, __ref_asa__, __mut_asa__, __asa_diff__, __ref_hyd__, __mut_hyd__ and __hyd_diff__ scores `impact_prediction()` function classifies the mutation as __Pathogenic__ or __Neutral__.
 
 
-Example input looks like:
+Example input:
 
 ```{r impact_prediction_example_input, echo=FALSE}
 
-final_df <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB", -1.53050220615806, 
-                                  -0.507499112395318, 1.13856030731978, -0.537583566239163, -1.40256053843562, -1.55402381567269, 
-                                  -0.91513, 0.65574, 0.64329, 0, 12, -0.89, 
-                                  4, 81, 1),
-                                c("3SQJ", "A", 60, "GLU", "LYS", "ALB", -1.32210500629763, 
-                                  -0.508688123731673, 1.75397316724014, -0.542439760676518, -1.25314372919749, -1.16009102167216, 
-                                  -0.91513, 0.65574, 0.64329, 1, 12, -0.89, 
-                                  4, 81, 1)))
+final_df <- as.data.frame(rbind(strsplit("1Z2M, A, 21, SER, ASN, ISG15, -1.22398148791155, -1.02542352280947, 1.1136176843448, -0.613542293147469, -1.04728495878065, -1.08634839880617, -0.50008, -0.044129, 0.40527, 1, 4, -0.12, 12, 7, 0, 29.35145, 109.5, 146.3, 36.8, -0.5, -3.5, -3", ", ")[[1]]))
 
-colnames(final_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name", "degree_z_score",
-                        "eigen_z_score", "shortest_path_z", "betweenness_scores_z", "clique_z_score", "pagerank_z_score",
-                        "syn_z", "mis_z", "pLI", "blosum62_scores", "kegg_pathway_number", "genic_intolerance",
-                        "go_terms", "disgenet", "gene_essentiality")
+colnames(final_df) <- strsplit("PDB_ID, Chain, Position, Orig_AA, Mut_AA, Gene_Name, degree_z_score, eigen_z_score, shortest_path_z, betweenness_scores_z, clique_z_score, pagerank_z_score, syn_z, mis_z, pLI, blosum62_scores, kegg_pathway_number, genic_intolerance, go_terms, disgenet, gene_essentiality, gtex, ref_asa, mut_asa, asa_diff, ref_hyd, mut_hyd, hyd_diff", ", ")[[1]]
 
 DT::datatable(final_df,options = list(scrollX = TRUE))
 
@@ -631,8 +683,7 @@ prediction_result <- impact_prediction(final_df)
 
 ```{r impact_prediction_example_output, echo=FALSE}
 
-example_result <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB", "Silent", "0.7353718"),
-                                      c("3SQJ", "A", 60, "GLU", "LYS","ALB", "Silent", "0.7919581")))
+example_result <- as.data.frame(rbind(c("1Z2M", "A", 21, "SER", "ASN", "ISG15", "Neutral", "0.7704317")))
 
 colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name", "Prediction", "Probability")
 
