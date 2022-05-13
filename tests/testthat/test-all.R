@@ -27,10 +27,7 @@ test_that("Check input column number", {
 
 test_that("Check output class and thread input", {
 
-  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
-                                 c("2DN2", "B", 6, "GLU", "ALA", "HBB"),
-                                 c("4ONL", "A", 36, "GLU", "GLY", "UBE2V2"),
-                                 c("4ONL", "A", 78, "PRO", "GLN", "UBE2V2")))
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 
   expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2)))
 })
@@ -65,7 +62,7 @@ test_that("Check input amino acid names", {
 ##
 
 info_df <- as.data.frame(rbind(c("2DN2", "B", 10000, "VAL", "ALA", "HBB"),
-                               c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+                               c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 
 test_that("Check if residue included", {
   expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2),
@@ -74,17 +71,14 @@ test_that("Check if residue included", {
 
 
 info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "GLU", "ALA", "HBB"),
-                               c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+                               c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 
 test_that("Check if residue-amino acid matching", {
-  expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2),
-                 "Residue [1-9]\\d* is not [a-zA-Z]+ in the PDB structure, it will be removed from the query"
-  )
+  expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2))
 })
 
 
-info_df <- as.data.frame(rbind(c("2DN2", "B", 5, "VAL", "ALA", "HBB"),
-                               c("2DN2", "B", 10, "GLU", "ALA", "HBB")))
+info_df <- as.data.frame(rbind(c("2DN2", "B", 5, "VAL", "ALA", "HBB")))
 
 
 test_that("Check input amino acid names", {
@@ -97,11 +91,13 @@ test_that("Check input amino acid names", {
 test_that("Check multiple amino acid for one residue message", {
 
   info_df <- as.data.frame(rbind(c("2DN2_N", "B", 1, "VAL", "ALA", "HBB"),
-                                 c("2DN2_N", "B", 6, "GLU", "ALA", "HBB")))
+                                 c("2DN2_N", "B", 6, "GLU", "ALA", "HBB"),
+                                 c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
   PDB_ID <- "2DN2"
   tmp_dir <- tempdir()
   tmp_path <- file.path(tmp_dir, paste0(PDB_ID, ".pdb"))
   download.file(bio3d::get.pdb(PDB_ID, URL=TRUE), tmp_path)
+  download.file(bio3d::get.pdb("1Z2M", URL=TRUE), file.path(tmp_dir, paste0("1Z2M", ".pdb")))
   pdb_file <- bio3d::read.pdb(tmp_path)
 
   pdb_file$atom$resid[1070] <- "ASP"
@@ -241,13 +237,6 @@ test_that("Check output class", {
                  "GNOMAD Scores:			DONE")
 })
 
-test_that("Check multiple PDB error", {
-  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
-                                 c("2DNN", "B", 6, "GLU", "ALA", "HBB")))
-
-  expect_error(gnomad_scores(info_df),
-               "filtered_info_df should contain only one PDB entries")
-})
 
 
 test_that("Check column number error", {
@@ -305,6 +294,14 @@ test_that("Check no gene info in gnomad", {
                                  c("1ND5", "B", 6, "GLU", "ALA", "")))
 
   expect_true(is.data.frame(gnomad_scores(info_df)))
+})
+
+test_that("Check multiple gene names from PDB no gnomAD scores", {
+
+  info_df <- as.data.frame(rbind(c("1KJ6", "A", 1, "VAL", "ALA", "")))
+
+  expect_message(gnomad_scores(info_df),
+                 "GNOMAD Scores:			DONE")
 })
 
 
@@ -445,14 +442,45 @@ test_that("Check output class", {
 
 # impact_prediction -------------------------------------------------------
 
-final_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB", "-0.3319392", "-0.9048452", "0.1615106", "-0.04987094",
-                                  "-0.8371797", "-0.1839022", "-3.7953", "-0.2113", "1.2274e-09", "0", "5", "-0.01"),
-                                c("2DN2", "B", 6, "GLU", "ALA", "HBB", "-0.6075531", "-1.3857613", "1.8748888", "-0.86584380",
-                                  "-0.3499602", "-0.3829808", "-3.7953", "-0.2113", "1.2274e-09", "-1", "5", "-0.01")))
+filtered_info_df <- as.data.frame(rbind(c("4RFZ", "A", 414, "GLY", "ARG", "BTK")))
 
-colnames(final_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name", "degree_z_score",
-                        "eigen_z_score", "shortest_path_z", "betweenness_scores_z", "clique_z_score", "pagerank_z_score",
-                        "syn_z", "mis_z", "pLI", "blosum62_scores", "kegg_pathway_number", "genic_intolerance")
+colnames(filtered_info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
+
+atom_matrix <- read_PDB("4RFZ")
+
+edge_list <- PDB2connections(atom_matrix, filtered_info_df, n_threads = 2, single_run = T)
+
+filtered_info_df$degree_z_score <- degree_score(edge_list, filtered_info_df)
+
+filtered_info_df$eigen_z_score <- eigen_centrality_score(edge_list, filtered_info_df)
+
+filtered_info_df$shortest_path_z <- shorteset_path_score(edge_list, filtered_info_df)
+
+filtered_info_df$betweenness_scores_z <- betweenness_score(edge_list, filtered_info_df)
+
+filtered_info_df$clique_z_score <- clique_score(edge_list, filtered_info_df, n_threads = 2, single_run = T)
+
+filtered_info_df$pagerank_z_score <- pagerank_score(edge_list, filtered_info_df)
+
+filtered_info_df <- gnomad_scores(filtered_info_df)
+
+filtered_info_df$blosum62_scores <- as.numeric(BLOSUM62_score(filtered_info_df))
+
+filtered_info_df <- KEGG_pathway_number(filtered_info_df)
+
+filtered_info_df <- genic_intolerance(filtered_info_df)
+
+filtered_info_df <- GO_terms(filtered_info_df)
+
+filtered_info_df <- DisGeNET(filtered_info_df)
+
+filtered_info_df <- gene_essentiality(filtered_info_df)
+
+filtered_info_df <- GTEx(filtered_info_df)
+
+filtered_info_df <- amino_acid_features(filtered_info_df)
+
+final_df <- filtered_info_df
 
 
 test_that("Check output class", {
@@ -460,3 +488,158 @@ test_that("Check output class", {
   expect_true(is.data.frame(impact_prediction(final_df)))
 
 })
+
+
+filtered_info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+
+colnames(filtered_info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
+
+atom_matrix <- read_PDB("1Z2M")
+
+edge_list <- PDB2connections(atom_matrix, filtered_info_df, n_threads = 2, single_run = T)
+
+filtered_info_df$degree_z_score <- degree_score(edge_list, filtered_info_df)
+
+filtered_info_df$eigen_z_score <- eigen_centrality_score(edge_list, filtered_info_df)
+
+filtered_info_df$shortest_path_z <- shorteset_path_score(edge_list, filtered_info_df)
+
+filtered_info_df$betweenness_scores_z <- betweenness_score(edge_list, filtered_info_df)
+
+filtered_info_df$clique_z_score <- clique_score(edge_list, filtered_info_df, n_threads = 2, single_run = T)
+
+filtered_info_df$pagerank_z_score <- pagerank_score(edge_list, filtered_info_df)
+
+filtered_info_df <- gnomad_scores(filtered_info_df)
+
+filtered_info_df$blosum62_scores <- as.numeric(BLOSUM62_score(filtered_info_df))
+
+filtered_info_df <- KEGG_pathway_number(filtered_info_df)
+
+filtered_info_df <- genic_intolerance(filtered_info_df)
+
+filtered_info_df <- GO_terms(filtered_info_df)
+
+filtered_info_df <- DisGeNET(filtered_info_df)
+
+filtered_info_df <- gene_essentiality(filtered_info_df)
+
+filtered_info_df <- GTEx(filtered_info_df)
+
+filtered_info_df <- amino_acid_features(filtered_info_df)
+
+final_df <- filtered_info_df
+
+
+test_that("Check output class", {
+
+  expect_true(is.data.frame(impact_prediction(final_df)))
+
+})
+
+
+# GO_terms ----------------------------------------------------------------
+
+test_that("Check column number error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
+                                 c("2DN2", "B", 6, "GLU", "ALA")))
+
+  expect_error(GO_terms(info_df),
+               "Input data.frame should contain at least 6 columns; PDB_ID, Chain, Position, Orig_AA, Mut_AA and Gene_Name ... respectively.")
+})
+
+
+
+test_that("Check output class", {
+
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+
+  expect_true(is.data.frame(GO_terms(info_df)))
+  expect_message(GO_terms(info_df),
+                 "GO Term Number:			DONE")
+})
+
+# DisGeNET ----------------------------------------------------------------
+
+test_that("Check column number error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
+                                 c("2DN2", "B", 6, "GLU", "ALA")))
+
+  expect_error(DisGeNET(info_df),
+               "Input data.frame should contain at least 6 columns; PDB_ID, Chain, Position, Orig_AA, Mut_AA and Gene_Name ... respectively.")
+})
+
+
+
+test_that("Check output class", {
+
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+
+  expect_true(is.data.frame(DisGeNET(info_df)))
+  expect_message(DisGeNET(info_df),
+                 "DisGeNET Disease Number:	DONE")
+})
+
+# gene_essentiality -------------------------------------------------------
+
+test_that("Check column number error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
+                                 c("2DN2", "B", 6, "GLU", "ALA")))
+
+  expect_error(gene_essentiality(info_df),
+               "Input data.frame should contain at least 6 columns; PDB_ID, Chain, Position, Orig_AA, Mut_AA and Gene_Name ... respectively.")
+})
+
+
+
+test_that("Check output class", {
+
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+
+  expect_true(is.data.frame(gene_essentiality(info_df)))
+  expect_message(gene_essentiality(info_df),
+                 "Gene Essentiality Score:	DONE")
+
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"AAACA")))
+  expect_message(gene_essentiality(info_df),
+                 "Gene Essentiality Score:	DONE")
+})
+
+# GTEx --------------------------------------------------------------------
+
+test_that("Check column number error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA"),
+                                 c("2DN2", "B", 6, "GLU", "ALA")))
+
+  expect_error(GTEx(info_df),
+               "Input data.frame should contain at least 6 columns; PDB_ID, Chain, Position, Orig_AA, Mut_AA and Gene_Name ... respectively.")
+})
+
+
+
+test_that("Check output class", {
+
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+
+  expect_true(is.data.frame(GTEx(info_df)))
+  expect_message(GTEx(info_df),
+                 "GTEx Score:			DONE")
+
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"AAACA")))
+  expect_message(GTEx(info_df),
+                 "GTEx Score:			DONE")
+})
+
+
+# amino_acid_features -----------------------------------------------------
+
+test_that("Check output class", {
+
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+
+  expect_true(is.data.frame(amino_acid_features(info_df)))
+  expect_message(amino_acid_features(info_df),
+                 "Amino Acid Features:		DONE")
+
+})
+
