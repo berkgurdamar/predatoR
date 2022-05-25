@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # <img src="https://github.com/berkgurdamar/predatoR/blob/main/inst/extdata/predator_logo.png?raw=true" align="left" height=150/> predatoR: Mutation Impact Prediction Based on Network Properties
@@ -31,10 +32,11 @@ properties.
 -   Calculate Betweenness Z-Score of each atom
 -   Calculate Clique Z-Score of each atom
 -   Calculate PageRank Z-Score of each atom
--   Gets gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF
-    Score
+-   Gets [gnomAD Synonymous](https://gnomad.broadinstitute.org/)
+    Z-Score, Non-Synonymous Z-Score, and PLoF Score
 -   Gets BLOSUM62 score of the mutation
--   Finds the number of KEGG Pathways which contains the input gene
+-   Finds the number of [KEGG Pathways](https://www.genome.jp/kegg/)
+    which contains the input gene
 -   Gets [Genic Intolerance](http://genic-intolerance.org/) Score
 -   Finds the number of GO terms associated with the input gene
 -   Finds the number of diseases associated with the input gene from
@@ -75,23 +77,17 @@ names.
 
 ``` r
 library(predatoR)
-
 # Gene name included
 input_df <- as.data.frame(rbind(c("4RFZ", "A", 414, "GLY", "ARG", "BTK"),
                                 c("1Z2M", "A", 21,  "SER", "ASN", "ISG15")))
-
 pred_res <- predatoR(info_df =  input_df, n_threads = 8, gene_name_info = TRUE)
-
 # Gene name not included
 input_df <- as.data.frame(rbind(c("4RFZ", "A", 414, "GLY", "ARG"),
                                 c("1Z2M", "A", 21,  "SER", "ASN")))
-
 pred_res <- predatoR(info_df =  input_df, n_threads = 8, gene_name_info = FALSE)
-
 # Partially included gene names
 input_df <- as.data.frame(rbind(c("4RFZ", "A", 414, "GLY", "ARG", "BTK"),
                                 c("1Z2M", "A", 21,  "SER", "ASN", "")))
-
 pred_res <- predatoR(info_df =  input_df, n_threads = 8, gene_name_info = TRUE)
 ```
 
