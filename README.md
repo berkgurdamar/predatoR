@@ -32,7 +32,7 @@ properties.
 -   Calculate Betweenness Z-Score of each atom
 -   Calculate Clique Z-Score of each atom
 -   Calculate PageRank Z-Score of each atom
--   Gets [gnomAD Synonymous](https://gnomad.broadinstitute.org/)
+-   Gets [gnomAD](https://gnomad.broadinstitute.org/) Synonymous
     Z-Score, Non-Synonymous Z-Score, and PLoF Score
 -   Gets BLOSUM62 score of the mutation
 -   Finds the number of [KEGG Pathways](https://www.genome.jp/kegg/)
