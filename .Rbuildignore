@@ -6,5 +6,8 @@
 ^.*\.Rprofile$
 ^extdata$
 ^\.github$
+<<<<<<< HEAD
 ^doc$
 ^Meta$
+=======
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369

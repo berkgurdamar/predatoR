@@ -14,14 +14,22 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.or
 
 # Overview
 
+<<<<<<< HEAD
 `predatoR` is a tool for mutation impact prediction based on network
+=======
+`predatoR` is a tool for mutation impact prediction using network
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 properties.
 
 <img src="https://github.com/berkgurdamar/predatoR/blob/main/vignettes/predatoR_workflow.png?raw=true" style="max-width:100%;" />
 
 `predatoR()` function is the wrapper function of `predatoR` package.
 
+<<<<<<< HEAD
 `predatoR()` works on each PDB respectively. For each PDB;
+=======
+`predatoR()` works on each PDB ID respectively. For each PDB ID;
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
 -   Download/Read PDB file
 -   Calculate distances between every atom
@@ -34,6 +42,7 @@ properties.
 -   Calculate PageRank Z-Score of each atom
 -   Gets gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF
     Score
+<<<<<<< HEAD
 -   Gets BLOSUM62 score of the mutation
 -   Finds the number of KEGG Pathways which contains the input gene
 -   Gets [Genic Intolerance](http://genic-intolerance.org/) Score
@@ -46,11 +55,27 @@ properties.
     [GTEx](https://gtexportal.org/home/)
 -   Calculates 6 different features from Accessible Surface Area and
     Hydrophobicity Scale of reference and mutant amino acids
+=======
+-   Gets Genic Intolerance Score
+-   Gets BLOSUM62 score of the mutation
+-   Finds the number of KEGG Pathways which contains the input gene
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 -   Make prediction
 
 # Installation
 
+<<<<<<< HEAD
 You can install predatoR via
+=======
+You can install the released version of predatoR from
+[CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("predatoR")
+```
+
+or install via
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 [devtools](https://www.r-project.org/nosvn/pandoc/devtools.html):
 
 ``` r
@@ -64,6 +89,7 @@ Mutation impact prediction can be done via `predatoR()` function:
 
 `predatoR()` uses data.frame structures as an input. data.frame should
 consist of **‘PDB_ID’**, **‘Chain’**, **‘Position’**, **‘Orig_AA’**,
+<<<<<<< HEAD
 **‘Mut_AA’** and **‘Gene_Name’** (optional):
 
 | PDB_ID | Chain | Position | Orig_AA | Mut_AA | Gene_Name |
@@ -73,10 +99,24 @@ consist of **‘PDB_ID’**, **‘Chain’**, **‘Position’**, **‘Orig_AA�
 
 `predatoR()` can work with input which has partially included gene
 names.
+=======
+**‘Mut_AA’** and **‘Gene_Name’**(optional):
+
+``` r
+input_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+```
+
+| PDB_ID | Chain | Position | Orig_AA | Mut_AA | Gene_Name |
+|:------:|:-----:|:--------:|:-------:|:------:|:---------:|
+|  2DN2  |   B   |    1     |   VAL   |  ALA   |    HBB    |
+|  2DN2  |   B   |    6     |   GLU   |  ALA   |    HBB    |
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
 ``` r
 library(predatoR)
 
+<<<<<<< HEAD
 # Gene name included
 input_df <- as.data.frame(rbind(c("4RFZ", "A", 414, "GLY", "ARG", "BTK"),
                                 c("1Z2M", "A", 21,  "SER", "ASN", "ISG15")))
@@ -93,12 +133,15 @@ pred_res <- predatoR(info_df =  input_df, n_threads = 8, gene_name_info = FALSE)
 input_df <- as.data.frame(rbind(c("4RFZ", "A", 414, "GLY", "ARG", "BTK"),
                                 c("1Z2M", "A", 21,  "SER", "ASN", "")))
 
+=======
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 pred_res <- predatoR(info_df =  input_df, n_threads = 8, gene_name_info = TRUE)
 ```
 
 `predatoR()` function returns a data.frame which contains additional two
 columns; **‘Prediction’** and **‘Probability’**. **‘Prediction’**
 represents the result of the impact prediction and **‘Probability’**
+<<<<<<< HEAD
 represents the probability that the mutation classified as
 **Pathogenic** or **Neutral**.
 
@@ -106,6 +149,15 @@ represents the probability that the mutation classified as
 |:------:|:-----:|:--------:|:-------:|:------:|:---------:|:----------:|:-----------:|
 |  4RFZ  |   A   |   414    |   GLY   |  ARG   |    BTK    | Pathogenic |  0.7666323  |
 |  1Z2M  |   A   |    21    |   SER   |  ASN   |   ISG15   |  Nautral   |  0.7704317  |
+=======
+represents the probability that the mutation classified as **Disease
+Causing** or **Silent**.
+
+| PDB_ID | Chain | Position | Orig_AA | Mut_AA | Gene_Name | Prediction | Probability |
+|:------:|:-----:|:--------:|:-------:|:------:|:---------:|:----------:|:-----------:|
+|  2DN2  |   B   |    1     |   VAL   |  ALA   |    HBB    |   Silent   |  0.6123515  |
+|  2DN2  |   B   |    6     |   GLU   |  ALA   |    HBB    |   Silent   |  0.5398617  |
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
 ## Utility Functions
 
@@ -123,11 +175,14 @@ The wrapper function `predatoR()` uses the utility functions below;
 -   `BLOSUM62_score()`
 -   `KEGG_pathway_number()`
 -   `genic_intolerance()`
+<<<<<<< HEAD
 -   `GO_terms()`
 -   `DisGeNET()`
 -   `gene_essentiality()`
 -   `GTEx()`
 -   `amino_acid_features()`
+=======
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 -   `impact_prediction()`
 
 Utility functions can be used alone, for more detail please see

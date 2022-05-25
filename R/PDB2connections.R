@@ -49,6 +49,10 @@ PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, sin
     }
   }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
   `%dopar%` <- foreach::`%dopar%`
 
   j <- ""

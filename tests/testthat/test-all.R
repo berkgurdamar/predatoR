@@ -27,7 +27,14 @@ test_that("Check input column number", {
 
 test_that("Check output class and thread input", {
 
+<<<<<<< HEAD
   info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+=======
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                 c("2DN2", "B", 6, "GLU", "ALA", "HBB"),
+                                 c("4ONL", "A", 36, "GLU", "GLY", "UBE2V2"),
+                                 c("4ONL", "A", 78, "PRO", "GLN", "UBE2V2")))
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
   expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2)))
 })
@@ -62,7 +69,11 @@ test_that("Check input amino acid names", {
 ##
 
 info_df <- as.data.frame(rbind(c("2DN2", "B", 10000, "VAL", "ALA", "HBB"),
+<<<<<<< HEAD
                                c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+=======
+                               c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
 test_that("Check if residue included", {
   expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2),
@@ -71,6 +82,7 @@ test_that("Check if residue included", {
 
 
 info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "GLU", "ALA", "HBB"),
+<<<<<<< HEAD
                                c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 
 test_that("Check if residue-amino acid matching", {
@@ -79,6 +91,19 @@ test_that("Check if residue-amino acid matching", {
 
 
 info_df <- as.data.frame(rbind(c("2DN2", "B", 5, "VAL", "ALA", "HBB")))
+=======
+                               c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+
+test_that("Check if residue-amino acid matching", {
+  expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2),
+                 "Residue [1-9]\\d* is not [a-zA-Z]+ in the PDB structure, it will be removed from the query"
+  )
+})
+
+
+info_df <- as.data.frame(rbind(c("2DN2", "B", 5, "VAL", "ALA", "HBB"),
+                               c("2DN2", "B", 10, "GLU", "ALA", "HBB")))
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
 
 test_that("Check input amino acid names", {
@@ -91,13 +116,20 @@ test_that("Check input amino acid names", {
 test_that("Check multiple amino acid for one residue message", {
 
   info_df <- as.data.frame(rbind(c("2DN2_N", "B", 1, "VAL", "ALA", "HBB"),
+<<<<<<< HEAD
                                  c("2DN2_N", "B", 6, "GLU", "ALA", "HBB"),
                                  c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+=======
+                                 c("2DN2_N", "B", 6, "GLU", "ALA", "HBB")))
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
   PDB_ID <- "2DN2"
   tmp_dir <- tempdir()
   tmp_path <- file.path(tmp_dir, paste0(PDB_ID, ".pdb"))
   download.file(bio3d::get.pdb(PDB_ID, URL=TRUE), tmp_path)
+<<<<<<< HEAD
   download.file(bio3d::get.pdb("1Z2M", URL=TRUE), file.path(tmp_dir, paste0("1Z2M", ".pdb")))
+=======
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
   pdb_file <- bio3d::read.pdb(tmp_path)
 
   pdb_file$atom$resid[1070] <- "ASP"
@@ -237,6 +269,16 @@ test_that("Check output class", {
                  "GNOMAD Scores:			DONE")
 })
 
+<<<<<<< HEAD
+=======
+test_that("Check multiple PDB error", {
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
+                                 c("2DNN", "B", 6, "GLU", "ALA", "HBB")))
+
+  expect_error(gnomad_scores(info_df),
+               "filtered_info_df should contain only one PDB entries")
+})
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
 
 test_that("Check column number error", {
@@ -296,6 +338,7 @@ test_that("Check no gene info in gnomad", {
   expect_true(is.data.frame(gnomad_scores(info_df)))
 })
 
+<<<<<<< HEAD
 test_that("Check multiple gene names from PDB no gnomAD scores", {
 
   info_df <- as.data.frame(rbind(c("1KJ6", "A", 1, "VAL", "ALA", "")))
@@ -304,6 +347,8 @@ test_that("Check multiple gene names from PDB no gnomAD scores", {
                  "GNOMAD Scores:			DONE")
 })
 
+=======
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
 # BLOSUM62_score ----------------------------------------------------------
 
@@ -442,6 +487,7 @@ test_that("Check output class", {
 
 # impact_prediction -------------------------------------------------------
 
+<<<<<<< HEAD
 filtered_info_df <- as.data.frame(rbind(c("4RFZ", "A", 414, "GLY", "ARG", "BTK")))
 
 colnames(filtered_info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
@@ -529,6 +575,16 @@ filtered_info_df <- GTEx(filtered_info_df)
 filtered_info_df <- amino_acid_features(filtered_info_df)
 
 final_df <- filtered_info_df
+=======
+final_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB", "-0.3319392", "-0.9048452", "0.1615106", "-0.04987094",
+                                  "-0.8371797", "-0.1839022", "-3.7953", "-0.2113", "1.2274e-09", "0", "5", "-0.01"),
+                                c("2DN2", "B", 6, "GLU", "ALA", "HBB", "-0.6075531", "-1.3857613", "1.8748888", "-0.86584380",
+                                  "-0.3499602", "-0.3829808", "-3.7953", "-0.2113", "1.2274e-09", "-1", "5", "-0.01")))
+
+colnames(final_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name", "degree_z_score",
+                        "eigen_z_score", "shortest_path_z", "betweenness_scores_z", "clique_z_score", "pagerank_z_score",
+                        "syn_z", "mis_z", "pLI", "blosum62_scores", "kegg_pathway_number", "genic_intolerance")
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
 
 test_that("Check output class", {
@@ -536,6 +592,7 @@ test_that("Check output class", {
   expect_true(is.data.frame(impact_prediction(final_df)))
 
 })
+<<<<<<< HEAD
 
 
 # GO_terms ----------------------------------------------------------------
@@ -643,3 +700,5 @@ test_that("Check output class", {
 
 })
 
+=======
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369

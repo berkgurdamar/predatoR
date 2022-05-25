@@ -14,8 +14,13 @@
 
 impact_prediction <- function(final_df){
 
+<<<<<<< HEAD
   final_df$Orig_AA <- as.factor(final_df$Orig_AA)
   final_df$Mut_AA <- as.factor(final_df$Mut_AA)
+=======
+  message(crayon::white(paste0("\n", "Prediction threshold: > ", "0.5158203 --> Disease Causing", "\n")))
+
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
   final_df$degree_z_score <- as.numeric(final_df$degree_z_score)
   final_df$eigen_z_score <- as.numeric(final_df$eigen_z_score)
   final_df$shortest_path_z <- as.numeric(final_df$shortest_path_z)
@@ -28,6 +33,7 @@ impact_prediction <- function(final_df){
   final_df$blosum62_scores <- as.numeric(final_df$blosum62_scores)
   final_df$kegg_pathway_number <- as.numeric(final_df$kegg_pathway_number)
   final_df$genic_intolerance <- as.numeric(final_df$genic_intolerance)
+<<<<<<< HEAD
   final_df$go_terms <- as.numeric(final_df$go_terms)
   final_df$disgenet <- as.numeric(final_df$disgenet)
   final_df$gene_essentiality <- as.numeric(final_df$gene_essentiality)
@@ -42,17 +48,31 @@ impact_prediction <- function(final_df){
   prob <- stats::predict(caret_adaboost, final_df, type = "prob")
 
   res <- as.factor(ifelse(stats::predict(caret_adaboost, final_df, type = "prob")[,2] > 0.5, "1", "0"))
+=======
+
+  prob <- stats::predict(caret_adaboost, final_df, type = "prob")
+
+  res <- as.factor(ifelse(stats::predict(caret_adaboost, final_df, type = "prob")[,2] > 0.5158203, "1", "0"))
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
   probs <- c()
   res_types <- c()
   for(i in 1:length(res)){
     if(res[i] == 0){
       probs <- c(probs, prob[i,1])
+<<<<<<< HEAD
       res_types <- c(res_types, "Neutral")
     }
     else{
       probs <- c(probs, prob[i,2])
       res_types <- c(res_types, "Pathogenic")
+=======
+      res_types <- c(res_types, "Silent")
+    }
+    else{
+      probs <- c(probs, prob[i,2])
+      res_types <- c(res_types, "Disease Causing")
+>>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
     }
   }
 
