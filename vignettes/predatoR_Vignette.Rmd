@@ -40,9 +40,9 @@ In this section, we show you how to use `predatoR` package for mutation impact p
  - Calculate Betweenness Z-Score of each atom
  - Calculate Clique Z-Score of each atom
  - Calculate PageRank Z-Score of each atom
- - Gets gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
+ - Gets [gnomAD Synonymous](https://gnomad.broadinstitute.org/) Z-Score, Non-Synonymous Z-Score, and PLoF Score
  - Gets BLOSUM62 score of the mutation
- - Finds the number of KEGG Pathways which contains the input gene
+ - Finds the number of [KEGG Pathways](https://www.genome.jp/kegg/) which contains the input gene
  - Gets [Genic Intolerance](http://genic-intolerance.org/) Score
  - Finds the number of GO terms associated with the input gene
  - Finds the number of diseases associated with the input gene from [DisGeNET](https://www.disgenet.org/)
