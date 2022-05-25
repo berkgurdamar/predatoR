@@ -71,14 +71,8 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
     if(is.data.frame(atom_matrix) == FALSE){
       next
     }
-<<<<<<< HEAD
 
 
-=======
-    # message(crayon::white(paste0("PDB ID:", "\t\t\t\t", i, "\n",
-    #                              "Position(s):", "\t\t\t", paste0(filtered_info_df$Position, collapse = ", "))))
-    #
->>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
     message(crayon::white(paste0("PDB ID:", "\t\t\t\t", i, "\n",
                                  "Position(s):", "\t\t\t",
                                  paste0(sapply(split(filtered_info_df$Position, ceiling(seq_along(filtered_info_df$Position)/20)),
@@ -97,7 +91,7 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
                                      " in the PDB file, it will be removed from the query")))
 
         removed_idx <- c(removed_idx, j)
-        }
+      }
       else if(unique(atom_matrix$resid[atom_matrix$resno == filtered_info_df$Position[j] & atom_matrix$chain == filtered_info_df$Chain[j]]) != filtered_info_df$Orig_AA[j]){
         message(crayon::white(paste0("Residue ", filtered_info_df$Position[j], " is not ",
                                      filtered_info_df$Orig_AA[j], " in the PDB structure, it will be removed from the query")))
@@ -107,7 +101,7 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
     }
 
     if(length(removed_idx) > 0){
-    filtered_info_df <- filtered_info_df[-removed_idx,]
+      filtered_info_df <- filtered_info_df[-removed_idx,]
       if(nrow(filtered_info_df) == 0){
         next
       }
@@ -135,7 +129,6 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
 
     filtered_info_df <- genic_intolerance(filtered_info_df)
 
-<<<<<<< HEAD
     filtered_info_df <- GO_terms(filtered_info_df)
 
     filtered_info_df <- DisGeNET(filtered_info_df)
@@ -145,8 +138,6 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
     filtered_info_df <- GTEx(filtered_info_df)
 
     filtered_info_df <- amino_acid_features(filtered_info_df)
-=======
->>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 
     final_df <- rbind(final_df, filtered_info_df)
   }
@@ -161,16 +152,12 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
 
   }else{
 
-  prediction_result <- impact_prediction(final_df)
+    prediction_result <- impact_prediction(final_df)
 
   }
 
   parallel::stopCluster(my.cluster)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
   return(prediction_result)
 
 }

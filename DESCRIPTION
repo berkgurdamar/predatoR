@@ -31,14 +31,10 @@ Imports:
     doParallel,
     igraph,
     parallel,
-<<<<<<< HEAD
     biomaRt,
     stringr,
     seqinr,
     protr
-=======
-    biomaRt
->>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
 Suggests: 
     rmarkdown,
     knitr,

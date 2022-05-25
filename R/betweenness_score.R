@@ -30,12 +30,9 @@ betweenness_score <- function(edge_list, filtered_info_df){
     df.g <- igraph::graph.data.frame(d = edge_list_filtered, directed = FALSE)
 
     all_betwenness <- igraph::betweenness(df.g, directed = F)
-<<<<<<< HEAD
     all_betwenness[which(all_betwenness == "Inf")] <- 0
     all_betwenness[which(all_betwenness == "NaN")] <- 0
 
-=======
->>>>>>> ee79646b65c39e937123c1002f0ae00cbbfee369
     mean_betwenness <- mean(all_betwenness)
     sd_betwenness <- stats::sd(all_betwenness)
 
@@ -54,4 +51,3 @@ betweenness_score <- function(edge_list, filtered_info_df){
 
   return(betweenness_z_final)
 }
-
