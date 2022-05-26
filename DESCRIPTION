@@ -9,15 +9,15 @@ Authors@R:
            comment = c(ORCID = "0000-0003-3811-2211"))
 Description: Mutation impact prediction has an important role in understanding the
             roles of mutations in diseases. predatoR package makes prediction about
-            amino acid substitutions on protein structures. With using PDB ID, residue, 
+            amino acid substitutions on protein structures. With using PDB ID, chain ID, residue, 
             reference amino acid, mutated amino acid and gene name (optional), 
-            calculates the impact of a mutation by using Adaboost model and classifies the mutations
-            as disease causing or not.
+            calculates the impact of a mutation  and classifies the mutations
+            as pathogenic or neutral.
 License: MIT + file LICENSE
 URL: https://github.com/berkgurdamar/predatoR
 BugReports: https://github.com/berkgurdamar/predatoR/issues
 Encoding: UTF-8
-LazyData: false
+LazyData: true
 Depends: 
     R (>= 4.1.0)
 Roxygen: list(markdown = TRUE)
