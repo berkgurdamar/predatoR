@@ -32,7 +32,7 @@ In this section, we show you how to use `predatoR` package for mutation impact p
 `predatoR()` function works on each PDB ID respectively. For each PDB ID;  
 
  - Download/Read PDB file
- - Calculate distances between every atom
+ - Calculate distances between each atom in the structure
  - Create network from PDB
  - Calculate Degree Centrality Z-Score of each atom
  - Calculate Eigen Centrality Z-Score of each atom
@@ -194,7 +194,7 @@ PDB_2DN2_structure <- read_PDB("3SQJ")
 
 ### `PDB2connections`
 
-`PDB2connections()` function calculates distances between every ATOM in the PDB structure 
+`PDB2connections()` function calculates distances between each ATOM in the PDB structure 
 and creates an edge between atoms if the distance <= 7 Angstrom. As a result, returns a list contains data frames of different chains interactions.
 
 #### Arguments
