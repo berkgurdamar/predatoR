@@ -24,7 +24,7 @@ properties.
 `predatoR()` works on each PDB respectively. For each PDB;
 
 -   Download/Read PDB file
--   Calculate distances between every atom
+-   Calculate distances between each atom in the structure
 -   Create network from PDB
 -   Calculate Degree Centrality Z-Score of each atom
 -   Calculate Eigen Centrality Z-Score of each atom
