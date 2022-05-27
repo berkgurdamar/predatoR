@@ -41,7 +41,7 @@ impact_prediction <- function(final_df){
 
   prob <- stats::predict(caret_adaboost, final_df, type = "prob")
 
-  res <- as.factor(ifelse(stats::predict(caret_adaboost, final_df, type = "prob")[,2] > 0.5, "1", "0"))
+  res <- as.factor(ifelse(stats::predict(caret_adaboost, final_df, type = "prob")[,2] > 0.5181931, "1", "0"))
 
   probs <- c()
   res_types <- c()
