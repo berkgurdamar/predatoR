@@ -195,8 +195,7 @@ PDB_2DN2_structure <- read_PDB("3SQJ")
 ### `PDB2connections`
 
 `PDB2connections()` function calculates distances between every ATOM in the PDB structure 
-and creates an edge between atoms if the distance <= 7 Angstrom. As a result, returns a data frame 
-which contains connection list.
+and creates an edge between atoms if the distance <= 7 Angstrom. As a result, returns a list contains data frames of different chains interactions.
 
 #### Arguments
 
@@ -292,12 +291,12 @@ shorteset_path_z_score <- shorteset_path_score(edge_list = edge_list, filtered_i
 `betweenness_score()` function calculates Betweenness Score of each node by using `betweenness()` 
 function of igraph package, turns the scores into Z-scores and returns scores of desired nodes.
 
-`betweenness()` function calculates Betweenness by using formula below;
+<!-- `betweenness()` function calculates Betweenness by using formula below; -->
 
 
-$$
-\sum_{i \neq j, i \neq v,j \neq v}{g_{ivj}/g_{ij}}
-$$
+<!-- $$ -->
+<!-- \sum_{i \neq j, i \neq v,j \neq v}{g_{ivj}/g_{ij}} -->
+<!-- $$ -->
 
 #### Arguments
 
@@ -366,10 +365,10 @@ pagerank_z_score <- pagerank_score(edge_list = edge_list, filtered_info_df = tes
 
 ### `gnomad_scores`
 
-`gnomad_scores()` function gets input gene's gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
+`gnomad_scores()` function gets input gene's gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLI Score
 from data retrieved from [gnomAD](https://gnomad.broadinstitute.org/). If there is no gene name information in the input,
-`gnomad_scores()` finds the genes that related with input PDB ID by using a dataset retrieved from [Ensembl](https://www.ensembl.org/). 
-If there are multiple genes annotated for same PDB, `gnomad_scores()` function gets the gene that has maximum Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score.
+`gnomad_scores()` finds the genes that related with input PDB chain ID by using a dataset retrieved from [Ensembl](https://www.ensembl.org/). 
+If there are multiple genes annotated for same PDB, `gnomad_scores()` function gets the gene that has maximum Synonymous Z-Score, Non-Synonymous Z-Score, and pLI Score.
 
 #### Arguments
 
@@ -515,7 +514,8 @@ gene_essentiality_score <- gene_essentiality(filtered_info_df = test_data)
 
 ### `GTEx`
 
-`GTEx()` function returns the median gene expression value of the input gene from [GTEx](https://gtexportal.org/home/).
+`GTEx()` function calculates the median gene expression value with using 54 different tissue types' median gene expression value from 
+[GTEx](https://gtexportal.org/home/) and returns the value of input gene.
 
 #### Arguments
 
@@ -573,7 +573,7 @@ gene_essentiality_score <- amino_acid_features(info_df = test_data)
 #### Usage 
 
 
-As an input data.frame containing __PDB_ID__, __Chain__, __Position__, __Orig_AA__, __Mut_AA__, __Gene_Name__, __degree_z_score__, __eigen_z_score__, __shortest_path_z__, __betwenness_scores_z__, __clique_z_score__, __pagerank_z_score__, __syn_z__, __mis_z__, __pLI__, __blosum62_scores__, __kegg_pathway_number__, __genic_intolerance__, __go_terms__, __disgenet__, __gene_essentiality__, __gtex__, __ref_asa__, __mut_asa__, __asa_diff__, __ref_hyd__, __mut_hyd__ and __hyd_diff__ scores `impact_prediction()` function classifies the mutation as __Pathogenic__ or __Neutral__.
+From an input data.frame containing __PDB_ID__, __Chain__, __Position__, __Orig_AA__, __Mut_AA__, __Gene_Name__, __degree_z_score__, __eigen_z_score__, __shortest_path_z__, __betwenness_scores_z__, __clique_z_score__, __pagerank_z_score__, __syn_z__, __mis_z__, __pLI__, __blosum62_scores__, __kegg_pathway_number__, __genic_intolerance__, __go_terms__, __disgenet__, __gene_essentiality__, __gtex__, __ref_asa__, __mut_asa__, __asa_diff__, __ref_hyd__, __mut_hyd__ and __hyd_diff__ scores `impact_prediction()` function classifies the mutation as __Pathogenic__ or __Neutral__.
 
 
 Example input:
