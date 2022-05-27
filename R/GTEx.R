@@ -1,7 +1,7 @@
 #' GTEx Median Expression Function
 #'
-#' This function returns the input genes' median gene expression value of
-#' 54 different tissue type from [GTEx](https://gtexportal.org/home/).
+#' `GTEx()` function calculates the median gene expression value with using 54 different tissue types' median gene expression value from
+#' [GTEx](https://gtexportal.org/home/) and returns the value of input gene.
 #'
 #' @param filtered_info_df input data.frame which contain only one PDB entries
 #'
