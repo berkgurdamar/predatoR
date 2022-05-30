@@ -39,7 +39,8 @@ Suggests:
     rmarkdown,
     knitr,
     DT,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    covr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true

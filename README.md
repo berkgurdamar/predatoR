@@ -7,6 +7,9 @@
 
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![R-CMD-check](https://github.com/berkgurdamar/predatoR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/berkgurdamar/predatoR/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/berkgurdamar/predatoR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/berkgurdamar/predatoR?branch=main)
 <!-- badges: end -->
 
 <!-- <br /> -->
