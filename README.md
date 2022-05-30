@@ -23,17 +23,17 @@ properties.
 
 `predatoR()` works on each PDB respectively. For each PDB;
 
--   Download/Read PDB file
--   Calculate distances between each atom in the structure
--   Create network from PDB
--   Calculate Degree Centrality Z-Score of each atom
--   Calculate Eigen Centrality Z-Score of each atom
--   Calculate Shortest Path Z-Score of each atom
--   Calculate Betweenness Z-Score of each atom
--   Calculate Clique Z-Score of each atom
--   Calculate PageRank Z-Score of each atom
+-   Downloads/Reads PDB file
+-   Calculates distance between each atom in the structure
+-   Creates a network from PDB
+-   Calculates Degree Centrality Z-Score of each atom
+-   Calculates Eigen Centrality Z-Score of each atom
+-   Calculates Shortest Path Z-Score of each atom
+-   Calculates Betweenness Z-Score of each atom
+-   Calculates Clique Z-Score of each atom
+-   Calculates PageRank Z-Score of each atom
 -   Gets [gnomAD](https://gnomad.broadinstitute.org/) Synonymous
-    Z-Score, Non-Synonymous Z-Score, and PLoF Score
+    Z-Score, Non-Synonymous Z-Score, and pLI Score
 -   Gets BLOSUM62 score of the mutation
 -   Finds the number of [KEGG Pathways](https://www.genome.jp/kegg/)
     which contains the input gene
@@ -47,7 +47,7 @@ properties.
     [GTEx](https://gtexportal.org/home/)
 -   Calculates 6 different features from Accessible Surface Area and
     Hydrophobicity Scale of reference and mutant amino acids
--   Make prediction
+-   Makes prediction
 
 # Installation
 
