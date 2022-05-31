@@ -17,9 +17,8 @@ coverage](https://codecov.io/gh/berkgurdamar/predatoR/branch/main/graph/badge.sv
 
 # NOTE
 
-`R-CMD-check` and `Codecov` gave an error due to the LFS system of
-GitHub. Local tests are fine you can download the `predatoR` as
-described below.
+`R-CMD-check` and `Codecov` gave an error due to the Git LFS. Local
+tests are fine you can download the `predatoR` as described below.
 
 # Overview
 
