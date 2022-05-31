@@ -15,6 +15,12 @@ coverage](https://codecov.io/gh/berkgurdamar/predatoR/branch/main/graph/badge.sv
 <!-- <br /> -->
 <!-- <br /> -->
 
+# NOTE
+
+`R-CMD-check` and `Codecov` gave an error due to the LFS system of
+GitHub. Local tests are fine you can download the `predatoR` as
+described below.
+
 # Overview
 
 `predatoR` is a tool for mutation impact prediction based on network
@@ -36,7 +42,7 @@ properties.
 -   Calculates Clique Z-Score of each atom
 -   Calculates PageRank Z-Score of each atom
 -   Gets [gnomAD](https://gnomad.broadinstitute.org/) Synonymous
-    Z-Score, Non-Synonymous Z-Score, and pLI Score
+    Z-Score, Missense Z-Score, and pLI Score
 -   Gets BLOSUM62 score of the mutation
 -   Finds the number of [KEGG Pathways](https://www.genome.jp/kegg/)
     which contains the input gene
