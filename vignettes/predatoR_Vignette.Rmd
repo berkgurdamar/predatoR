@@ -50,7 +50,7 @@ install_local("path/to/predatoR_0.0.1.9000.tar.gz")
  - Calculates Betweenness Z-Score of each atom
  - Calculates Clique Z-Score of each atom
  - Calculates PageRank Z-Score of each atom
- - Gets [gnomAD](https://gnomad.broadinstitute.org/) Synonymous Z-Score, Non-Synonymous Z-Score, and pLI Score
+ - Gets [gnomAD](https://gnomad.broadinstitute.org/) Synonymous Z-Score, Missense Z-Score, and pLI Score
  - Gets BLOSUM62 score of the mutation
  - Finds the number of [KEGG Pathways](https://www.genome.jp/kegg/) which contains the input gene
  - Gets [Genic Intolerance](http://genic-intolerance.org/) Score
@@ -375,10 +375,10 @@ pagerank_z_score <- pagerank_score(edge_list = edge_list, filtered_info_df = tes
 
 ### `gnomad_scores`
 
-`gnomad_scores()` function gets input gene's gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLI Score
+`gnomad_scores()` function gets input gene's gnomAD Synonymous Z-Score, Missense Z-Score, and PLI Score
 from data retrieved from [gnomAD](https://gnomad.broadinstitute.org/). If there is no gene name information in the input,
 `gnomad_scores()` finds the genes that related with input PDB chain ID by using a dataset retrieved from [Ensembl](https://www.ensembl.org/). 
-If there are multiple genes annotated for same PDB, `gnomad_scores()` function gets the gene that has maximum Synonymous Z-Score, Non-Synonymous Z-Score, and pLI Score.
+If there are multiple genes annotated for same PDB, `gnomad_scores()` function gets the gene that has maximum Synonymous Z-Score, Missense Z-Score, and pLI Score.
 
 #### Arguments
 
