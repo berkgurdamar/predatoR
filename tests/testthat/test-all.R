@@ -4,7 +4,7 @@ library(predatoR)
 
 # predatoR ----------------------------------------------------------------
 
-
+testthat::skip_on_os("mac")
 
 info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
@@ -27,6 +27,7 @@ test_that("Check input column number", {
 
 test_that("Check output class and thread input", {
 
+
   info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 
   expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2)))
@@ -34,6 +35,7 @@ test_that("Check output class and thread input", {
 
 
 test_that("Check false pdb input", {
+
 
   info_df <- as.data.frame(rbind(c("2DNNN2", "B", 1, "VAL", "ALA", "HBB")))
 
@@ -43,6 +45,7 @@ test_that("Check false pdb input", {
 
 
 test_that("Check no gene name input", {
+
 
   info_df <- as.data.frame(rbind(c("2DNNN2", "B", 1, "VAL", "ALA")))
 
@@ -65,6 +68,7 @@ info_df <- as.data.frame(rbind(c("2DN2", "B", 10000, "VAL", "ALA", "HBB"),
                                c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 
 test_that("Check if residue included", {
+
   expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2),
                  "Residue [1-9]\\d* is not included in the PDB structure, it will be removed from the query")
 })
@@ -74,6 +78,7 @@ info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "GLU", "ALA", "HBB"),
                                c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 
 test_that("Check if residue-amino acid matching", {
+
   expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2))
 })
 
@@ -82,6 +87,7 @@ info_df <- as.data.frame(rbind(c("2DN2", "B", 5, "VAL", "ALA", "HBB")))
 
 
 test_that("Check input amino acid names", {
+
   expect_error(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2),
                "There is no input for prediction")
 })
@@ -89,6 +95,7 @@ test_that("Check input amino acid names", {
 
 
 test_that("Check multiple amino acid for one residue message", {
+
 
   info_df <- as.data.frame(rbind(c("2DN2_N", "B", 1, "VAL", "ALA", "HBB"),
                                  c("2DN2_N", "B", 6, "GLU", "ALA", "HBB"),
@@ -148,6 +155,7 @@ atom_matrix <- read_PDB("2DN2")
 
 info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+
 
 connections_df <- PDB2connections(atom_matrix, info_df, single_run = TRUE, n_threads = 2)
 
