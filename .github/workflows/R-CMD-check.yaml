@@ -30,8 +30,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          lfs: true
 
       - uses: r-lib/actions/setup-pandoc@v2
 
