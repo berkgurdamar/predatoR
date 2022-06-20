@@ -56,13 +56,12 @@ properties.
 
 # Installation
 
-You can download the source code of predatoR from
-[Zenodo](https://doi.org/10.5281/zenodo.6588575) and install manually
-via [devtools](https://www.r-project.org/nosvn/pandoc/devtools.html):
+You can install the predatoR via
+[devtools](https://www.r-project.org/nosvn/pandoc/devtools.html):
 
 ``` r
 library(devtools)
-install_local("path/to/predatoR_0.0.1.9000.tar.gz")
+install_github("berkgurdamar/predatoR")
 ```
 
 # Usage
