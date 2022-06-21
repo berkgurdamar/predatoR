@@ -3,7 +3,7 @@
 #' Function gets input gene's gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLI Score
 #' from data retrieved from [gnomAD](https://gnomad.broadinstitute.org/). If there is no gene name information in the input,
 #' \code{gnomad_scores} finds the genes that related with input PDB chain ID by using a dataset retrieved from [Ensembl](https://www.ensembl.org/).
-#' If there are multiple genes annotated for same PDB, \code{gnomad_scores} function gets the gene that has maximum Synonymous Z-Score, Non-Synonymous Z-Score, and pLI Score.
+#' If there are multiple genes annotated for same PDB, \code{gnomad_scores} function gets the gene that has the maximum Synonymous Z-Score, Non-Synonymous Z-Score, and pLI Score.
 #'
 #' @param filtered_info_df input data.frame which contain only one PDB entries
 #'

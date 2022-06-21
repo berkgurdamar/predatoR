@@ -7,15 +7,15 @@
 impact_prediction(final_df)
 }
 \arguments{
-\item{final_df}{data.frame contains all the required information for impact prediction}
+\item{final_df}{data.frame contains all the required features for impact prediction}
 }
 \value{
-matrix contains the prediction results
+data.frame contains the prediction results
 }
 \description{
 Function that makes the final prediction
 }
 \details{
-This function takes a data.frame which contains all the required fields for impact prediction and compute
-the prediction based on pre-computed Adaboost model.
+This function takes a data.frame which contains all the required features and compute
+the impact of a mutation.
 }

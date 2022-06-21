@@ -3,7 +3,7 @@
 #' Calculate Shortest Path Z-Scores of input position
 #'
 #' This function calculates Shortest Path lengths of all nodes in the network via \code{shortest.paths} function
-#' of igraph package. Sum shortest path lengts of every nodes, calculates and returns the Z-Scores of the input positions.
+#' of igraph package. Sum shortest path lengths of every nodes, calculates and returns the Z-Scores of the input positions.
 #'
 #' @param edge_list list contains separate edge data.frames for each chain
 #' @param filtered_info_df input data.frame which contain only one PDB entries

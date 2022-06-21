@@ -19,5 +19,5 @@ Calculate Shortest Path Z-Scores of input position
 }
 \details{
 This function calculates Shortest Path lengths of all nodes in the network via \code{shortest.paths} function
-of igraph package. Sum shortest path lengts of every nodes, calculates and returns the Z-Scores of the input positions.
+of igraph package. Sum shortest path lengths of every nodes, calculates and returns the Z-Scores of the input positions.
 }

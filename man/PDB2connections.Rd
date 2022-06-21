@@ -28,5 +28,5 @@ Creates all the edges from the input atom matrix created by \code{PDB_read} .
 }
 \details{
 This function calculates the distances between all the atoms in the atom matrix and create edges
-if the distance between two atoms is less or equal to 7 Angstrom.
+if the distance between two atoms is less than or equal to 7 Angstrom.
 }

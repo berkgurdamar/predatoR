@@ -13,6 +13,6 @@ GTEx(filtered_info_df)
 median gene expression values of input genes
 }
 \description{
-This function returns the input genes' median gene expression value of
-54 different tissue type from \href{https://gtexportal.org/home/}{GTEx}.
+\code{GTEx()} function calculates the median gene expression value with using 54 different tissue types' median gene expression value from
+\href{https://gtexportal.org/home/}{GTEx} and returns the value of input gene.
 }

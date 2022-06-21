@@ -13,8 +13,8 @@ gnomad_scores(filtered_info_df)
 gnomAD scores added input data.frame
 }
 \description{
-Function gets input gene's gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score
+Function gets input gene's gnomAD Synonymous Z-Score, Non-Synonymous Z-Score, and PLI Score
 from data retrieved from \href{https://gnomad.broadinstitute.org/}{gnomAD}. If there is no gene name information in the input,
-\code{gnomad_scores} finds the genes that related with input PDB ID by using a dataset retrieved from \href{https://www.ensembl.org/}{Ensembl}.
-If there are multiple genes annotated for same PDB, \code{gnomad_scores} function gets the gene that has maximum Synonymous Z-Score, Non-Synonymous Z-Score, and PLoF Score.
+\code{gnomad_scores} finds the genes that related with input PDB chain ID by using a dataset retrieved from \href{https://www.ensembl.org/}{Ensembl}.
+If there are multiple genes annotated for same PDB, \code{gnomad_scores} function gets the gene that has the maximum Synonymous Z-Score, Non-Synonymous Z-Score, and pLI Score.
 }

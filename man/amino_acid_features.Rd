@@ -15,7 +15,7 @@ values of reference amino acid, mutant amino acid and difference between mutant 
 amino acids
 }
 \description{
-This function adds accessible surface area and hydrophobicity scale
+This function calculates accessible surface area and hydrophobicity scale
 values of reference amino acid, mutant amino acid and difference between mutant and reference
 amino acids.
 }
