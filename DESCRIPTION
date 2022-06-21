@@ -21,7 +21,7 @@ LazyData: true
 Depends: 
     R (>= 4.1.0)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 biocViews:
 Imports: 
     adabag,
