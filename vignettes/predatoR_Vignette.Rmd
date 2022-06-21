@@ -146,7 +146,7 @@ prediction_result <- predatoR(test_data, PDB_path = "path/to/PDB/files/")
 
 ### Result
 
-`predatoR()` function returns a data.frame which contains additional two columns; __'Prediction'__ and __'Probability'__. __'Prediction'__ represents the result of the impact prediction and __'Probability'__ represents the probability that the mutation classified as __Disease Causing__ or __Silent__. 
+`predatoR()` function returns a data.frame which contains additional two columns; __'Prediction'__ and __'Probability'__. __'Prediction'__ represents the result of the impact prediction and __'Probability'__ represents the probability that the mutation classified as __Pathogenic__ or __Neutral__. 
 
 ```{r example_output, echo=FALSE}
 example_result <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB", "Pathogenic", "0.5025182"),
@@ -301,12 +301,6 @@ shorteset_path_z_score <- shorteset_path_score(edge_list = edge_list, filtered_i
 `betweenness_score()` function calculates Betweenness Score of each node by using `betweenness()` 
 function of igraph package, turns the scores into Z-scores and returns scores of desired nodes.
 
-<!-- `betweenness()` function calculates Betweenness by using formula below; -->
-
-
-<!-- $$ -->
-<!-- \sum_{i \neq j, i \neq v,j \neq v}{g_{ivj}/g_{ij}} -->
-<!-- $$ -->
 
 #### Arguments
 
@@ -327,8 +321,7 @@ betweenness_z_score <- betweenness_score(edge_list = edge_list, filtered_info_df
 
 ### `clique_score`
 
-`clique_score()` function calculates how many of the nodes that a node is connected to are connected to each other.
-Turns the scores into Z-scores and returns scores of desired nodes.
+`clique_score()` function calculates Clique score of each atom and turns the desired nodes' scores into Z-scores.
 
 #### Arguments
 
