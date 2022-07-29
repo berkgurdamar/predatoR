@@ -19,6 +19,7 @@ read_PDB <- function(PDB_ID, PDB_path = NULL){
       pdb <- suppressMessages(bio3d::read.pdb(bio3d::get.pdb(PDB_ID, URL=TRUE)))
 
       atom_matrix <- pdb$atom
+      # atom_matrix <- atom_matrix[which(atom_matrix$elety == "CA"),]
       atom_matrix <- atom_matrix[which(atom_matrix$type == "ATOM"),]
       atom_matrix <- atom_matrix[which(atom_matrix$resid != "HOH"),]
 
@@ -46,6 +47,7 @@ read_PDB <- function(PDB_ID, PDB_path = NULL){
       pdb <- suppressMessages(bio3d::read.pdb(f_path))
 
       atom_matrix <- pdb$atom
+      # atom_matrix <- atom_matrix[which(atom_matrix$elety == "CA"),]
       atom_matrix <- atom_matrix[which(atom_matrix$type == "ATOM"),]
       atom_matrix <- atom_matrix[which(atom_matrix$resid != "HOH"),]
 

@@ -39,9 +39,9 @@ impact_prediction <- function(final_df){
   final_df$mut_hyd <- as.numeric(final_df$mut_hyd)
   final_df$hyd_diff <- as.numeric(final_df$hyd_diff)
 
-  prob <- caret::predict.train(caret_adaboost, final_df, type = "prob")
+  prob <- caret::predict.train(caret_adaboost_all, final_df, type = "prob")
 
-  res <- as.factor(ifelse(caret::predict.train(caret_adaboost, final_df, type = "prob")[,2] > 0.5181931, "1", "0"))
+  res <- as.factor(ifelse(caret::predict.train(caret_adaboost_all, final_df, type = "prob")[,2] > 0.5, "1", "0"))
 
   probs <- c()
   res_types <- c()
