@@ -21,7 +21,7 @@ suppressPackageStartupMessages(library(predatoR))
 
 In this section, we show you how to use `predatoR` package for mutation impact prediction.
 
-`predatoR` package makes prediction about impact of a mutation based on an __Adaboost__ model and classifies the mutations as __Pathogenic__ or __Neutral__. Model was created by using [Varibench](http://structure.bmc.lu.se/VariBench/) and [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/) datasets (AUC: 0.948). [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) dataset also used for model validation (AUC: 0.932). 
+`predatoR` package makes prediction about impact of a mutation based on an __Adaboost__ model and classifies the mutations as __Pathogenic__ or __Neutral__. Model was created by using [Varibench](http://structure.bmc.lu.se/VariBench/) and [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/) datasets. [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) dataset also used for model validation. 
 
 ### Installation
 
@@ -37,7 +37,7 @@ install_github("berkgurdamar/predatoR")
 
 <img src="./predatoR_workflow.png" style="max-width:100%;" />
 
-`predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. 
+`predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. Predictions can be made by using 2 different models, 7 Angstrom (Å)-all atoms model and 7Å-carbon alpha (Cα) atoms only model.
 
 `predatoR()` function works on each PDB ID respectively. For each PDB ID;  
 
@@ -66,24 +66,28 @@ If `predatoR()` couldn't find any information of any gene such as 'Genic Intoler
  
 ### Arguments
  
- `predatoR()` function has 4 arguments; 
+ `predatoR()` function has 6 arguments; 
  
  - __info_df:__ Input data.frame
  - __PDB_path:__ PDB file path if the user wants to use PDB structures stored locally (default = NULL)
  - __n_threads:__ Number of threads (default = NULL)
  - __gene_name_info:__ Whether there is gene name information in the input or not (default = TRUE)
+ - __distance_cutoff:__ distance cutoff for setting edges (default = 7)
+ - __network_approach:__ network building approach; "all" (default) for using all atoms or "ca" for using Cα atoms only
  
  When running the `predatoR()` function, if gene name is included in the input, `gene_name_info`
  should be set as `TRUE`. If there is no gene name information in the input (`gene_name_info = FALSE`), 
  `predatoR()` function gets the related gene names from [Ensembl](https://www.ensembl.org/) and if there are multiple
- genes annotated for the PDB ID, asks user to choose input __'Gene_Name'__. 
+ genes annotated for the PDB ID, choose the gene having the higher gnomAD metrics. 
+ 
+ `predatoR()` can make predictions using only 7Å distance cutoff. For exploratory purposes, different cutoffs can be used and network properties can be calculated.
  
  
  Example input with the __'Gene_Name'__ information included:
  
 ```{r example_gene_name, echo=FALSE}
-test_data <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB"),
-                                 c("3SQJ", "A", 60, "GLU", "LYS","ALB")))
+test_data <- as.data.frame(rbind(c("3SQJ", "A", 196, "GLN", "LEU", "ALB"),
+                               c("3SQJ", "A", 396, "GLU", "LYS", "ALB")))
 colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
 knitr::kable(test_data, align = c("c", "c", "c", "c", "c", "c"))
 ```
@@ -96,8 +100,8 @@ prediction_result <- predatoR(test_data, gene_name_info = TRUE)
 Example input with the __'Gene_Name'__ information does not included:
  
 ```{r example_no_gene_name, echo=FALSE}
-test_data <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN"),
-                                 c("3SQJ", "A", 60, "GLU", "LYS")))
+test_data <- as.data.frame(rbind(c("3SQJ", "A", 196, "GLN", "LEU"),
+                               c("3SQJ", "A", 396, "GLU", "LYS")))
 colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
 knitr::kable(test_data, align = c("c", "c", "c", "c", "c"))
 ```
@@ -113,8 +117,8 @@ information, it gets the related gene names from [Ensembl](https://www.ensembl.o
  
  
 ```{r example_partial_gene_name, echo=FALSE}
-test_data <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB"),
-                                 c("3SQJ", "A", 60, "GLU", "LYS","ALB"),
+test_data <- as.data.frame(rbind(c("3SQJ", "A", 196, "GLN", "LEU"),
+                                 c("3SQJ", "A", 396, "GLU", "LYS"),
                                  c("1A4Y", "A", 169, "PRO", "LEU", "")))
 colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
 knitr::kable(test_data, align = c("c", "c", "c", "c", "c", "c"))
@@ -149,10 +153,24 @@ prediction_result <- predatoR(test_data, PDB_path = "path/to/PDB/files/")
 `predatoR()` function returns a data.frame which contains additional two columns; __'Prediction'__ and __'Probability'__. __'Prediction'__ represents the result of the impact prediction and __'Probability'__ represents the probability that the mutation classified as __Pathogenic__ or __Neutral__. 
 
 ```{r example_output, echo=FALSE}
-example_result <- as.data.frame(rbind(c("3SQJ", "A", 3, "HIS", "GLN", "ALB", "Pathogenic", "0.5025182"),
-                                      c("3SQJ", "A", 60, "GLU", "LYS","ALB", "Nautral", "0.5644399")))
+example_result <- as.data.frame(rbind(c("3SQJ", "A", "196", "GLN", "LEU", "ALB", "Neutral", "0.6521832"),
+                                      c("3SQJ", "A", "396", "GLU", "LYS", "ALB", "Neutral", "0.6009792")))
 colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name", "Prediction", "Probability")
 knitr::kable(example_result, align = c("c", "c", "c", "c", "c", "c", "c", "c"))
+```
+
+
+## Exploratory Usage
+
+Network properties can be calculated by using different distance cutoffs. In this approach, `predatoR()` does not make any prediction about the mutation, but returns a data frame contains all 24 features annotated to the dataset. Both network formalisation approaches also can be used.
+
+```{r Exploratory, eval=FALSE}
+# networks build using all atoms and 7.6Å cutoff
+prediction_result <- predatoR(test_data, distance_cutoff = 7.6, network_approach = "all") 
+
+# networks build using only Cα atoms and 8Å cutoff
+prediction_result <- predatoR(test_data, distance_cutoff = 8, network_approach = "ca") 
+
 ```
 
 
@@ -205,16 +223,17 @@ PDB_2DN2_structure <- read_PDB("3SQJ")
 ### `PDB2connections`
 
 `PDB2connections()` function calculates distances between each ATOM in the PDB structure 
-and creates an edge between atoms if the distance <= 7 Angstrom. As a result, returns a list contains data frames of different chains interactions.
+and creates an edge between atoms if the distance <= 7Å. As a result, returns a list contains data frames of different chains interactions.
 
 #### Arguments
 
-`PDB2connections()` has 4 arguments;
+`PDB2connections()` has 5 arguments;
 
  - __atom_matrix:__ Matrix created by `read_PDB()` function
  - __filtered_info_df:__ data.frame contains only one PDB entries
  - __n_threads:__ number of threads (default = NULL)
  - __single_run:__ should be set as TRUE when using `PDB2connections()` function alone (default = TRUE)
+ - __distance_cutoff:__ distance cutoff for setting edges (default = 7)
 
 #### Usage 
 
@@ -569,9 +588,11 @@ gene_essentiality_score <- amino_acid_features(info_df = test_data)
 
 #### Arguments
 
-`impact_prediction()` has 1 arguments;
+`impact_prediction()` has 3 arguments;
 
  - __final_df:__ data.frame contains all the required information for impact prediction
+ - __distance_cutoff:__ distance cutoff for setting edges (default = 7)
+ - __network_approach:__ network building approach; "all" (default) for using all atoms or "ca" for using Cα atoms only
 
 #### Usage 
 
@@ -582,7 +603,8 @@ From an input data.frame containing __PDB_ID__, __Chain__, __Position__, __Orig_
 Example input:
 
 ```{r impact_prediction_example_input, echo=FALSE}
-final_df <- as.data.frame(rbind(strsplit("1Z2M, A, 21, SER, ASN, ISG15, -1.22398148791155, -1.02542352280947, 1.1136176843448, -0.613542293147469, -1.04728495878065, -1.08634839880617, -0.50008, -0.044129, 0.40527, 1, 4, -0.12, 12, 7, 0, 29.35145, 109.5, 146.3, 36.8, -0.5, -3.5, -3", ", ")[[1]]))
+final_df <- as.data.frame(rbind(strsplit("3SQJ, A, 196, GLN, LEU, ALB, -0.0717218071350537, -0.379784447875971, -1.61712172099028, 0.709536957153219, -0.0906809533248494, 0.0255568093251824, -0.91513, 0.65574, 0.64329, -2, 12, -0.89, 4, 81, 1, 1.515105, 177.7, 173.7, -4, -3.68, 3.8, 7.48", ", ")[[1]],
+                                strsplit("3SQJ, A, 396, GLU, LYS, ALB, -0.280119006995483, -0.406648724044331, -0.114702339705536, -0.531050971889894, 0.0706892006523297, -0.318847672527394, -0.91513, 0.65574, 0.64329, 1, 12, -0.89, 4, 81, 1, 1.515105, 182.9, 215.2, 32.3, -3.2, -4.11, -0.91", ", ")[[1]]))
 colnames(final_df) <- strsplit("PDB_ID, Chain, Position, Orig_AA, Mut_AA, Gene_Name, degree_z_score, eigen_z_score, shortest_path_z, betweenness_scores_z, clique_z_score, pagerank_z_score, syn_z, mis_z, pLI, blosum62_scores, kegg_pathway_number, genic_intolerance, go_terms, disgenet, gene_essentiality, gtex, ref_asa, mut_asa, asa_diff, ref_hyd, mut_hyd, hyd_diff", ", ")[[1]]
 DT::datatable(final_df,options = list(scrollX = TRUE))
 ```
@@ -594,7 +616,8 @@ prediction_result <- impact_prediction(final_df)
 ```
 
 ```{r impact_prediction_example_output, echo=FALSE}
-example_result <- as.data.frame(rbind(c("1Z2M", "A", 21, "SER", "ASN", "ISG15", "Neutral", "0.7704317")))
+example_result <- as.data.frame(rbind(c("3SQJ", "A", "196", "GLN", "LEU", "ALB", "Neutral", "0.6521832"),
+                                      c("3SQJ", "A", "396", "GLU", "LYS", "ALB", "Neutral", "0.6009792")))
 colnames(example_result) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name", "Prediction", "Probability")
 knitr::kable(example_result, align = c("c", "c", "c", "c", "c", "c", "c", "c"))
 ```
