@@ -1,6 +1,6 @@
 #' Creating edge list from atom matrix
 #'
-#' Creates all the edges from the input atom matrix created by \code{PDB_read} .
+#' Creates all the edges from the input atom matrix created by \code{PDB_read}.
 #'
 #' This function calculates the distances between all the atoms in the atom matrix and create edges
 #'  if the distance between two atoms is less than or equal to 7 Angstrom.
@@ -9,13 +9,14 @@
 #' @param filtered_info_df input data.frame which contain only one PDB entries
 #' @param n_threads number of threads (default = NULL)
 #' @param single_run should be set as TRUE when using \code{PDB2connections} function alone (default = TRUE)
+#' @param distance_cutoff distance cutoff for setting edges (default = 7)
 #'
 #' @return list contains separate edge data.frames for each chain
 #'
 #' @export
 #'
 
-PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, single_run = TRUE){
+PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, single_run = TRUE, distance_cutoff = 7){
 
   colnames(filtered_info_df)[1:5] <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
 
@@ -72,9 +73,9 @@ PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, sin
       node_name <- c(node_name, as.character(rep(paste0(filtered_atom_matrix$resno[j],
                                                         "_", filtered_atom_matrix$elety[j],
                                                         "_", filtered_atom_matrix$chain[j]),
-                                                 length(names(dist_mat[which(dist_mat <= 7)])))))
+                                                 length(names(dist_mat[which(dist_mat <= distance_cutoff)])))))
 
-      connections <- c(connections, names(dist_mat[which(dist_mat <= 7)]))
+      connections <- c(connections, names(dist_mat[which(dist_mat <= distance_cutoff)]))
 
       cbind(node_name, connections)
 

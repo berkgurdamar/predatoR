@@ -5,19 +5,27 @@
 #' With an input data.frame which contains 'PDB_ID', 'Chain', 'Position',
 #' 'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively,
 #' make a prediction about the impact of a mutation and classifies the mutation as 'Pathogenic' or 'Neutral'.
+#' Predictions can be done by using 7 angstrom distance cutoff or other cutoffs can be used for exploratory purposes.
 #'
 #' @param info_df data.frame containing 'PDB_ID', 'Chain', 'Position',
 #' 'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively.
 #' @param PDB_path PDB file path (default = NULL)
 #' @param n_threads number of threads (default = NULL)
 #' @param gene_name_info whether there is gene name information in the input or not (default = TRUE)
+#' @param distance_cutoff distance cutoff for setting edges (default = 7)
+#' @param network_approach network building approach; "all" (default) for using all atoms or "ca" for using carbon alpha atoms only
 #'
 #' @return data.frame which contains prediction results
 #'
 #' @export
 #'
 
-predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE){
+predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE, distance_cutoff = 7, network_approach="all"){
+
+  if(!network_approach %in% c("all", "ca")){
+    stop("Network approach needs to be 'all' or 'ca'")
+
+  }
 
   if(is.null(n_threads) == TRUE){
     n.cores <- parallel::detectCores() - 1
@@ -106,7 +114,7 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
       }
     }
 
-    edge_list <- PDB2connections(atom_matrix, filtered_info_df, n_threads = n.cores, single_run = FALSE)
+    edge_list <- PDB2connections(atom_matrix, filtered_info_df, n_threads = n.cores, single_run = FALSE, distance_cutoff = distance_cutoff)
 
     filtered_info_df$degree_z_score <- degree_score(edge_list, filtered_info_df)
 
@@ -141,22 +149,27 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
     final_df <- rbind(final_df, filtered_info_df)
   }
 
-  final_df <- stats::na.omit(final_df)
+  if(distance_cutoff == 7){
+    final_df <- stats::na.omit(final_df)
 
-  if(nrow(final_df) == 0){
+    if(nrow(final_df) == 0){
+
+      parallel::stopCluster(my.cluster)
+
+      stop("There is no input for prediction")
+
+    }else{
+
+      prediction_result <- impact_prediction(final_df, distance_cutoff = distance_cutoff, network_approach = network_approach)
+
+    }
 
     parallel::stopCluster(my.cluster)
 
-    stop("There is no input for prediction")
+    return(prediction_result)
 
   }else{
-
-    prediction_result <- impact_prediction(final_df)
-
+    return(final_df)
   }
-
-  parallel::stopCluster(my.cluster)
-
-  return(prediction_result)
 
 }
