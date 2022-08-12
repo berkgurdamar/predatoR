@@ -8,7 +8,8 @@ PDB2connections(
   atom_matrix,
   filtered_info_df,
   n_threads = NULL,
-  single_run = TRUE
+  single_run = TRUE,
+  distance_cutoff = 7
 )
 }
 \arguments{
@@ -19,12 +20,14 @@ PDB2connections(
 \item{n_threads}{number of threads (default = NULL)}
 
 \item{single_run}{should be set as TRUE when using \code{PDB2connections} function alone (default = TRUE)}
+
+\item{distance_cutoff}{distance cutoff for setting edges (default = 7)}
 }
 \value{
 list contains separate edge data.frames for each chain
 }
 \description{
-Creates all the edges from the input atom matrix created by \code{PDB_read} .
+Creates all the edges from the input atom matrix created by \code{PDB_read}.
 }
 \details{
 This function calculates the distances between all the atoms in the atom matrix and create edges

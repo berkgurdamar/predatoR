@@ -4,7 +4,14 @@
 \alias{predatoR}
 \title{Mutation impact Prediction}
 \usage{
-predatoR(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE)
+predatoR(
+  info_df,
+  PDB_path = NULL,
+  n_threads = NULL,
+  gene_name_info = TRUE,
+  distance_cutoff = 7,
+  network_approach = "all"
+)
 }
 \arguments{
 \item{info_df}{data.frame containing 'PDB_ID', 'Chain', 'Position',
@@ -15,6 +22,10 @@ predatoR(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE)
 \item{n_threads}{number of threads (default = NULL)}
 
 \item{gene_name_info}{whether there is gene name information in the input or not (default = TRUE)}
+
+\item{distance_cutoff}{distance cutoff for setting edges (default = 7)}
+
+\item{network_approach}{network building approach; "all" (default) for using all atoms or "ca" for using carbon alpha atoms only}
 }
 \value{
 data.frame which contains prediction results
@@ -26,4 +37,5 @@ Main function for mutation impact prediction
 With an input data.frame which contains 'PDB_ID', 'Chain', 'Position',
 'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively,
 make a prediction about the impact of a mutation and classifies the mutation as 'Pathogenic' or 'Neutral'.
+Predictions can be done by using 7 angstrom distance cutoff or other cutoffs can be used for exploratory purposes.
 }
