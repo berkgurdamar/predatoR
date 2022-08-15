@@ -4,12 +4,14 @@
 \alias{read_PDB}
 \title{PDB Reading/Downloading}
 \usage{
-read_PDB(PDB_ID, PDB_path = NULL)
+read_PDB(PDB_ID, PDB_path = NULL, network_approach = "all")
 }
 \arguments{
 \item{PDB_ID}{PDB ID}
 
 \item{PDB_path}{PDB file path (default = NULL)}
+
+\item{network_approach}{network building approach; "all" (default) for using all atoms or "ca" for using carbon alpha atoms only}
 }
 \value{
 Matrix that contains all the atoms in the PDB structure
