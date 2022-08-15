@@ -28,7 +28,7 @@ test_that("Check input column number", {
 test_that("Check output class and thread input", {
 
 
-  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+  info_df <- as.data.frame(rbind(c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
 
   expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2)))
 })
