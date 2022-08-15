@@ -5,13 +5,19 @@
 #'
 #' @param PDB_ID PDB ID
 #' @param PDB_path PDB file path (default = NULL)
+#' @param network_approach network building approach; "all" (default) for using all atoms or "ca" for using carbon alpha atoms only
 #'
 #' @return Matrix that contains all the atoms in the PDB structure
 #'
 #' @export
 #'
 
-read_PDB <- function(PDB_ID, PDB_path = NULL){
+read_PDB <- function(PDB_ID, PDB_path = NULL, network_approach = "all"){
+
+  if(!network_approach %in% c("all", "ca")){
+    stop("Network approach needs to be 'all' or 'ca'")
+
+  }
 
   if(is.null(PDB_path)){
 
@@ -19,9 +25,12 @@ read_PDB <- function(PDB_ID, PDB_path = NULL){
       pdb <- suppressMessages(bio3d::read.pdb(bio3d::get.pdb(PDB_ID, URL=TRUE)))
 
       atom_matrix <- pdb$atom
-      # atom_matrix <- atom_matrix[which(atom_matrix$elety == "CA"),]
       atom_matrix <- atom_matrix[which(atom_matrix$type == "ATOM"),]
       atom_matrix <- atom_matrix[which(atom_matrix$resid != "HOH"),]
+
+      if(network_approach == "ca"){
+        atom_matrix <- atom_matrix[which(atom_matrix$elety == "CA"),]
+      }
 
       message(crayon::white(paste0("STEP:","\n" ,"Reading PDB:", "\t\t\t", "DONE")))
 
@@ -47,9 +56,12 @@ read_PDB <- function(PDB_ID, PDB_path = NULL){
       pdb <- suppressMessages(bio3d::read.pdb(f_path))
 
       atom_matrix <- pdb$atom
-      # atom_matrix <- atom_matrix[which(atom_matrix$elety == "CA"),]
       atom_matrix <- atom_matrix[which(atom_matrix$type == "ATOM"),]
       atom_matrix <- atom_matrix[which(atom_matrix$resid != "HOH"),]
+
+      if(network_approach == "ca"){
+        atom_matrix <- atom_matrix[which(atom_matrix$elety == "CA"),]
+      }
 
       message(crayon::white(paste0("STEP:","\n" ,"Reading PDB:", "\t\t\t", "DONE")))
 

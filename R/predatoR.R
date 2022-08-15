@@ -20,7 +20,7 @@
 #' @export
 #'
 
-predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE, distance_cutoff = 7, network_approach="all"){
+predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE, distance_cutoff = 7, network_approach = "all"){
 
   if(!network_approach %in% c("all", "ca")){
     stop("Network approach needs to be 'all' or 'ca'")
@@ -73,7 +73,7 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
 
     filtered_info_df <- info_df[info_df$PDB_ID == i,]
 
-    atom_matrix <- read_PDB(i, PDB_path = PDB_path)
+    atom_matrix <- read_PDB(i, PDB_path = PDB_path, network_approach = network_approach)
 
     if(is.data.frame(atom_matrix) == FALSE){
       next
