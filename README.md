@@ -148,5 +148,5 @@ The wrapper function `predatoR()` uses the utility functions below;
 -   `amino_acid_features()`
 -   `impact_prediction()`
 
-Utility functions can be used alone, for more detail please see
-vignette.
+Utility functions can be used alone, for more detail please see vignette
+via `vignette("predatoR_Vignette")`.
