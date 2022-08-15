@@ -28,7 +28,7 @@ test_that("Check input column number", {
 test_that("Check output class and thread input", {
 
 
-  info_df <- as.data.frame(rbind(c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 
   expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2)))
 })
@@ -69,9 +69,9 @@ info_df <- as.data.frame(rbind(c("2DN2", "B", 10000, "VAL", "ALA", "HBB"),
 
 test_that("Check if residue included", {
 
-  expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1),
-                 "Residue [1-9]\\d* is not included in the PDB structure, it will be removed from the query")
-  # expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1))
+  # expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1),
+  #                "Residue [1-9]\\d* is not included in the PDB structure, it will be removed from the query")
+  expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1))
 })
 
 
@@ -121,7 +121,7 @@ test_that("Check multiple amino acid for one residue message", {
 # read_PDB ----------------------------------------------------------------
 
 test_that("Check local PDB read", {
-  PDB_ID <- "2DN2"
+  PDB_ID <- "1Z2M"
   tmp_dir <- tempdir()
   tmp_path <- file.path(tmp_dir, paste0(PDB_ID, ".pdb"))
   download.file(bio3d::get.pdb(PDB_ID, URL=TRUE), tmp_path)
