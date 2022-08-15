@@ -498,52 +498,52 @@ test_that("Check output class", {
 })
 
 
-filtered_info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
-
-colnames(filtered_info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
-
-atom_matrix <- read_PDB("1Z2M")
-
-edge_list <- PDB2connections(atom_matrix, filtered_info_df, n_threads = 2, single_run = T)
-
-filtered_info_df$degree_z_score <- degree_score(edge_list, filtered_info_df)
-
-filtered_info_df$eigen_z_score <- eigen_centrality_score(edge_list, filtered_info_df)
-
-filtered_info_df$shortest_path_z <- shorteset_path_score(edge_list, filtered_info_df)
-
-filtered_info_df$betweenness_scores_z <- betweenness_score(edge_list, filtered_info_df)
-
-filtered_info_df$clique_z_score <- clique_score(edge_list, filtered_info_df, n_threads = 2, single_run = T)
-
-filtered_info_df$pagerank_z_score <- pagerank_score(edge_list, filtered_info_df)
-
-filtered_info_df <- gnomad_scores(filtered_info_df)
-
-filtered_info_df$blosum62_scores <- as.numeric(BLOSUM62_score(filtered_info_df))
-
-filtered_info_df <- KEGG_pathway_number(filtered_info_df)
-
-filtered_info_df <- genic_intolerance(filtered_info_df)
-
-filtered_info_df <- GO_terms(filtered_info_df)
-
-filtered_info_df <- DisGeNET(filtered_info_df)
-
-filtered_info_df <- gene_essentiality(filtered_info_df)
-
-filtered_info_df <- GTEx(filtered_info_df)
-
-filtered_info_df <- amino_acid_features(filtered_info_df)
-
-final_df <- filtered_info_df
-
-
-test_that("Check output class", {
-
-  expect_true(is.data.frame(impact_prediction(final_df)))
-
-})
+# filtered_info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+#
+# colnames(filtered_info_df) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
+#
+# atom_matrix <- read_PDB("1Z2M")
+#
+# edge_list <- PDB2connections(atom_matrix, filtered_info_df, n_threads = 2, single_run = T)
+#
+# filtered_info_df$degree_z_score <- degree_score(edge_list, filtered_info_df)
+#
+# filtered_info_df$eigen_z_score <- eigen_centrality_score(edge_list, filtered_info_df)
+#
+# filtered_info_df$shortest_path_z <- shorteset_path_score(edge_list, filtered_info_df)
+#
+# filtered_info_df$betweenness_scores_z <- betweenness_score(edge_list, filtered_info_df)
+#
+# filtered_info_df$clique_z_score <- clique_score(edge_list, filtered_info_df, n_threads = 2, single_run = T)
+#
+# filtered_info_df$pagerank_z_score <- pagerank_score(edge_list, filtered_info_df)
+#
+# filtered_info_df <- gnomad_scores(filtered_info_df)
+#
+# filtered_info_df$blosum62_scores <- as.numeric(BLOSUM62_score(filtered_info_df))
+#
+# filtered_info_df <- KEGG_pathway_number(filtered_info_df)
+#
+# filtered_info_df <- genic_intolerance(filtered_info_df)
+#
+# filtered_info_df <- GO_terms(filtered_info_df)
+#
+# filtered_info_df <- DisGeNET(filtered_info_df)
+#
+# filtered_info_df <- gene_essentiality(filtered_info_df)
+#
+# filtered_info_df <- GTEx(filtered_info_df)
+#
+# filtered_info_df <- amino_acid_features(filtered_info_df)
+#
+# final_df <- filtered_info_df
+#
+#
+# test_that("Check output class", {
+#
+#   expect_true(is.data.frame(impact_prediction(final_df)))
+#
+# })
 
 
 # GO_terms ----------------------------------------------------------------
