@@ -205,10 +205,11 @@ After reading, create a matrix that contains only ATOM labelled structures.
 
 #### Arguments
 
-`read_PDB()` has 2 arguments;
+`read_PDB()` has 3 arguments;
 
  - __PDB_ID:__ PDB ID (E.g. "3SQJ")
  - __PDB_path:__ PDB file path if files stored locally (default = FALSE)
+ - __network_approach:__ network building approach; "all" (default) for using all atoms or "ca" for using Cα atoms only
 
 #### Usage 
 
