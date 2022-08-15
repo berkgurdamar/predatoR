@@ -14,11 +14,12 @@ Description: Mutation impact prediction has an important role in understanding t
             calculates the impact of a mutation  and classifies the mutations
             as pathogenic or neutral.
 License: MIT + file LICENSE
-URL: https://github.com/berkgurdamar/predatoR
+URL: https://github.com/berkgurdamar/predatoR,
+    https://berkgurdamar.github.io/predatoR/
 BugReports: https://github.com/berkgurdamar/predatoR/issues
 Encoding: UTF-8
 LazyData: true
-LazyDataCompression:xz
+LazyDataCompression: xz
 Depends: 
     R (>= 4.1.0)
 Roxygen: list(markdown = TRUE)
