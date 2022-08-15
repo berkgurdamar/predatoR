@@ -64,12 +64,14 @@ test_that("Check input amino acid names", {
 
 ##
 
-info_df <- as.data.frame(rbind(c("2DN2", "B", 10000, "VAL", "ALA", "HBB")))
+info_df <- as.data.frame(rbind(c("2DN2", "B", 10000, "VAL", "ALA", "HBB"),
+                               c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 
 test_that("Check if residue included", {
 
   expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1),
                  "Residue [1-9]\\d* is not included in the PDB structure, it will be removed from the query")
+  # expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1))
 })
 
 
