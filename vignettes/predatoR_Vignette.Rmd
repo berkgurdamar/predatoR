@@ -117,8 +117,8 @@ information, it gets the related gene names from [Ensembl](https://www.ensembl.o
  
  
 ```{r example_partial_gene_name, echo=FALSE}
-test_data <- as.data.frame(rbind(c("3SQJ", "A", 196, "GLN", "LEU"),
-                                 c("3SQJ", "A", 396, "GLU", "LYS"),
+test_data <- as.data.frame(rbind(c("3SQJ", "A", 196, "GLN", "LEU", "ALB"),
+                                 c("3SQJ", "A", 396, "GLU", "LYS", "ALB"),
                                  c("1A4Y", "A", 169, "PRO", "LEU", "")))
 colnames(test_data) <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA", "Gene_Name")
 knitr::kable(test_data, align = c("c", "c", "c", "c", "c", "c"))
