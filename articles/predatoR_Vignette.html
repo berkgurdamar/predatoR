@@ -74,7 +74,7 @@
       <img src="" class="logo" alt=""><h1>Introduction to predatoR</h1>
                         <h4 data-toc-skip class="author">Berk Gurdamar</h4>
             
-            <h4 data-toc-skip class="date">2022-08-15</h4>
+            <h4 data-toc-skip class="date">2022-08-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/berkgurdamar/predatoR/blob/HEAD/vignettes/predatoR_Vignette.Rmd" class="external-link"><code>vignettes/predatoR_Vignette.Rmd</code></a></small>
       <div class="d-none name"><code>predatoR_Vignette.Rmd</code></div>
@@ -207,8 +207,6 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prediction_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predatoR.html">predatoR</a></span><span class="op">(</span><span class="va">test_data</span>, gene_name_info <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/predatoR.html">predatoR()</a></code> function can also work with no gene name inputs. If a mutation has no gene name information, it gets the related gene names from <a href="https://www.ensembl.org/" class="external-link">Ensembl</a> and if there are multiple genes annotated for the PDB ID, gets the gene which has maximum GnomAD scores (<code>gene_name_info</code> should set as <code>TRUE</code>).</p>
-<pre><code><span><span class="co">#&gt; Warning in rbind(c("3SQJ", "A", 196, "GLN", "LEU"), c("3SQJ", "A", 396, : number</span></span>
-<span><span class="co">#&gt; of columns of result is not a multiple of vector length (arg 1)</span></span></code></pre>
 <table class="table">
 <thead><tr class="header">
 <th align="center">PDB_ID</th>
@@ -225,7 +223,7 @@
 <td align="center">196</td>
 <td align="center">GLN</td>
 <td align="center">LEU</td>
-<td align="center">3SQJ</td>
+<td align="center">ALB</td>
 </tr>
 <tr class="even">
 <td align="center">3SQJ</td>
@@ -233,7 +231,7 @@
 <td align="center">396</td>
 <td align="center">GLU</td>
 <td align="center">LYS</td>
-<td align="center">3SQJ</td>
+<td align="center">ALB</td>
 </tr>
 <tr class="odd">
 <td align="center">1A4Y</td>
@@ -245,13 +243,13 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prediction_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predatoR.html">predatoR</a></span><span class="op">(</span><span class="va">test_data</span>, gene_name_info <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/predatoR.html">predatoR()</a></code> function uses <code>max_thread_number - 1</code> as a default when <code>n_threads = NULL</code>. <code>n_threads</code> can be set by user.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prediction_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predatoR.html">predatoR</a></span><span class="op">(</span><span class="va">test_data</span>, n_threads <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> <span class="co"># 8 threads will be used</span></span></code></pre></div>
 <p><code><a href="../reference/predatoR.html">predatoR()</a></code> function downloads each PDB by default (<code>PDB_path = NULL</code>) or can use PDB files stored locally when <code>PDB_path</code> specified. It will automatically read and process the input PDB file from the path.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prediction_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predatoR.html">predatoR</a></span><span class="op">(</span><span class="va">test_data</span>, PDB_path <span class="op">=</span> <span class="st">"path/to/PDB/files/"</span><span class="op">)</span> </span></code></pre></div>
 </div>
 <div class="section level4">
@@ -297,7 +295,7 @@
 <h3 id="exploratory-usage">Exploratory Usage<a class="anchor" aria-label="anchor" href="#exploratory-usage"></a>
 </h3>
 <p>Network properties can be calculated by using different distance cutoffs. In this approach, <code><a href="../reference/predatoR.html">predatoR()</a></code> does not make any prediction about the mutation, but returns a data frame contains all 24 features annotated to the dataset. Both network formalisation approaches also can be used.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># networks build using all atoms and 7.6Å cutoff</span></span>
 <span><span class="va">prediction_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predatoR.html">predatoR</a></span><span class="op">(</span><span class="va">test_data</span>, distance_cutoff <span class="op">=</span> <span class="fl">7.6</span>, network_approach <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span> </span>
 <span></span>
@@ -349,7 +347,7 @@
 <div class="section level5">
 <h5 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h5>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># if file stored locally</span></span>
 <span><span class="va">PDB_2DN2_structure</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_PDB.html">read_PDB</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, PDB_path <span class="op">=</span> <span class="st">"path/to/PDB/files/"</span><span class="op">)</span> </span>
 <span><span class="co"># if file is going to be downloded</span></span>
@@ -381,7 +379,7 @@
 <div class="section level5">
 <h5 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a>
 </h5>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -407,7 +405,7 @@
 <div class="section level5">
 <h5 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a>
 </h5>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -433,7 +431,7 @@
 <div class="section level5">
 <h5 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a>
 </h5>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -459,7 +457,7 @@
 <div class="section level5">
 <h5 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a>
 </h5>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -485,7 +483,7 @@
 <div class="section level5">
 <h5 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a>
 </h5>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -515,7 +513,7 @@
 <div class="section level5">
 <h5 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a>
 </h5>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -541,7 +539,7 @@
 <div class="section level5">
 <h5 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a>
 </h5>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -565,7 +563,7 @@
 <div class="section level5">
 <h5 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a>
 </h5>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -589,7 +587,7 @@
 <div class="section level5">
 <h5 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a>
 </h5>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -613,7 +611,7 @@
 <div class="section level5">
 <h5 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a>
 </h5>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -637,7 +635,7 @@
 <div class="section level5">
 <h5 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a>
 </h5>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -661,7 +659,7 @@
 <div class="section level5">
 <h5 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a>
 </h5>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -685,7 +683,7 @@
 <div class="section level5">
 <h5 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a>
 </h5>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -709,7 +707,7 @@
 <div class="section level5">
 <h5 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a>
 </h5>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -733,7 +731,7 @@
 <div class="section level5">
 <h5 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a>
 </h5>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -765,7 +763,7 @@
 <div class="section level5">
 <h5 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a>
 </h5>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">3</span>, <span class="st">"HIS"</span>, <span class="st">"GLN"</span>, <span class="st">"ALB"</span><span class="op">)</span>,</span>
 <span>                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3SQJ"</span>, <span class="st">"A"</span>, <span class="fl">60</span>, <span class="st">"GLU"</span>, <span class="st">"LYS"</span>,<span class="st">"ALB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDB_ID"</span>, <span class="st">"Chain"</span>, <span class="st">"Position"</span>, <span class="st">"Orig_AA"</span>, <span class="st">"Mut_AA"</span>, <span class="st">"Gene_Name"</span><span class="op">)</span></span>
@@ -795,8 +793,8 @@
 </h5>
 <p>From an input data.frame containing <strong>PDB_ID</strong>, <strong>Chain</strong>, <strong>Position</strong>, <strong>Orig_AA</strong>, <strong>Mut_AA</strong>, <strong>Gene_Name</strong>, <strong>degree_z_score</strong>, <strong>eigen_z_score</strong>, <strong>shortest_path_z</strong>, <strong>betwenness_scores_z</strong>, <strong>clique_z_score</strong>, <strong>pagerank_z_score</strong>, <strong>syn_z</strong>, <strong>mis_z</strong>, <strong>pLI</strong>, <strong>blosum62_scores</strong>, <strong>kegg_pathway_number</strong>, <strong>genic_intolerance</strong>, <strong>go_terms</strong>, <strong>disgenet</strong>, <strong>gene_essentiality</strong>, <strong>gtex</strong>, <strong>ref_asa</strong>, <strong>mut_asa</strong>, <strong>asa_diff</strong>, <strong>ref_hyd</strong>, <strong>mut_hyd</strong> and <strong>hyd_diff</strong> scores <code><a href="../reference/impact_prediction.html">impact_prediction()</a></code> function classifies the mutation as <strong>Pathogenic</strong> or <strong>Neutral</strong>.</p>
 <p>Example input:</p>
-<div id="htmlwidget-252b62bda5d7f146839b" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-252b62bda5d7f146839b">{"x":{"filter":"none","vertical":false,"data":[["1","2"],["3SQJ","3SQJ"],["A","A"],["196","396"],["GLN","GLU"],["LEU","LYS"],["ALB","ALB"],["-0.0717218071350537","-0.280119006995483"],["-0.379784447875971","-0.406648724044331"],["-1.61712172099028","-0.114702339705536"],["0.709536957153219","-0.531050971889894"],["-0.0906809533248494","0.0706892006523297"],["0.0255568093251824","-0.318847672527394"],["-0.91513","-0.91513"],["0.65574","0.65574"],["0.64329","0.64329"],["-2","1"],["12","12"],["-0.89","-0.89"],["4","4"],["81","81"],["1","1"],["1.515105","1.515105"],["177.7","182.9"],["173.7","215.2"],["-4","32.3"],["-3.68","-3.2"],["3.8","-4.11"],["7.48","-0.91"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PDB_ID<\/th>\n      <th>Chain<\/th>\n      <th>Position<\/th>\n      <th>Orig_AA<\/th>\n      <th>Mut_AA<\/th>\n      <th>Gene_Name<\/th>\n      <th>degree_z_score<\/th>\n      <th>eigen_z_score<\/th>\n      <th>shortest_path_z<\/th>\n      <th>betweenness_scores_z<\/th>\n      <th>clique_z_score<\/th>\n      <th>pagerank_z_score<\/th>\n      <th>syn_z<\/th>\n      <th>mis_z<\/th>\n      <th>pLI<\/th>\n      <th>blosum62_scores<\/th>\n      <th>kegg_pathway_number<\/th>\n      <th>genic_intolerance<\/th>\n      <th>go_terms<\/th>\n      <th>disgenet<\/th>\n      <th>gene_essentiality<\/th>\n      <th>gtex<\/th>\n      <th>ref_asa<\/th>\n      <th>mut_asa<\/th>\n      <th>asa_diff<\/th>\n      <th>ref_hyd<\/th>\n      <th>mut_hyd<\/th>\n      <th>hyd_diff<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div id="htmlwidget-33204e0d3c2a41c7eac7" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-33204e0d3c2a41c7eac7">{"x":{"filter":"none","vertical":false,"data":[["1","2"],["3SQJ","3SQJ"],["A","A"],["196","396"],["GLN","GLU"],["LEU","LYS"],["ALB","ALB"],["-0.0717218071350537","-0.280119006995483"],["-0.379784447875971","-0.406648724044331"],["-1.61712172099028","-0.114702339705536"],["0.709536957153219","-0.531050971889894"],["-0.0906809533248494","0.0706892006523297"],["0.0255568093251824","-0.318847672527394"],["-0.91513","-0.91513"],["0.65574","0.65574"],["0.64329","0.64329"],["-2","1"],["12","12"],["-0.89","-0.89"],["4","4"],["81","81"],["1","1"],["1.515105","1.515105"],["177.7","182.9"],["173.7","215.2"],["-4","32.3"],["-3.68","-3.2"],["3.8","-4.11"],["7.48","-0.91"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PDB_ID<\/th>\n      <th>Chain<\/th>\n      <th>Position<\/th>\n      <th>Orig_AA<\/th>\n      <th>Mut_AA<\/th>\n      <th>Gene_Name<\/th>\n      <th>degree_z_score<\/th>\n      <th>eigen_z_score<\/th>\n      <th>shortest_path_z<\/th>\n      <th>betweenness_scores_z<\/th>\n      <th>clique_z_score<\/th>\n      <th>pagerank_z_score<\/th>\n      <th>syn_z<\/th>\n      <th>mis_z<\/th>\n      <th>pLI<\/th>\n      <th>blosum62_scores<\/th>\n      <th>kegg_pathway_number<\/th>\n      <th>genic_intolerance<\/th>\n      <th>go_terms<\/th>\n      <th>disgenet<\/th>\n      <th>gene_essentiality<\/th>\n      <th>gtex<\/th>\n      <th>ref_asa<\/th>\n      <th>mut_asa<\/th>\n      <th>asa_diff<\/th>\n      <th>ref_hyd<\/th>\n      <th>mut_hyd<\/th>\n      <th>hyd_diff<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prediction_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/impact_prediction.html">impact_prediction</a></span><span class="op">(</span><span class="va">final_df</span><span class="op">)</span> </span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
