@@ -167,6 +167,10 @@ test_that("Check ca only pdb read with download", {
 })
 
 test_that("Check ca only pdb read with pdb read", {
+  PDB_ID <- "1Z2M"
+  tmp_dir <- tempdir()
+  tmp_path <- file.path(tmp_dir, paste0(PDB_ID, ".pdb"))
+  download.file(bio3d::get.pdb(PDB_ID, URL=TRUE), tmp_path)
   expect_true(is.data.frame(read_PDB("2DN2", network_approach = "ca", PDB_path = tmp_dir)))
 })
 
