@@ -163,11 +163,11 @@ test_that("Check network approach error", {
 })
 
 test_that("Check ca only pdb read with download", {
-  expect_error(read_PDB("2DN2", network_approach = "ca"))
+  expect_true(is.data.frame(read_PDB("2DN2", network_approach = "ca")))
 })
 
 test_that("Check ca only pdb read with pdb read", {
-  expect_error(read_PDB("2DN2", network_approach = "ca", PDB_path = tmp_dir))
+  expect_true(is.data.frame(read_PDB("2DN2", network_approach = "ca", PDB_path = tmp_dir)))
 })
 
 # PDB2connections ---------------------------------------------------------
