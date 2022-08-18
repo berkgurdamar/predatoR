@@ -10,6 +10,16 @@ info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
 
 
+test_that("Check network approach error", {
+  expect_error(predatoR(info_df = as.matrix(info_df), gene_name_info = T, network_approach = "null"))
+})
+
+test_that("Check exploratory analysis output", {
+
+  info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
+  expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2, network_approach = "ca", distance_cutoff = 5)))
+})
+
 test_that("Check input type", {
   expect_error(predatoR(info_df = as.matrix(info_df), gene_name_info = T),
                "Input should be a data.frame.")
@@ -148,7 +158,17 @@ test_that("Check output class", {
   expect_true(is.data.frame(read_PDB("2DN2")))
 })
 
+test_that("Check network approach error", {
+  expect_error(read_PDB("2DN2", network_approach = "null"))
+})
 
+test_that("Check ca only pdb read with download", {
+  expect_error(read_PDB("2DN2", network_approach = "ca"))
+})
+
+test_that("Check ca only pdb read with pdb read", {
+  expect_error(read_PDB("2DN2", network_approach = "ca", PDB_path = tmp_dir))
+})
 
 # PDB2connections ---------------------------------------------------------
 
@@ -495,6 +515,41 @@ final_df <- filtered_info_df
 test_that("Check output class", {
 
   expect_true(is.data.frame(impact_prediction(final_df)))
+
+})
+
+
+atom_matrix <- read_PDB("4RFZ", network_approach = "ca")
+
+edge_list <- PDB2connections(atom_matrix, filtered_info_df, n_threads = 2, single_run = T)
+
+filtered_info_df$degree_z_score <- degree_score(edge_list, filtered_info_df)
+
+filtered_info_df$eigen_z_score <- eigen_centrality_score(edge_list, filtered_info_df)
+
+filtered_info_df$shortest_path_z <- shorteset_path_score(edge_list, filtered_info_df)
+
+filtered_info_df$betweenness_scores_z <- betweenness_score(edge_list, filtered_info_df)
+
+filtered_info_df$clique_z_score <- clique_score(edge_list, filtered_info_df, n_threads = 2, single_run = T)
+
+filtered_info_df$pagerank_z_score <- pagerank_score(edge_list, filtered_info_df)
+
+test_that("Check ca output class", {
+
+  expect_true(is.data.frame(impact_prediction(final_df, network_approach = "ca")))
+
+})
+
+test_that("Check prediction error", {
+
+  expect_error(is.data.frame(impact_prediction(final_df, network_approach = "ca", distance_cutoff = 8)))
+
+})
+
+test_that("Check network approach error", {
+
+  expect_error(is.data.frame(impact_prediction(final_df, network_approach = "null")))
 
 })
 
