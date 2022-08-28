@@ -21,7 +21,7 @@ suppressPackageStartupMessages(library(predatoR))
 
 In this section, we show you how to use `predatoR` package for mutation impact prediction.
 
-`predatoR` package makes prediction about impact of a mutation based on an __Adaboost__ model and classifies the mutations as __Pathogenic__ or __Neutral__. Model was created by using [Varibench](http://structure.bmc.lu.se/VariBench/) and [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/) datasets. [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) dataset also used for model validation. 
+`predatoR` package makes prediction about impact of a mutation based on an __Adaboost__ model and classifies the mutations as __Pathogenic__ or __Neutral__. Model was created by using [Varibench](http://structure.bmc.lu.se/VariBench/) and [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/) datasets. [Missense3D](http://missense3d.bc.ic.ac.uk/~missense3d/) dataset also used for method comparison. 
 
 ### Installation
 
@@ -37,7 +37,7 @@ install_github("berkgurdamar/predatoR")
 
 <img src="./predatoR_workflow.png" style="max-width:100%;" />
 
-`predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. Predictions can be made by using 2 different models, 7 Angstrom (Å)-all atoms model and 7Å-carbon alpha (Cα) atoms only model.
+`predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. Predictions can be made by using 2 different models, 7 Angstrom (Å)-all atoms model and 5Å-carbon alpha (Cα) atoms only model.
 
 `predatoR()` function works on each PDB ID respectively. For each PDB ID;  
 
@@ -80,7 +80,7 @@ If `predatoR()` couldn't find any information of any gene such as 'Genic Intoler
  `predatoR()` function gets the related gene names from [Ensembl](https://www.ensembl.org/) and if there are multiple
  genes annotated for the PDB ID, choose the gene having the higher gnomAD metrics. 
  
- `predatoR()` can make predictions using only 7Å distance cutoff. For exploratory purposes, different cutoffs can be used and network properties can be calculated.
+ `predatoR()` can make predictions using 7Å or 5Å distance cutoffs. For exploratory purposes, different cutoffs can be used and network properties can be calculated.
  
  
  Example input with the __'Gene_Name'__ information included:
@@ -224,7 +224,7 @@ PDB_2DN2_structure <- read_PDB("3SQJ")
 ### `PDB2connections`
 
 `PDB2connections()` function calculates distances between each ATOM in the PDB structure 
-and creates an edge between atoms if the distance <= 7Å. As a result, returns a list contains data frames of different chains interactions.
+and creates an edge between atoms if the distance <= 7Å. As a result, returns a list contains data frames of different chains' interaction lists.
 
 #### Arguments
 

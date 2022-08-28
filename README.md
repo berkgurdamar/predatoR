@@ -71,7 +71,7 @@ Mutation impact prediction can be done via `predatoR()` function:
 `predatoR()` uses data.frame structures as an input. data.frame should
 consist of **‘PDB_ID’**, **‘Chain’**, **‘Position’**, **‘Orig_AA’**,
 **‘Mut_AA’** and **‘Gene_Name’** (optional). Predictions can be made by
-using 2 different models, 7 Angstrom (Å)-all atoms model and 7Å-carbon
+using 2 different models, 7 Angstrom (Å)-all atoms model and 5Å-carbon
 alpha (Cα) atoms only model.
 
 | PDB_ID | Chain | Position | Orig_AA | Mut_AA | Gene_Name |

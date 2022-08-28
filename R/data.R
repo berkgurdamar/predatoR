@@ -7,6 +7,6 @@
 
 #' Only Cα atoms used model
 #'
-#' Adaboost model built using 7Å cutoff and only Cα atoms in the structure.
+#' Adaboost model built using 5Å cutoff and only Cα atoms in the structure.
 #'
-"caret_adaboost_ca"
+"caret_adaboost_5_ca"

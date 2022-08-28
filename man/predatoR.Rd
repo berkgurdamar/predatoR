@@ -37,5 +37,6 @@ Main function for mutation impact prediction
 With an input data.frame which contains 'PDB_ID', 'Chain', 'Position',
 'Reference Amino Acid', 'Mutated Amino Acid' and 'Gene_Name' (optional) information respectively,
 make a prediction about the impact of a mutation and classifies the mutation as 'Pathogenic' or 'Neutral'.
-Predictions can be done by using 7 angstrom distance cutoff or other cutoffs can be used for exploratory purposes.
+Predictions can be done by using 7 angstrom cutoff - all atom approach or 5 angstrom cutoff - ca atom approach.
+Other cutoffs can be used for exploratory purposes.
 }

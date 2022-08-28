@@ -541,7 +541,7 @@ filtered_info_df$pagerank_z_score <- pagerank_score(edge_list, filtered_info_df)
 
 test_that("Check ca output class", {
 
-  expect_true(is.data.frame(impact_prediction(final_df, network_approach = "ca")))
+  expect_true(is.data.frame(impact_prediction(final_df, network_approach = "ca", distance_cutoff = 5)))
 
 })
 
