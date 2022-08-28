@@ -1,6 +1,6 @@
 Package: predatoR
 Title: Mutation Impact Prediction Based on Network Properties
-Version: 0.0.1.9000
+Version: 1.0.0
 Authors@R: 
     person(given = "Berk",
            family = "Gurdamar",
