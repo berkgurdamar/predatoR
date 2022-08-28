@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">predatoR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@
       <img src="" class="logo" alt=""><h1>Introduction to predatoR</h1>
                         <h4 data-toc-skip class="author">Berk Gurdamar</h4>
             
-            <h4 data-toc-skip class="date">2022-08-18</h4>
+            <h4 data-toc-skip class="date">2022-08-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/berkgurdamar/predatoR/blob/HEAD/vignettes/predatoR_Vignette.Rmd" class="external-link"><code>vignettes/predatoR_Vignette.Rmd</code></a></small>
       <div class="d-none name"><code>predatoR_Vignette.Rmd</code></div>
@@ -86,7 +86,7 @@
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <p>In this section, we show you how to use <code>predatoR</code> package for mutation impact prediction.</p>
-<p><code>predatoR</code> package makes prediction about impact of a mutation based on an <strong>Adaboost</strong> model and classifies the mutations as <strong>Pathogenic</strong> or <strong>Neutral</strong>. Model was created by using <a href="http://structure.bmc.lu.se/VariBench/" class="external-link">Varibench</a> and <a href="https://www.ncbi.nlm.nih.gov/clinvar/" class="external-link">ClinVar</a> datasets. <a href="http://missense3d.bc.ic.ac.uk/~missense3d/" class="external-link">Missense3D</a> dataset also used for model validation.</p>
+<p><code>predatoR</code> package makes prediction about impact of a mutation based on an <strong>Adaboost</strong> model and classifies the mutations as <strong>Pathogenic</strong> or <strong>Neutral</strong>. Model was created by using <a href="http://structure.bmc.lu.se/VariBench/" class="external-link">Varibench</a> and <a href="https://www.ncbi.nlm.nih.gov/clinvar/" class="external-link">ClinVar</a> datasets. <a href="http://missense3d.bc.ic.ac.uk/~missense3d/" class="external-link">Missense3D</a> dataset also used for method comparison.</p>
 <div class="section level4">
 <h4 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h4>
@@ -99,7 +99,7 @@
 <h4 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
 </h4>
 <p><img src="predatoR_workflow.png" style="max-width:100%;"></p>
-<p><code><a href="../reference/predatoR.html">predatoR()</a></code> function is the wrapper function of the <code>predatoR</code> package. <code><a href="../reference/predatoR.html">predatoR()</a></code> gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are <strong>‘PDB_ID’</strong>, <strong>‘Chain’</strong>, <strong>‘Position’</strong>, <strong>‘Orig_AA’</strong> and <strong>‘Mut_AA’</strong>. <strong>‘Gene_Name’</strong> column is optional. Predictions can be made by using 2 different models, 7 Angstrom (Å)-all atoms model and 7Å-carbon alpha (Cα) atoms only model.</p>
+<p><code><a href="../reference/predatoR.html">predatoR()</a></code> function is the wrapper function of the <code>predatoR</code> package. <code><a href="../reference/predatoR.html">predatoR()</a></code> gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are <strong>‘PDB_ID’</strong>, <strong>‘Chain’</strong>, <strong>‘Position’</strong>, <strong>‘Orig_AA’</strong> and <strong>‘Mut_AA’</strong>. <strong>‘Gene_Name’</strong> column is optional. Predictions can be made by using 2 different models, 7 Angstrom (Å)-all atoms model and 5Å-carbon alpha (Cα) atoms only model.</p>
 <p><code><a href="../reference/predatoR.html">predatoR()</a></code> function works on each PDB ID respectively. For each PDB ID;</p>
 <ul>
 <li>Downloads/Reads PDB file</li>
@@ -145,7 +145,7 @@
 <strong>network_approach:</strong> network building approach; “all” (default) for using all atoms or “ca” for using Cα atoms only</li>
 </ul>
 <p>When running the <code><a href="../reference/predatoR.html">predatoR()</a></code> function, if gene name is included in the input, <code>gene_name_info</code> should be set as <code>TRUE</code>. If there is no gene name information in the input (<code>gene_name_info = FALSE</code>), <code><a href="../reference/predatoR.html">predatoR()</a></code> function gets the related gene names from <a href="https://www.ensembl.org/" class="external-link">Ensembl</a> and if there are multiple genes annotated for the PDB ID, choose the gene having the higher gnomAD metrics.</p>
-<p><code><a href="../reference/predatoR.html">predatoR()</a></code> can make predictions using only 7Å distance cutoff. For exploratory purposes, different cutoffs can be used and network properties can be calculated.</p>
+<p><code><a href="../reference/predatoR.html">predatoR()</a></code> can make predictions using 7Å or 5Å distance cutoffs. For exploratory purposes, different cutoffs can be used and network properties can be calculated.</p>
 <p>Example input with the <strong>‘Gene_Name’</strong> information included:</p>
 <table class="table">
 <thead><tr class="header">
@@ -358,7 +358,7 @@
 <h4 id="pdb2connections">
 <code>PDB2connections</code><a class="anchor" aria-label="anchor" href="#pdb2connections"></a>
 </h4>
-<p><code><a href="../reference/PDB2connections.html">PDB2connections()</a></code> function calculates distances between each ATOM in the PDB structure and creates an edge between atoms if the distance &lt;= 7Å. As a result, returns a list contains data frames of different chains interactions.</p>
+<p><code><a href="../reference/PDB2connections.html">PDB2connections()</a></code> function calculates distances between each ATOM in the PDB structure and creates an edge between atoms if the distance &lt;= 7Å. As a result, returns a list contains data frames of different chains’ interaction lists.</p>
 <div class="section level5">
 <h5 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a>
 </h5>
@@ -793,8 +793,8 @@
 </h5>
 <p>From an input data.frame containing <strong>PDB_ID</strong>, <strong>Chain</strong>, <strong>Position</strong>, <strong>Orig_AA</strong>, <strong>Mut_AA</strong>, <strong>Gene_Name</strong>, <strong>degree_z_score</strong>, <strong>eigen_z_score</strong>, <strong>shortest_path_z</strong>, <strong>betwenness_scores_z</strong>, <strong>clique_z_score</strong>, <strong>pagerank_z_score</strong>, <strong>syn_z</strong>, <strong>mis_z</strong>, <strong>pLI</strong>, <strong>blosum62_scores</strong>, <strong>kegg_pathway_number</strong>, <strong>genic_intolerance</strong>, <strong>go_terms</strong>, <strong>disgenet</strong>, <strong>gene_essentiality</strong>, <strong>gtex</strong>, <strong>ref_asa</strong>, <strong>mut_asa</strong>, <strong>asa_diff</strong>, <strong>ref_hyd</strong>, <strong>mut_hyd</strong> and <strong>hyd_diff</strong> scores <code><a href="../reference/impact_prediction.html">impact_prediction()</a></code> function classifies the mutation as <strong>Pathogenic</strong> or <strong>Neutral</strong>.</p>
 <p>Example input:</p>
-<div id="htmlwidget-89f231758d26bc202809" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-89f231758d26bc202809">{"x":{"filter":"none","vertical":false,"data":[["1","2"],["3SQJ","3SQJ"],["A","A"],["196","396"],["GLN","GLU"],["LEU","LYS"],["ALB","ALB"],["-0.0717218071350537","-0.280119006995483"],["-0.379784447875971","-0.406648724044331"],["-1.61712172099028","-0.114702339705536"],["0.709536957153219","-0.531050971889894"],["-0.0906809533248494","0.0706892006523297"],["0.0255568093251824","-0.318847672527394"],["-0.91513","-0.91513"],["0.65574","0.65574"],["0.64329","0.64329"],["-2","1"],["12","12"],["-0.89","-0.89"],["4","4"],["81","81"],["1","1"],["1.515105","1.515105"],["177.7","182.9"],["173.7","215.2"],["-4","32.3"],["-3.68","-3.2"],["3.8","-4.11"],["7.48","-0.91"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PDB_ID<\/th>\n      <th>Chain<\/th>\n      <th>Position<\/th>\n      <th>Orig_AA<\/th>\n      <th>Mut_AA<\/th>\n      <th>Gene_Name<\/th>\n      <th>degree_z_score<\/th>\n      <th>eigen_z_score<\/th>\n      <th>shortest_path_z<\/th>\n      <th>betweenness_scores_z<\/th>\n      <th>clique_z_score<\/th>\n      <th>pagerank_z_score<\/th>\n      <th>syn_z<\/th>\n      <th>mis_z<\/th>\n      <th>pLI<\/th>\n      <th>blosum62_scores<\/th>\n      <th>kegg_pathway_number<\/th>\n      <th>genic_intolerance<\/th>\n      <th>go_terms<\/th>\n      <th>disgenet<\/th>\n      <th>gene_essentiality<\/th>\n      <th>gtex<\/th>\n      <th>ref_asa<\/th>\n      <th>mut_asa<\/th>\n      <th>asa_diff<\/th>\n      <th>ref_hyd<\/th>\n      <th>mut_hyd<\/th>\n      <th>hyd_diff<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div id="htmlwidget-bc7d30779a37f8b50e22" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bc7d30779a37f8b50e22">{"x":{"filter":"none","vertical":false,"data":[["1","2"],["3SQJ","3SQJ"],["A","A"],["196","396"],["GLN","GLU"],["LEU","LYS"],["ALB","ALB"],["-0.0717218071350537","-0.280119006995483"],["-0.379784447875971","-0.406648724044331"],["-1.61712172099028","-0.114702339705536"],["0.709536957153219","-0.531050971889894"],["-0.0906809533248494","0.0706892006523297"],["0.0255568093251824","-0.318847672527394"],["-0.91513","-0.91513"],["0.65574","0.65574"],["0.64329","0.64329"],["-2","1"],["12","12"],["-0.89","-0.89"],["4","4"],["81","81"],["1","1"],["1.515105","1.515105"],["177.7","182.9"],["173.7","215.2"],["-4","32.3"],["-3.68","-3.2"],["3.8","-4.11"],["7.48","-0.91"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PDB_ID<\/th>\n      <th>Chain<\/th>\n      <th>Position<\/th>\n      <th>Orig_AA<\/th>\n      <th>Mut_AA<\/th>\n      <th>Gene_Name<\/th>\n      <th>degree_z_score<\/th>\n      <th>eigen_z_score<\/th>\n      <th>shortest_path_z<\/th>\n      <th>betweenness_scores_z<\/th>\n      <th>clique_z_score<\/th>\n      <th>pagerank_z_score<\/th>\n      <th>syn_z<\/th>\n      <th>mis_z<\/th>\n      <th>pLI<\/th>\n      <th>blosum62_scores<\/th>\n      <th>kegg_pathway_number<\/th>\n      <th>genic_intolerance<\/th>\n      <th>go_terms<\/th>\n      <th>disgenet<\/th>\n      <th>gene_essentiality<\/th>\n      <th>gtex<\/th>\n      <th>ref_asa<\/th>\n      <th>mut_asa<\/th>\n      <th>asa_diff<\/th>\n      <th>ref_hyd<\/th>\n      <th>mut_hyd<\/th>\n      <th>hyd_diff<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prediction_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/impact_prediction.html">impact_prediction</a></span><span class="op">(</span><span class="va">final_df</span><span class="op">)</span> </span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
