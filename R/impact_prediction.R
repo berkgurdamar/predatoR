@@ -61,7 +61,7 @@ impact_prediction <- function(final_df, distance_cutoff = 7, network_approach = 
 
     }
     else{
-      stop("Predictions can be made using 5 angstrom ca atom approach and 7 angstrom all atom approach cutoffs")
+      stop("Predictions can be made using 5 angstrom ca atom approach and 7 angstrom all atom approach")
     }
     probs <- c()
     res_types <- c()

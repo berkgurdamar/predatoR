@@ -557,6 +557,11 @@ test_that("Check network approach error", {
 
 })
 
+test_that("Check cutoff error", {
+
+  expect_error(is.data.frame(impact_prediction(final_df, network_approach = "ca", distance_cutoff = 7)))
+
+})
 
 # filtered_info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 #
