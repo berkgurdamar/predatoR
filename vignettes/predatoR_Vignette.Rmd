@@ -341,7 +341,7 @@ betweenness_z_score <- betweenness_score(edge_list = edge_list, filtered_info_df
 
 ### `clique_score`
 
-`clique_score()` function calculates Clique score of each atom and turns the desired nodes' scores into Z-scores.
+`clique_score()` function calculates Clique Z-scores score of each atom and returns the desired nodes' scores.
 
 #### Arguments
 
@@ -391,7 +391,7 @@ pagerank_z_score <- pagerank_score(edge_list = edge_list, filtered_info_df = tes
 `gnomad_scores()` function gets input gene's gnomAD Synonymous Z-Score, Missense Z-Score, and PLI Score
 from data retrieved from [gnomAD](https://gnomad.broadinstitute.org/). If there is no gene name information in the input,
 `gnomad_scores()` finds the genes that related with input PDB chain ID by using a dataset retrieved from [Ensembl](https://www.ensembl.org/). 
-If there are multiple genes annotated for same PDB, `gnomad_scores()` function gets the gene that has maximum Synonymous Z-Score, Missense Z-Score, and pLI Score.
+If there are multiple genes annotated for same PDB Chain ID, `gnomad_scores()` function gets the gene that has maximum Synonymous Z-Score, Missense Z-Score, and pLI Score.
 
 #### Arguments
 
@@ -434,7 +434,7 @@ BLOSUM62_scores <- BLOSUM62_score(info_df = test_data)
 
 ### `KEGG_pathway_number`
 
-`KEGG_pathway_number()` function finds the number of KEGG Pathways which related with the input genes.
+`KEGG_pathway_number()` function finds the number of KEGG Pathways associated with the input genes.
 
 #### Arguments
 
@@ -475,7 +475,7 @@ genic_intolerance_score <- genic_intolerance(filtered_info_df = test_data)
 
 ### `GO_terms`
 
-`GO_terms()` function returns the number of GO terms related with the input genes.
+`GO_terms()` function returns the number of GO terms associated with the input genes.
 
 #### Arguments
 
@@ -495,7 +495,7 @@ GO_terms_score <- GO_terms(filtered_info_df = test_data)
 
 ### `DisGeNET`
 
-`DisGeNET()` function returns number of diseases related with input genes by using a dataset retrieved from 
+`DisGeNET()` function returns number of diseases associated with input genes by using a dataset retrieved from 
 [DisGeNET](http://https://www.disgenet.org/).
 
 #### Arguments
@@ -538,7 +538,7 @@ gene_essentiality_score <- gene_essentiality(filtered_info_df = test_data)
 ### `GTEx`
 
 `GTEx()` function calculates the median gene expression value with using 54 different tissue types' median gene expression value from 
-[GTEx](https://gtexportal.org/home/) and returns the value of input gene.
+[GTEx](https://gtexportal.org/home/) and returns the values of input genes.
 
 #### Arguments
 

@@ -1,6 +1,7 @@
 #' Clique Score
 #'
-#' Calculates and returns the Clique Z-Scores of the input positions.
+#' For each node, calculates the number of edges between neighbors of a node.
+#' Converts to scores into Z-Scores and returns the scores of input positions.
 #'
 #' @param edge_list list contains separate edge data.frames for each chain
 #' @param filtered_info_df input data.frame which contain only one PDB entries
@@ -53,14 +54,12 @@ clique_score <- function(edge_list, filtered_info_df, n_threads = NULL, single_r
 
     edge_list_filtered <- as.data.frame(edge_list[[i]])
 
-    all_perm <- choose(length(unique(edge_list_filtered$node_name)), 2) * factorial(2)
-
     clique_score <- foreach::foreach(j = 1:length(unique(edge_list_filtered$node_name)), .combine = c) %dopar% {
 
       idx <- edge_list_filtered[which(edge_list_filtered[,1] == unique(edge_list_filtered$node_name)[j]), 2]
       cliques <- edge_list_filtered[intersect(which(edge_list_filtered$node_name %in% idx), which(edge_list_filtered$connections %in% idx)),]
 
-      nrow(cliques)/all_perm
+      nrow(cliques)
     }
 
     clique_z_score <- (clique_score - mean(clique_score)) / stats::sd(clique_score)
