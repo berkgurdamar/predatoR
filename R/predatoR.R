@@ -150,7 +150,29 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
     final_df <- rbind(final_df, filtered_info_df)
   }
 
-  if(distance_cutoff == 7){
+
+  if(network_approach == "all" & distance_cutoff == 7){
+    final_df <- stats::na.omit(final_df)
+
+      if(nrow(final_df) == 0){
+
+        parallel::stopCluster(my.cluster)
+
+        stop("There is no input for prediction")
+
+      }else{
+
+        prediction_result <- impact_prediction(final_df, distance_cutoff = distance_cutoff, network_approach = network_approach)
+
+        parallel::stopCluster(my.cluster)
+
+        return(prediction_result)
+
+      }
+
+  }
+
+  else if(network_approach == "ca" & distance_cutoff == 5){
     final_df <- stats::na.omit(final_df)
 
     if(nrow(final_df) == 0){
@@ -163,14 +185,14 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
 
       prediction_result <- impact_prediction(final_df, distance_cutoff = distance_cutoff, network_approach = network_approach)
 
+      parallel::stopCluster(my.cluster)
+
+      return(prediction_result)
+
     }
 
-    parallel::stopCluster(my.cluster)
-
-    return(prediction_result)
-
   }else{
-    return(final_df)
-  }
+      return(final_df)
+    }
 
 }
