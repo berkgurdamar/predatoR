@@ -49,15 +49,15 @@ impact_prediction <- function(final_df, distance_cutoff = 7, network_approach = 
 
     if(network_approach == "all" & distance_cutoff == 7){
 
-      prob <- caret::predict.train(caret_adaboost_all, final_df, type = "prob")
+      prob <- caret::predict.train(predatoR::caret_adaboost_all, final_df, type = "prob")
 
-      res <- as.factor(ifelse(caret::predict.train(caret_adaboost_all, final_df, type = "prob")[,2] > 0.5, "1", "0"))
+      res <- as.factor(ifelse(caret::predict.train(predatoR::caret_adaboost_all, final_df, type = "prob")[,2] > 0.5, "1", "0"))
 
     }else if(network_approach == "ca" & distance_cutoff == 5){
 
-      prob <- caret::predict.train(caret_adaboost_5_ca, final_df, type = "prob")
+      prob <- caret::predict.train(predatoR::caret_adaboost_5_ca, final_df, type = "prob")
 
-      res <- as.factor(ifelse(caret::predict.train(caret_adaboost_5_ca, final_df, type = "prob")[,2] > 0.5, "1", "0"))
+      res <- as.factor(ifelse(caret::predict.train(predatoR::caret_adaboost_5_ca, final_df, type = "prob")[,2] > 0.5, "1", "0"))
 
     }
     else{
