@@ -1,9 +1,9 @@
-pandoc: 2.14.2
+pandoc: 2.19.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   predatoR_Vignette: predatoR_Vignette.html
-last_built: 2022-10-06T10:10Z
+last_built: 2022-12-07T09:50Z
 urls:
   reference: https://berkgurdamar.github.io/predatoR/reference
   article: https://berkgurdamar.github.io/predatoR/articles

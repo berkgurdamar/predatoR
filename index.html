@@ -74,11 +74,15 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="-predator-mutation-impact-prediction-based-on-network-properties">
-<img src="https://github.com/berkgurdamar/predatoR/blob/main/inst/extdata/predator_logo.png?raw=true" align="left" height="150/"> predatoR: Mutation Impact Prediction Based on Network Properties<a class="anchor" aria-label="anchor" href="#-predator-mutation-impact-prediction-based-on-network-properties"></a>
+<div class="page-header"><h1 id="id_-predator-mutation-impact-prediction-based-on-network-properties">
+<img src="https://github.com/berkgurdamar/predatoR/blob/main/inst/extdata/predator_logo.png?raw=true" align="left" height="150/"> predatoR: Mutation Impact Prediction Based on Network Properties<a class="anchor" aria-label="anchor" href="#id_-predator-mutation-impact-prediction-based-on-network-properties"></a>
 </h1></div>
 <!-- badges: start -->
-<!-- <br /> --><!-- <br /> --><!-- # NOTE --><!-- `R-CMD-check` and `Codecov` gave an error due to the Git LFS. Local tests are fine you can download the `predatoR` as described below. -->
+
+<!-- <br /> -->
+<!-- <br /> -->
+<!-- # NOTE -->
+<!-- `R-CMD-check` and `Codecov` gave an error due to the Git LFS. Local tests are fine you can download the `predatoR` as described below. -->
 </div>
 <div class="section level1">
 <h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
@@ -169,6 +173,16 @@
 <span><span class="va">pred_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/predatoR.html">predatoR</a></span><span class="op">(</span>info_df <span class="op">=</span>  <span class="va">input_df</span>, n_threads <span class="op">=</span> <span class="fl">8</span>, gene_name_info <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="reference/predatoR.html">predatoR()</a></code> function returns a data.frame which contains additional two columns; <strong>‘Prediction’</strong> and <strong>‘Probability’</strong>. <strong>‘Prediction’</strong> represents the result of the impact prediction and <strong>‘Probability’</strong> represents the probability that the mutation classified as <strong>Pathogenic</strong> or <strong>Neutral</strong>.</p>
 <table class="table">
+<colgroup>
+<col width="10%">
+<col width="8%">
+<col width="12%">
+<col width="11%">
+<col width="10%">
+<col width="14%">
+<col width="15%">
+<col width="16%">
+</colgroup>
 <thead><tr class="header">
 <th align="center">PDB_ID</th>
 <th align="center">Chain</th>
