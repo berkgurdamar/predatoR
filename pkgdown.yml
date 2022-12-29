@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   predatoR_Vignette: predatoR_Vignette.html
-last_built: 2022-12-29T10:18Z
+last_built: 2022-12-29T11:20Z
 urls:
   reference: https://berkgurdamar.github.io/predatoR/reference
   article: https://berkgurdamar.github.io/predatoR/articles
