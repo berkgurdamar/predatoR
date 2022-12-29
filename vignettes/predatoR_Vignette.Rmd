@@ -73,7 +73,7 @@ If `predatoR()` couldn't find any information of any gene such as 'Genic Intoler
  - __n_threads:__ Number of threads (default = NULL)
  - __gene_name_info:__ Whether there is gene name information in the input or not (default = TRUE)
  - __distance_cutoff:__ distance cutoff for setting edges (default = 5)
- - __network_approach:__ network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
+ - __network_approach:__ network building approach; "all" (default) for using all atoms only or "ca" for using ca atoms only
  
  When running the `predatoR()` function, if gene name is included in the input, `gene_name_info`
  should be set as `TRUE`. If there is no gene name information in the input (`gene_name_info = FALSE`), 
@@ -209,7 +209,7 @@ After reading, create a matrix that contains only ATOM labelled structures.
 
  - __PDB_ID:__ PDB ID (E.g. "3SQJ")
  - __PDB_path:__ PDB file path if files stored locally (default = FALSE)
- - __network_approach:__ network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
+ - __network_approach:__ network building approach; "all" (default) for using all atoms only or "ca" for using ca atoms only
 
 #### Usage 
 
@@ -593,7 +593,7 @@ gene_essentiality_score <- amino_acid_features(info_df = test_data)
 
  - __final_df:__ data.frame contains all the required information for impact prediction
  - __distance_cutoff:__ distance cutoff for setting edges (default = 5)
- - __network_approach:__ network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
+ - __network_approach:__ network building approach; "all" (default) for using all atoms only or "ca" for using ca atoms only
 
 #### Usage 
 

@@ -7,14 +7,14 @@
 #'
 #' @param final_df data.frame contains all the required features for impact prediction
 #' @param distance_cutoff distance cutoff for setting edges (default = 5)
-#' @param network_approach network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
+#' @param network_approach network building approach; "all" (default) for using all atoms only or "ca" for using ca atoms only
 #'
 #' @return data.frame contains the prediction results
 #'
 #' @export
 #'
 
-impact_prediction <- function(final_df, distance_cutoff = 5, network_approach = "ca"){
+impact_prediction <- function(final_df, distance_cutoff = 5, network_approach = "all"){
 
   if(!network_approach %in% c("all", "ca")){
     stop("Network approach needs to be 'all' or 'ca'")
