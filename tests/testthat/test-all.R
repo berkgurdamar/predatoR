@@ -64,7 +64,7 @@ test_that("Check false pdb input", {
 
   info_df <- as.data.frame(rbind(c("2DNNN2", "B", 1, "VAL", "ALA", "HBB")))
 
-  expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2)))
+  expect_error(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2))
 })
 
 
@@ -73,7 +73,7 @@ test_that("Check no gene name input", {
 
   info_df <- as.data.frame(rbind(c("2DNNN2", "B", 1, "VAL", "ALA")))
 
-  expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = F, n_threads = 2)))
+  expect_error(predatoR(info_df = info_df, gene_name_info = F, n_threads = 2))
 })
 
 
@@ -112,7 +112,7 @@ info_df <- as.data.frame(rbind(c("2DN2", "B", 5, "VAL", "ALA", "HBB")))
 
 test_that("Check input amino acid names", {
 
-  expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1))
+  expect_error(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1))
 })
 
 
@@ -727,3 +727,4 @@ test_that("Check output class", {
                  "Amino Acid Features:		DONE")
 
 })
+
