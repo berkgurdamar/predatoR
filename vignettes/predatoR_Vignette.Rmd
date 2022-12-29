@@ -37,7 +37,7 @@ install_github("berkgurdamar/predatoR")
 
 <img src="./predatoR_workflow.png" style="max-width:100%;" />
 
-`predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. Predictions can be made by using 2 different models, 7 Angstrom (Å)-all atoms model and 5Å-carbon alpha (Cα) atoms only model.
+`predatoR()` function is the wrapper function of the `predatoR` package. `predatoR()` gets a data.frame structure as an input. Input should contain 5 mandatory and 1 optional columns. Mandatory columns are  __'PDB_ID'__, __'Chain'__, __'Position'__, __'Orig_AA'__ and  __'Mut_AA'__. __'Gene_Name'__ column is optional. Predictions can be made by using 2 different models, 5 Angstrom (Å)-all atoms model and 7Å-carbon alpha (Cα) atoms only model.
 
 `predatoR()` function works on each PDB ID respectively. For each PDB ID;  
 
@@ -72,8 +72,8 @@ If `predatoR()` couldn't find any information of any gene such as 'Genic Intoler
  - __PDB_path:__ PDB file path if the user wants to use PDB structures stored locally (default = NULL)
  - __n_threads:__ Number of threads (default = NULL)
  - __gene_name_info:__ Whether there is gene name information in the input or not (default = TRUE)
- - __distance_cutoff:__ distance cutoff for setting edges (default = 7)
- - __network_approach:__ network building approach; "all" (default) for using all atoms or "ca" for using Cα atoms only
+ - __distance_cutoff:__ distance cutoff for setting edges (default = 5)
+ - __network_approach:__ network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
  
  When running the `predatoR()` function, if gene name is included in the input, `gene_name_info`
  should be set as `TRUE`. If there is no gene name information in the input (`gene_name_info = FALSE`), 
@@ -209,7 +209,7 @@ After reading, create a matrix that contains only ATOM labelled structures.
 
  - __PDB_ID:__ PDB ID (E.g. "3SQJ")
  - __PDB_path:__ PDB file path if files stored locally (default = FALSE)
- - __network_approach:__ network building approach; "all" (default) for using all atoms or "ca" for using Cα atoms only
+ - __network_approach:__ network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
 
 #### Usage 
 
@@ -224,7 +224,7 @@ PDB_2DN2_structure <- read_PDB("3SQJ")
 ### `PDB2connections`
 
 `PDB2connections()` function calculates distances between each ATOM in the PDB structure 
-and creates an edge between atoms if the distance <= 7Å. As a result, returns a list contains data frames of different chains' interaction lists.
+and creates an edge between atoms if the distance <= 5Å. As a result, returns a list contains data frames of different chains' interaction lists.
 
 #### Arguments
 
@@ -234,7 +234,7 @@ and creates an edge between atoms if the distance <= 7Å. As a result, returns a
  - __filtered_info_df:__ data.frame contains only one PDB entries
  - __n_threads:__ number of threads (default = NULL)
  - __single_run:__ should be set as TRUE when using `PDB2connections()` function alone (default = TRUE)
- - __distance_cutoff:__ distance cutoff for setting edges (default = 7)
+ - __distance_cutoff:__ distance cutoff for setting edges (default = 5)
 
 #### Usage 
 
@@ -592,8 +592,8 @@ gene_essentiality_score <- amino_acid_features(info_df = test_data)
 `impact_prediction()` has 3 arguments;
 
  - __final_df:__ data.frame contains all the required information for impact prediction
- - __distance_cutoff:__ distance cutoff for setting edges (default = 7)
- - __network_approach:__ network building approach; "all" (default) for using all atoms or "ca" for using Cα atoms only
+ - __distance_cutoff:__ distance cutoff for setting edges (default = 5)
+ - __network_approach:__ network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
 
 #### Usage 
 
