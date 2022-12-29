@@ -6,18 +6,33 @@ library(predatoR)
 
 testthat::skip_on_os("mac")
 
+info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "XXXXX"),
+                               c("2DN2", "B", 6, "GLU", "ALA", "XXXXX")))
+
+
+test_that("Check final error", {
+  expect_error(predatoR(info_df = info_df, gene_name_info = T, network_approach = "all", distance_cutoff = 5))
+})
+
 info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
 
 
 test_that("Check network approach error", {
-  expect_error(predatoR(info_df = as.matrix(info_df), gene_name_info = T, network_approach = "null"))
+  expect_error(predatoR(info_df = info_df, gene_name_info = T, network_approach = "null"))
 })
+
+
+test_that("Check exploratory output", {
+  expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, network_approach = "ca", distance_cutoff = 7.2)))
+})
+
+
 
 test_that("Check exploratory analysis output", {
 
   info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
-  expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2, network_approach = "ca", distance_cutoff = 5)))
+  expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2, network_approach = "all", distance_cutoff = 5)))
 })
 
 test_that("Check input type", {
@@ -541,13 +556,13 @@ filtered_info_df$pagerank_z_score <- pagerank_score(edge_list, filtered_info_df)
 
 test_that("Check ca output class", {
 
-  expect_true(is.data.frame(impact_prediction(final_df, network_approach = "ca", distance_cutoff = 5)))
+  expect_true(is.data.frame(impact_prediction(final_df, network_approach = "all", distance_cutoff = 5)))
 
 })
 
 test_that("Check prediction error", {
 
-  expect_error(is.data.frame(impact_prediction(final_df, network_approach = "ca", distance_cutoff = 8)))
+  expect_error(is.data.frame(impact_prediction(final_df, network_approach = "all", distance_cutoff = 8)))
 
 })
 
@@ -559,7 +574,7 @@ test_that("Check network approach error", {
 
 test_that("Check cutoff error", {
 
-  expect_error(is.data.frame(impact_prediction(final_df, network_approach = "ca", distance_cutoff = 7)))
+  expect_error(is.data.frame(impact_prediction(final_df, network_approach = "all", distance_cutoff = 7)))
 
 })
 
