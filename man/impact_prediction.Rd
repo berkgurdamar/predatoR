@@ -4,14 +4,14 @@
 \alias{impact_prediction}
 \title{Impact Prediction}
 \usage{
-impact_prediction(final_df, distance_cutoff = 5, network_approach = "ca")
+impact_prediction(final_df, distance_cutoff = 5, network_approach = "all")
 }
 \arguments{
 \item{final_df}{data.frame contains all the required features for impact prediction}
 
 \item{distance_cutoff}{distance cutoff for setting edges (default = 5)}
 
-\item{network_approach}{network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms}
+\item{network_approach}{network building approach; "all" (default) for using all atoms only or "ca" for using ca atoms only}
 }
 \value{
 data.frame contains the prediction results

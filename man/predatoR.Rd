@@ -10,7 +10,7 @@ predatoR(
   n_threads = NULL,
   gene_name_info = TRUE,
   distance_cutoff = 5,
-  network_approach = "ca"
+  network_approach = "all"
 )
 }
 \arguments{
@@ -25,7 +25,7 @@ predatoR(
 
 \item{distance_cutoff}{distance cutoff for setting edges (default = 5)}
 
-\item{network_approach}{network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms}
+\item{network_approach}{network building approach; "all" (default) for using all atoms only or "ca" for using ca atoms only}
 }
 \value{
 data.frame which contains prediction results
