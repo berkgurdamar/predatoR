@@ -19,5 +19,6 @@ clique_score(edge_list, filtered_info_df, n_threads = NULL, single_run = TRUE)
 Clique Z-Scores of input position
 }
 \description{
-Calculates and returns the Clique Z-Scores of the input positions.
+For each node, calculates the number of edges between neighbors of a node.
+Converts to scores into Z-Scores and returns the scores of input positions.
 }

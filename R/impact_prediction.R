@@ -6,15 +6,15 @@
 #' the impact of a mutation.
 #'
 #' @param final_df data.frame contains all the required features for impact prediction
-#' @param distance_cutoff distance cutoff for setting edges (default = 7)
-#' @param network_approach network building approach; "all" (default) for using all atoms or "ca" for using carbon alpha atoms only
+#' @param distance_cutoff distance cutoff for setting edges (default = 5)
+#' @param network_approach network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
 #'
 #' @return data.frame contains the prediction results
 #'
 #' @export
 #'
 
-impact_prediction <- function(final_df, distance_cutoff = 7, network_approach = "all"){
+impact_prediction <- function(final_df, distance_cutoff = 5, network_approach = "ca"){
 
   if(!network_approach %in% c("all", "ca")){
     stop("Network approach needs to be 'all' or 'ca'")
@@ -47,21 +47,21 @@ impact_prediction <- function(final_df, distance_cutoff = 7, network_approach = 
     final_df$mut_hyd <- as.numeric(final_df$mut_hyd)
     final_df$hyd_diff <- as.numeric(final_df$hyd_diff)
 
-    if(network_approach == "all" & distance_cutoff == 7){
+    if(network_approach == "all" & distance_cutoff == 5){
 
-      prob <- caret::predict.train(predatoR::caret_adaboost_all, final_df, type = "prob")
+      prob <- caret::predict.train(predatoR::adaboost_5_all, final_df, type = "prob")
 
-      res <- as.factor(ifelse(caret::predict.train(predatoR::caret_adaboost_all, final_df, type = "prob")[,2] > 0.5, "1", "0"))
+      res <- as.factor(ifelse(caret::predict.train(predatoR::adaboost_5_all, final_df, type = "prob")[,2] > 0.5, "1", "0"))
 
-    }else if(network_approach == "ca" & distance_cutoff == 5){
+    }else if(network_approach == "ca" & distance_cutoff == 7){
 
-      prob <- caret::predict.train(predatoR::caret_adaboost_5_ca, final_df, type = "prob")
+      prob <- caret::predict.train(predatoR::adaboost_7_ca, final_df, type = "prob")
 
-      res <- as.factor(ifelse(caret::predict.train(predatoR::caret_adaboost_5_ca, final_df, type = "prob")[,2] > 0.5, "1", "0"))
+      res <- as.factor(ifelse(caret::predict.train(predatoR::adaboost_7_ca, final_df, type = "prob")[,2] > 0.5, "1", "0"))
 
     }
     else{
-      stop("Predictions can be made using 5 angstrom ca atom approach and 7 angstrom all atom approach")
+      stop("Predictions can be made using 5 angstrom all atom approach and 7 angstrom ca atom approach")
     }
     probs <- c()
     res_types <- c()
@@ -82,6 +82,6 @@ impact_prediction <- function(final_df, distance_cutoff = 7, network_approach = 
     return(cbind(final_df[,1:6], pred_df))
 
   }else{
-    stop("Predictions can be made using 5 angstrom ca atom approach and 7 angstrom all atom approach cutoffs")
+    stop("Predictions can be made using 5 angstrom all atom approach and 7 angstrom ca atom approach cutoffs")
   }
 }

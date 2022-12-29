@@ -9,14 +9,14 @@
 #' @param filtered_info_df input data.frame which contain only one PDB entries
 #' @param n_threads number of threads (default = NULL)
 #' @param single_run should be set as TRUE when using \code{PDB2connections} function alone (default = TRUE)
-#' @param distance_cutoff distance cutoff for setting edges (default = 7)
+#' @param distance_cutoff distance cutoff for setting edges (default = 5)
 #'
 #' @return list contains separate edge data.frames for each chain
 #'
 #' @export
 #'
 
-PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, single_run = TRUE, distance_cutoff = 7){
+PDB2connections <- function(atom_matrix, filtered_info_df, n_threads = NULL, single_run = TRUE, distance_cutoff = 5){
 
   colnames(filtered_info_df)[1:5] <- c("PDB_ID", "Chain", "Position", "Orig_AA", "Mut_AA")
 

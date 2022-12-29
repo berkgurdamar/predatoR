@@ -9,7 +9,7 @@ PDB2connections(
   filtered_info_df,
   n_threads = NULL,
   single_run = TRUE,
-  distance_cutoff = 7
+  distance_cutoff = 5
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ PDB2connections(
 
 \item{single_run}{should be set as TRUE when using \code{PDB2connections} function alone (default = TRUE)}
 
-\item{distance_cutoff}{distance cutoff for setting edges (default = 7)}
+\item{distance_cutoff}{distance cutoff for setting edges (default = 5)}
 }
 \value{
 list contains separate edge data.frames for each chain

@@ -13,15 +13,15 @@
 #' @param PDB_path PDB file path (default = NULL)
 #' @param n_threads number of threads (default = NULL)
 #' @param gene_name_info whether there is gene name information in the input or not (default = TRUE)
-#' @param distance_cutoff distance cutoff for setting edges (default = 7)
-#' @param network_approach network building approach; "all" (default) for using all atoms or "ca" for using carbon alpha atoms only
+#' @param distance_cutoff distance cutoff for setting edges (default = 5)
+#' @param network_approach network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
 #'
 #' @return data.frame which contains prediction results
 #'
 #' @export
 #'
 
-predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE, distance_cutoff = 7, network_approach = "all"){
+predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info = TRUE, distance_cutoff = 5, network_approach = "ca"){
 
   if(!network_approach %in% c("all", "ca")){
     stop("Network approach needs to be 'all' or 'ca'")
@@ -151,7 +151,7 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
   }
 
 
-  if(network_approach == "all" & distance_cutoff == 7){
+  if(network_approach == "ca" & distance_cutoff == 7){
     final_df <- stats::na.omit(final_df)
 
       if(nrow(final_df) == 0){
@@ -172,7 +172,7 @@ predatoR <- function(info_df, PDB_path = NULL, n_threads = NULL, gene_name_info 
 
   }
 
-  else if(network_approach == "ca" & distance_cutoff == 5){
+  else if(network_approach == "all" & distance_cutoff == 5){
     final_df <- stats::na.omit(final_df)
 
     if(nrow(final_df) == 0){

@@ -5,14 +5,14 @@
 #'
 #' @param PDB_ID PDB ID
 #' @param PDB_path PDB file path (default = NULL)
-#' @param network_approach network building approach; "all" (default) for using all atoms or "ca" for using carbon alpha atoms only
+#' @param network_approach network building approach; "ca" (default) for using ca atoms only or "all" for using all atoms
 #'
 #' @return Matrix that contains all the atoms in the PDB structure
 #'
 #' @export
 #'
 
-read_PDB <- function(PDB_ID, PDB_path = NULL, network_approach = "all"){
+read_PDB <- function(PDB_ID, PDB_path = NULL, network_approach = "ca"){
 
   if(!network_approach %in% c("all", "ca")){
     stop("Network approach needs to be 'all' or 'ca'")
