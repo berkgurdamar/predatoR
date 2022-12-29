@@ -33,7 +33,7 @@ test_that("Check exploratory output", {
   expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, network_approach = "ca", distance_cutoff = 7.2)))
 })
 
-
+info_df <- as.data.frame(rbind(c("1Z2M"	,"A",	21,	"SER",	"ASN",	"ISG15")))
 test_that("Check output", {
   expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, network_approach = "ca", distance_cutoff = 7)))
 })
