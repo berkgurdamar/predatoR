@@ -28,31 +28,31 @@ properties.
 
 `predatoR()` works on each PDB respectively. For each PDB;
 
--   Downloads/Reads PDB file
--   Calculates distance between each atom in the structure
--   Creates a network from PDB
--   Calculates Degree Centrality Z-Score of each atom
--   Calculates Eigen Centrality Z-Score of each atom
--   Calculates Shortest Path Z-Score of each atom
--   Calculates Betweenness Z-Score of each atom
--   Calculates Clique Z-Score of each atom
--   Calculates PageRank Z-Score of each atom
--   Gets [gnomAD](https://gnomad.broadinstitute.org/) Synonymous
-    Z-Score, Missense Z-Score, and pLI Score
--   Gets BLOSUM62 score of the mutation
--   Finds the number of [KEGG Pathways](https://www.genome.jp/kegg/)
-    which contains the input gene
--   Gets [Genic Intolerance](http://genic-intolerance.org/) Score
--   Finds the number of GO terms associated with the input gene
--   Finds the number of diseases associated with the input gene from
-    [DisGeNET](https://www.disgenet.org/)
--   Gets the Gene Essentiality Score from Online Gene Essentiality
-    ([OGEE](https://v3.ogee.info/#/home)) Database
--   Calculates the median gene expression value of the input gene from
-    [GTEx](https://gtexportal.org/home/)
--   Calculates 6 different features from Accessible Surface Area and
-    Hydrophobicity Scale of reference and mutant amino acids
--   Makes prediction
+- Downloads/Reads PDB file
+- Calculates distance between each atom in the structure
+- Creates a network from PDB
+- Calculates Degree Centrality Z-Score of each atom
+- Calculates Eigen Centrality Z-Score of each atom
+- Calculates Shortest Path Z-Score of each atom
+- Calculates Betweenness Z-Score of each atom
+- Calculates Clique Z-Score of each atom
+- Calculates PageRank Z-Score of each atom
+- Gets [gnomAD](https://gnomad.broadinstitute.org/) Synonymous Z-Score,
+  Missense Z-Score, and pLI Score
+- Gets BLOSUM62 score of the mutation
+- Finds the number of [KEGG Pathways](https://www.genome.jp/kegg/) which
+  contains the input gene
+- Gets [Genic Intolerance](http://genic-intolerance.org/) Score
+- Finds the number of GO terms associated with the input gene
+- Finds the number of diseases associated with the input gene from
+  [DisGeNET](https://www.disgenet.org/)
+- Gets the Gene Essentiality Score from Online Gene Essentiality
+  ([OGEE](https://v3.ogee.info/#/home)) Database
+- Calculates the median gene expression value of the input gene from
+  [GTEx](https://gtexportal.org/home/)
+- Calculates 6 different features from Accessible Surface Area and
+  Hydrophobicity Scale of reference and mutant amino acids
+- Makes prediction
 
 # Installation
 
@@ -71,7 +71,7 @@ Mutation impact prediction can be done via `predatoR()` function:
 `predatoR()` uses data.frame structures as an input. data.frame should
 consist of **‘PDB_ID’**, **‘Chain’**, **‘Position’**, **‘Orig_AA’**,
 **‘Mut_AA’** and **‘Gene_Name’** (optional). Predictions can be made by
-using 2 different models, 7 Angstrom (Å)-all atoms model and 5Å-carbon
+using 2 different models, 5 Angstrom (Å)-all atoms model and 7Å-carbon
 alpha (Cα) atoms only model.
 
 | PDB_ID | Chain | Position | Orig_AA | Mut_AA | Gene_Name |
@@ -129,24 +129,24 @@ prediction_result <- predatoR(input_df, distance_cutoff = 8, network_approach = 
 
 The wrapper function `predatoR()` uses the utility functions below;
 
--   `read_PDB()`
--   `PDB2connections()`
--   `degree_score()`
--   `eigen_centrality_score()`
--   `shorteset_path_score()`
--   `betweenness_score()`
--   `clique_score()`
--   `pagerank_score()`
--   `gnomad_scores()`
--   `BLOSUM62_score()`
--   `KEGG_pathway_number()`
--   `genic_intolerance()`
--   `GO_terms()`
--   `DisGeNET()`
--   `gene_essentiality()`
--   `GTEx()`
--   `amino_acid_features()`
--   `impact_prediction()`
+- `read_PDB()`
+- `PDB2connections()`
+- `degree_score()`
+- `eigen_centrality_score()`
+- `shorteset_path_score()`
+- `betweenness_score()`
+- `clique_score()`
+- `pagerank_score()`
+- `gnomad_scores()`
+- `BLOSUM62_score()`
+- `KEGG_pathway_number()`
+- `genic_intolerance()`
+- `GO_terms()`
+- `DisGeNET()`
+- `gene_essentiality()`
+- `GTEx()`
+- `amino_acid_features()`
+- `impact_prediction()`
 
 Utility functions can be used alone, for more detail please see vignette
 via `vignette("predatoR_Vignette")`.
