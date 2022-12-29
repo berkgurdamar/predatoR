@@ -64,8 +64,7 @@ test_that("Check false pdb input", {
 
   info_df <- as.data.frame(rbind(c("2DNNN2", "B", 1, "VAL", "ALA", "HBB")))
 
-  expect_error(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2),
-               "There is no input for prediction")
+  expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, n_threads = 2)))
 })
 
 
@@ -74,8 +73,7 @@ test_that("Check no gene name input", {
 
   info_df <- as.data.frame(rbind(c("2DNNN2", "B", 1, "VAL", "ALA")))
 
-  expect_error(predatoR(info_df = info_df, gene_name_info = F, n_threads = 2),
-               "There is no input for prediction")
+  expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = F, n_threads = 2)))
 })
 
 
@@ -114,8 +112,7 @@ info_df <- as.data.frame(rbind(c("2DN2", "B", 5, "VAL", "ALA", "HBB")))
 
 test_that("Check input amino acid names", {
 
-  expect_error(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1),
-               "There is no input for prediction")
+  expect_message(predatoR(info_df = info_df, gene_name_info = T, n_threads = 1))
 })
 
 
@@ -137,7 +134,7 @@ test_that("Check multiple amino acid for one residue message", {
 
   bio3d::write.pdb(pdb_file, file.path(tmp_dir, paste0(PDB_ID, "_N.pdb")))
 
-  expect_message(predatoR(info_df = info_df, gene_name_info = T, PDB_path = tmp_dir, n_threads = 2),
+  expect_message(predatoR(info_df = info_df, gene_name_info = T, PDB_path = tmp_dir, n_threads = 2, distance_cutoff = 5, network_approach = "all"),
                  "There are multiple amino acids for residue [1-9]\\d* in the PDB file, it will be removed from the query")
 
 })
@@ -533,7 +530,7 @@ final_df <- filtered_info_df
 
 test_that("Check output class", {
 
-  expect_true(is.data.frame(impact_prediction(final_df)))
+  expect_true(is.data.frame(impact_prediction(final_df, )))
 
 })
 
