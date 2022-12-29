@@ -14,6 +14,12 @@ test_that("Check final error", {
   expect_error(predatoR(info_df = info_df, gene_name_info = T, network_approach = "all", distance_cutoff = 5))
 })
 
+
+test_that("Check final error", {
+  expect_error(predatoR(info_df = info_df, gene_name_info = T, network_approach = "ca", distance_cutoff = 7))
+})
+
+
 info_df <- as.data.frame(rbind(c("2DN2", "B", 1, "VAL", "ALA", "HBB"),
                                c("2DN2", "B", 6, "GLU", "ALA", "HBB")))
 
@@ -27,6 +33,10 @@ test_that("Check exploratory output", {
   expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, network_approach = "ca", distance_cutoff = 7.2)))
 })
 
+
+test_that("Check output", {
+  expect_true(is.data.frame(predatoR(info_df = info_df, gene_name_info = T, network_approach = "ca", distance_cutoff = 7)))
+})
 
 
 test_that("Check exploratory analysis output", {
