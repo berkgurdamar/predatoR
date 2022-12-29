@@ -34,6 +34,12 @@
     <loc>https://berkgurdamar.github.io/predatoR/reference/PDB2connections.html</loc>
   </url>
   <url>
+    <loc>https://berkgurdamar.github.io/predatoR/reference/adaboost_5_all.html</loc>
+  </url>
+  <url>
+    <loc>https://berkgurdamar.github.io/predatoR/reference/adaboost_7_ca.html</loc>
+  </url>
+  <url>
     <loc>https://berkgurdamar.github.io/predatoR/reference/amino_acid_features.html</loc>
   </url>
   <url>
@@ -41,12 +47,6 @@
   </url>
   <url>
     <loc>https://berkgurdamar.github.io/predatoR/reference/blosum62_score.html</loc>
-  </url>
-  <url>
-    <loc>https://berkgurdamar.github.io/predatoR/reference/caret_adaboost_5_ca.html</loc>
-  </url>
-  <url>
-    <loc>https://berkgurdamar.github.io/predatoR/reference/caret_adaboost_all.html</loc>
   </url>
   <url>
     <loc>https://berkgurdamar.github.io/predatoR/reference/clique_score.html</loc>
